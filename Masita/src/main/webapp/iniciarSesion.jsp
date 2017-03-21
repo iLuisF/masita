@@ -1,16 +1,10 @@
-<%-- 
-    Document   : iniciarSesion
-    Created on : 20/03/2017, 11:58:54 PM
-    Author     : Roc韔 Huerta
---%>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Iniciar Sesi髇</title>
+    <title>Iniciar Sesi贸n</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
@@ -25,7 +19,7 @@
         </style>
         <div class="barrasup"> Masita
             <button type="button" class="btn btn-warning" style="position:absolute;left:75%;top:1%;">Registrarse</button>
-            <button type="button" class="btn btn-success" style="position:absolute;left:85%;top:1%;">Iniciar Sesi髇</button>
+            <button type="button" class="btn btn-success" style="position:absolute;left:85%;top:1%;">Iniciar Sesi贸n</button>
     
         </div>
         <form class="navbar-form navbar-left" role="search">
@@ -40,7 +34,7 @@
         </div>
         <div class="panel panel-info" style="position:absolute;left:5%;top:30%;width:90%;">
             <div class="panel-heading"> </div>
-            <div class="panel-body" style="font-size:150%">Cafeter韆 Ciencias</div>
+            <div class="panel-body" style="font-size:150%">Cafeter铆a Ciencias</div>
             <div class="panel-body">Comida corrida</div>
         </div>
             <div class="ec-stars-wrapper" style="position:absolute;left:75%;top:40%;width:90%;font-size:32px;">
@@ -79,17 +73,17 @@
         
         <div class="container" style="position:absolute;left:80%;top:6%;width:20%;background:#93E7A5;">
             <form class="form-signin">
-                <h1 class="form-heading">Iniciar Sesi髇</h1>
-                <label for="inputEmail" class="sr-only">Correo electr髇ico</label>
-                <input type="correo" id="inputEmail" class="form-control" placeholder="Correo elextr髇ico" required autofocus>
-                <label for="inputPassword" class="sr-only">Contrase馻</label>
-                <input type="contrasena" id="inputPassword" class="form-control" placeholder="Contrase馻" required>
+                <h1 class="form-heading">Iniciar Sesi贸n</h1>
+                <label for="inputEmail" class="sr-only">Correo electr贸nico</label>
+                <input type="correo" id="inputEmail" class="form-control" placeholder="Correo elextr贸nico" required autofocus>
+                <label for="inputPassword" class="sr-only">Contrase帽a</label>
+                <input type="contrasena" id="inputPassword" class="form-control" placeholder="Contrase帽a" required>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" value="remember-me"> Recordarme
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar Sesi髇</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar Sesi贸n</button>
             </form>
         </div
         
