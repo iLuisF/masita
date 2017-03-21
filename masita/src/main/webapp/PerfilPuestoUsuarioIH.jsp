@@ -25,7 +25,7 @@
                 <div class="navbar-header">        
                     <button type="button" class="navbar-toggle collapsed" 
                             data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Navegación</span>
+                        <span class="sr-only">NavegaciÃ³n</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -35,7 +35,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <form class="navbar-form navbar-right">            
                         <button type="submit" class="btn btn-primary">Bob bobbins</button>
-                        <button type="submit" class="btn btn-success">Cerrar sesión</button>
+                        <button type="submit" class="btn btn-success">Cerrar sesiÃ³n</button>
                     </form>          
                 </div>
             </div>
@@ -67,12 +67,12 @@
                             <div class="panel panel-info">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
-                                        <strong>Información Puesto</strong></h3>
+                                        <strong>InformaciÃ³n Puesto</strong></h3>
                                 </div>
                                 <div class="panel-body">
                                     <p><strong>Horario:</strong> 9:00 - 18:00</p>
                                     <p><strong>Mesas:</strong> Si</p>
-                                    <p><strong>Baños:</strong> No</p>
+                                    <p><strong>BaÃ±os:</strong> No</p>
                                 </div>
                             </div>
                         </div>
@@ -88,20 +88,20 @@
                         <tr>      
                             <th>Usuario</th>
                             <th>Comentario</th>
-                            <th>Calificación</th>
+                            <th>CalificaciÃ³n</th>
                             <th>Fecha</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th scope="row">Jennifer Pinsker</th>
-                            <td>¡Deliciosas enchiladas!</td>
+                            <td>Â¡Deliciosas enchiladas!</td>
                             <td><img src="./imagenes/stars3.png" height="50%"></td>
                             <td>15 Sep, 8:56 AM</td>
                         </tr>
                         <tr>
                             <th scope="row">Bob bobbins</th>
-                            <td>Están sucias las mesas 
+                            <td>EstÃ¡n sucias las mesas 
                                 <img src="./imagenes/eliminar.png" height="20%" alt="Eliminar comentario" align="right"> </td>
                             <td><img src="./imagenes/stars2.png" height="50%"></td>
                             <td>15 Sep, 8:56 AM</td>
@@ -113,9 +113,9 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">¿Qué piensas sobre este puesto?</h3>
+                    <h3 class="panel-title">Â¿QuÃ© piensas sobre este puesto?</h3>
                 </div>
-                <textarea class="form-control" rows="3" placeholder="Aquí va tu comentario."></textarea>
+                <textarea class="form-control" rows="3" placeholder="AquÃ­ va tu comentario."></textarea>
                 <div class="panel-footer">
                     <p class="text-right">
                         <img src="./imagenes/stars0.png" width="150px"> 
