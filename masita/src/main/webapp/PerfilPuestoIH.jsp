@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="en">
-    
+<html lang="es">
+
     <head>
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="">
@@ -16,17 +16,9 @@
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <link href="./assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
         <!-- Custom styles for this template -->
-        <link href="jumbotron.css" rel="stylesheet">
-        <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-        <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-        <script src="./assets/js/ie-emulation-modes-warning.js"></script>
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <link href="jumbotron.css" rel="stylesheet">      
     </head>
-    
+
     <body>
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
@@ -56,28 +48,31 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-8">
-                            <!-- Responsive iFrame google maps-->
+                            <!-- Primer columna correspondiente a google maps-->
                             <div class="Flexible-container">
                                 <iframe width="425" height="350" frameborder="0"
                                         scrolling="no" marginheight="0" marginwidth="0"
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3765.054246151732!2d-99.18183038478072!3d19.32345224916825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ce000fdd96288f%3A0x1096af9b5b03d38d!2sFacultad+de+Ciencias%2C+UNAM!5e0!3m2!1ses!2smx!4v1489916016734">                                            
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3765.054246151732!2d-99.18183038478072!3d19.32345224916825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ce000fdd96288f%3A0x1096af9b5b03d38d!2sFacultad+de+Ciencias%2C+UNAM!5e0!3m2!1ses!2smx!4v1489916016734">                                            
                                 </iframe>    
                             </div>
                         </div>
                         <div class="col-sm-4">
+                            <!--Segunda columa correspondiente a los datos del puesto-->
                             <center>
-                                <h2>Cafeteria Ciencias</h2>
+                                <h2><img src="./imagenes/edificio.png" width="40px" alt="Cafeteria Ciencias">
+                                    Cafeteria Ciencias</h2>
                                 <h5>Comida Corrida</h5>
-                                <p>Aquí va el número de estrellas.</p>
+                                <p><img src="./imagenes/stars3.png" width="70%"></p>
                             </center>
                             <div class="panel panel-info">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Información Puesto</h3>
+                                    <h3 class="panel-title">
+                                        <strong>Información Puesto</strong></h3>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Horario: 9:00 - 18:00</p>
-                                    <p>Mesas: Si</p>
-                                    <p>Baños: No</p>
+                                    <p><strong>Horario:</strong> 9:00 - 18:00</p>
+                                    <p><strong>Mesas:</strong> Si</p>
+                                    <p><strong>Baños:</strong> No</p>
                                 </div>
                             </div>
                         </div>
@@ -101,13 +96,14 @@
                         <tr>
                             <th scope="row">Jennifer Pinsker</th>
                             <td>¡Deliciosas enchiladas!</td>
-                            <td>3 estrellas</td>
+                            <td><img src="./imagenes/stars3.png" height="50%"></td>
                             <td>15 Sep, 8:56 AM</td>
                         </tr>
                         <tr>
                             <th scope="row">Bob bobbins</th>
-                            <td>Están sucias las mesas</td>
-                            <td>2 estrellas</td>
+                            <td>Están sucias las mesas 
+                                <img src="./imagenes/eliminar.png" height="20%" alt="Eliminar comentario" align="right"> </td>
+                            <td><img src="./imagenes/stars2.png" height="50%"></td>
                             <td>15 Sep, 8:56 AM</td>
                         </tr>
                     </tbody>
@@ -120,7 +116,12 @@
                     <h3 class="panel-title">¿Qué piensas sobre este puesto?</h3>
                 </div>
                 <textarea class="form-control" rows="3" placeholder="Aquí va tu comentario."></textarea>
-                <div class="panel-footer">Aquí va la calificicación y botón de comentar</div>
+                <div class="panel-footer">
+                    <p class="text-right">
+                        <img src="./imagenes/stars0.png" width="150px"> 
+                        <button type="button" class="btn btn-primary">Comentar</button>
+                    </p>
+                </div>
             </div>            
             <hr>
             <footer>
@@ -128,14 +129,5 @@
             </footer>
         </div> <!-- /container -->
 
-
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-        <script src="../../dist/js/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
     </body>
 </html>
