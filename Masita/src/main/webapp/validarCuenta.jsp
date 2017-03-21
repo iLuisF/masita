@@ -1,9 +1,3 @@
-<%-- 
-    Document   : validarCuenta
-    Created on : 20/03/2017, 09:40:04 PM
-    Author     : Rocío Huerta
---%>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,31 +19,31 @@
         </style>
         <div class="barrasup"> Masita
             <button type="button" class="btn btn-warning" style="position:absolute;left:75%;top:1%;">Hugh Jackman</button>
-            <button type="button" class="btn btn-success" style="position:absolute;left:85%;top:1%;">Cerrar Sesión</button>
+            <button type="button" class="btn btn-success" style="position:absolute;left:85%;top:1%;">Cerrar SesiÃ³n</button>
         </div>
         
         <div class="alert alert-success alert-dismissable">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>¡Se creó la cuenta exitosamente!</strong>
+            <strong>Â¡Se creÃ³ la cuenta exitosamente!</strong>
         </div>
         
-        <p class="lead" style="font-size:120%;position:absolute;left:5%;">Se ha enviado un correo electrónico a la dirección: </p>
+        <p class="lead" style="font-size:120%;position:absolute;left:5%;">Se ha enviado un correo electrÃ³nico a la direcciÃ³n: </p>
         <strong style="font-size:120%;position:absolute;left:15%;top:25%;">alumno@ciencias.unam.mx</strong>
         <p class="lead" style="font-size:120%;position:absolute;left:5%;top:32%;">
-            Para confirmar que es la dirección de tu correo electrónico, haz click en el hipervínculo de confirmación que se mostrará
+            Para confirmar que es la direcciÃ³n de tu correo electrÃ³nico, haz click en el hipervÃ­nculo de confirmaciÃ³n que se mostrarÃ¡
             en el mismo.
         </p>
         <p class="lead" style="font-size:120%;position:absolute;left:5%;top:50%;">
-            ¿No es tu dirección de correo electrónico?
+            Â¿No es tu direcciÃ³n de correo electrÃ³nico?
         </p>
         <u style="font-size:120%;position:absolute;left:30%;top:50%;color:#040BE5;">
             Editar correo
         </u>
         <p class="lead" style="font-size:120%;position:absolute;left:5%;top:56%;">
-            ¿No has recibido el correo?
+            Â¿No has recibido el correo?
         </p>
         <u style="font-size:120%;position:absolute;left:22%;top:56%;color:#040BE5;">
-            Reenviar mi validación
+            Reenviar mi validaciÃ³n
         </u>
         
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
