@@ -1,3 +1,4 @@
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -20,7 +21,7 @@ CREATE TABLE UsuarioCiencias (
     nombre_usuario 				varchar(64) NOT NULL,
     correo 						varchar(128) NOT NULL,
     PRIMARY KEY(id_usuario)
-) ;
+) ; ENGINE=InnoBD DEFAULT CHARSET=utf8;
 
 
 --
@@ -139,3 +140,4 @@ ALTER TABLE `TipoComida`
 --
 ALTER TABLE `UsuarioCiencias`
   MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT;
+
