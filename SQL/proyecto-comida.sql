@@ -1,20 +1,27 @@
--- phpMyAdmin SQL Dump
--- version 4.6.5.2
--- https://www.phpmyadmin.net/
---
--- Servidor: localhost:8889
--- Tiempo de generación: 21-03-2017 a las 02:07:43
--- Versión del servidor: 5.6.34
--- Versión de PHP: 7.1.0
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
 -- Base de datos: `Masita`
 --
+create database masita;
+
+use masita;
 
 -- --------------------------------------------------------
+
+CREATE TABLE UsuarioCiencias (
+	id_usuario 					int NOT NULL,
+    contrasenia 				varchar(128) NOT NULL,
+    nombre 						varchar(64) NOT NULL,
+    app 						varchar(64) NOT NULL,
+    apm 						varchar(64) NOT NULL,
+    activo 						varchar(128) NOT NULL,
+    nombre_usuario 				varchar(64) NOT NULL,
+    correo 						varchar(128) NOT NULL,
+    PRIMARY KEY(id_usuario)
+) ;
+
 
 --
 -- Estructura de tabla para la tabla `Comentario`
@@ -67,21 +74,6 @@ CREATE TABLE `TipoComida` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `UsuarioCiencias`
---
-
-CREATE TABLE `UsuarioCiencias` (
-  `idUsuario` int(11) NOT NULL,
-  `nombre` varchar(64) NOT NULL,
-  `app` varchar(64) NOT NULL,
-  `apm` varchar(64) NOT NULL,
-  `correo` varchar(128) NOT NULL,
-  `nombreUsuario` varchar(64) NOT NULL,
-  `contrasenia` varchar(128) NOT NULL,
-  `activo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Índices para tablas volcadas
