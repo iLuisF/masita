@@ -1,19 +1,15 @@
-CREATE DATABASE Proyecto_Comida;
-GO
-USE Proyecto_Comida
-GO
-CREATE SCHEMA Masita;
-GO
-CREATE TABLE Proyecto_Comida.Masita.Puesto(
-	nombrePuesto 		varchar(255) primary key,
-	tipoComida 			varchar(255),
-	calificacion 		tinyint,
-	coordenadaX 		numeric (10,8),
-	coordanadaY			numeric(10,8),
-	horario				varchar(50),
-	tiene_mesas 		bit not null, -- 0 para no , 1 para si	
-	tiene_banios		bit not null -- 0 para no , 1 para si
-);
+create database masita;
 
-ALTER TABLE Masita.Puesto add CONSTRAINT ck_horario CHECK (horario LIKE '[0-9][0-9][:][0-9][0-9][-][0-9][0-9][:][0-9][0-9]');
-ALTER TABLE Masita.Puesto add CONSTRAINT ck_calificacion CHECK (calificacion > 0 AND calificacion < 5);
+use masita;
+
+CREATE TABLE UsuarioCiencias (
+	id_usuario 					int NOT NULL,
+    contrasenia 				varchar(128) NOT NULL,
+    nombre 						varchar(64) NOT NULL,
+    app 						varchar(64) NOT NULL,
+    apm 						varchar(64) NOT NULL,
+    activo 						varchar(128) NOT NULL,
+    nombre_usuario 				varchar(64) NOT NULL,
+    correo 						varchar(128) NOT NULL,
+    PRIMARY KEY(id_usuario)
+) ENGINE=InnoBD DEFAULT CHARSET=utf8;
