@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:b="http://bootsfaces.net/ui">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <title>Masita</title>
@@ -95,20 +96,22 @@
         </b:container>
 
 
-        <b:container>           
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">¿Qué piensas sobre este puesto?</h3>
-                </div>
-                <textarea class="form-control" rows="3" placeholder="Aquí va tu comentario."></textarea>
-                <div class="panel-footer">
-                    <p class="text-right">
-                        <img src="./imagenes/stars0.png" width="150px"> </img>
-                        <button type="button" class="btn btn-primary">Comentar</button>
-                    </p>
-                </div>
-            </div>            
+        <b:container>      
 
+            <h:form>
+                <p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px" closable="true" >
+                    <h:outputText/>
+                    <br/>
+                    <p:inputTextarea value="#{comentario.contenido}" style="width: 100%" rows="10"/>
+                    <br />
+                    <p:commandButton id='btn' value="Comentar" action="#{crearcomentario.crearComentario()}"
+                                     ajax="false" />
+                    <br />
+                    <h:outputText value="Comentario creado:" />                    
+                    <h:outputText id="display" value="#{comentario.contenido}" style="font-weight: bold" />
+                </p:panel>
+            </h:form>
+            
         </b:container>
     </h:body>
 </html>

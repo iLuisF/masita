@@ -1,5 +1,15 @@
+package com.kaab.proyecto;
+
 
 import java.util.Date;
+
+
+import java.util.Locale;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 
 /**
@@ -7,6 +17,8 @@ import java.util.Date;
  * @author Flores González Luis.
  * @version 1.0 - Abril del 2017
  */
+@ManagedBean(name = "comentario", eager = true)
+@RequestScoped
 public class Comentario {
     
     private UsuarioCiencias usuario;
@@ -46,6 +58,9 @@ public class Comentario {
         this.fecha = fecha;
     }
     
-    
+    @Override
+    public String toString(){
+        return contenido;
+    }
     
 }
