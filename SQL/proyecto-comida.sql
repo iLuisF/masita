@@ -18,7 +18,7 @@ drop table if exists ServicioAdicionalPuesto;
 -- Estructura para la tabla Usuario
 --
 CREATE TABLE Usuario (
-  idUsuario       int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  idUsuario       serial PRIMARY KEY,
   correo          varchar(128) NOT NULL,
   contrasenia     varchar(128) NOT NULL,
   nombre          varchar(64) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE Usuario (
 -- Estructura para la tabla Puesto
 --
 CREATE TABLE Puesto (
-  idPuesto      int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  idPuesto      serial PRIMARY KEY,
   nombre        varchar(64) NOT NULL,
   horario       varchar(16) NOT NULL,
   latitud		varchar(20) NOT NULL,
@@ -44,9 +44,9 @@ CREATE TABLE Puesto (
 -- Estructura para la tabla Comentario
 --
 CREATE TABLE Comentario (
-  idComentario    int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  idPuesto        int NOT NULL,
-  idUsuario       int NOT NULL,
+  idComentario    serial PRIMARY KEY,
+  idPuesto        bigint(20) unsigned NOT NULL,
+  idUsuario       bigint(20) unsigned NOT NULL,
   contenido       longtext,
   fecha           date NOT NULL,
   calificacion    int(11)
@@ -56,7 +56,7 @@ CREATE TABLE Comentario (
 -- Estructura para la tabla TipoComida
 --
 CREATE TABLE TipoComida (
-  idTipoComida  int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  idTipoComida  serial PRIMARY KEY,
   nombre        varchar(64) NOT NULL
 ) ENGINE=InnoDB default charset=utf8;
 
@@ -64,7 +64,7 @@ CREATE TABLE TipoComida (
 -- Estructura para la tabla ServicioAdicional
 --
 CREATE TABLE ServicioAdicional (
-  idServicio    int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  idServicio    serial PRIMARY KEY,
   nombre        varchar(64) NOT NULL
 ) ENGINE=InnoDB default charset=utf8;
 
@@ -72,8 +72,8 @@ CREATE TABLE ServicioAdicional (
 -- Estructura para la tabla TipoComidaPuesto
 --
 CREATE TABLE TipoComidaPuesto (
-  idTipoComida  int NOT NULL,
-  idPuesto      int NOT NULL,
+  idTipoComida  bigint(20) unsigned NOT NULL,
+  idPuesto      bigint(20) unsigned NOT NULL,
   PRIMARY KEY (idTipoComida, idPuesto)
 ) ENGINE=InnoDB default charset=utf8;
 
@@ -81,8 +81,8 @@ CREATE TABLE TipoComidaPuesto (
 -- Estructura para la tabla ServicioPuesto
 --
 CREATE TABLE ServicioAdicionalPuesto (
-  idServicio    int NOT NULL,
-  idPuesto      int NOT NULL,
+  idServicio    bigint(20) unsigned NOT NULL,
+  idPuesto      bigint(20) unsigned NOT NULL,
   PRIMARY KEY (idServicio, idPuesto)
 ) ENGINE=InnoDB default charset=utf8;
 
