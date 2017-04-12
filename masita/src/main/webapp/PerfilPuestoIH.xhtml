@@ -9,32 +9,15 @@
         <title>Masita</title>
         <meta name="author" content="The Author"></meta>
     </h:head>
+
+    <h:outputStylesheet name="first.css"/>
+
     <!-- Add 50px padding top to the body for the navbar -->
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
         <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
-            <b:navbarLinks>
-                <b:navLink value="Link" href="#"></b:navLink>
-                <b:navLink value="Link" href="#"></b:navLink>
-                <b:dropMenu value="Dropdown">
-                    <b:navLink value="Action" href="#"></b:navLink>
-                    <b:navLink value="Another action" href="#"></b:navLink>
-                    <b:navLink value="Something else here" href="#"></b:navLink>
-                    <b:navLink></b:navLink>
-                    <b:navLink header="Nav header"></b:navLink>
-                    <b:navLink value="Separated link" href="#"></b:navLink>
-                    <b:navLink value="One more separated link" href="#"></b:navLink>
-                </b:dropMenu>
-            </b:navbarLinks>
             <h:form styleClass="navbar-form navbar-right">
-                <div class="form-group">
-                    <b:inputText placeholder="Email" fieldSize="sm"/>
-                    <!--input type="text" class="form-control" placeholder="Search"/-->
-                </div>
-                <div class="form-group">
-                    <b:inputText placeholder="Password" fieldSize="sm"/>
-                </div> 
-                #{' '}
-                <b:commandButton action="a" value="Sign in" look="success" icon="chevron-right" iconAlign="right"/>
+                <b:commandButton action="a" value="Regístrate" look="warning" icon="chevron-right" iconAlign="right"/>
+                <b:commandButton action="a" value="Iniciar Sesión" look="success" icon="chevron-right" iconAlign="right"/>
             </h:form>
         </b:navBar>
         <b:jumbotron>
@@ -66,52 +49,51 @@
                 </b:row>                                        
             </b:container>
 
-        </b:jumbotron>
+        </b:jumbotron>       
+      
+        
         <b:container>
-            <table class="table table-striped">
-                <thead>
-                    <tr>      
-                        <th>Usuario</th>
-                        <th>Comentario</th>
-                        <th>Calificación</th>
-                        <th>Fecha</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">Jennifer Pinsker</th>
-                        <td>¡Deliciosas enchiladas!</td>
-                        <td><img src="./imagenes/stars3.png" height="50%"></img></td>
-                        <td>15 Sep, 8:56 AM</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Bob bobbins</th>
-                        <td>Están sucias las mesas 
-                            <img src="./imagenes/eliminar.png" height="20%" alt="Eliminar comentario" align="right"> </img></td>
-                        <td><img src="./imagenes/stars2.png" height="50%"></img></td>
-                        <td>15 Sep, 8:56 AM</td>
-                    </tr>
-                </tbody>
-            </table>
+            <p:dataTable var="comentario" value="#{leerComentario.comentarios}">
+                <p:column headerText="Usuario">
+                    <h:outputText value="#{comentario.idUsuario}" />
+                </p:column>
+
+                <p:column headerText="Comentario">
+                    <h:outputText value="#{comentario.contenido}" />
+                </p:column>
+
+                <p:column headerText="Calificación">
+                    <h:outputText value="#{comentario.calificacion}" />
+                </p:column>
+
+                <p:column headerText="fecha">
+                    <h:outputText value="#{comentario.fecha}" />
+                </p:column>
+            </p:dataTable>
+
         </b:container>
-
-
+        
+            <br />
+            <br />
+        
         <b:container>      
 
             <h:form>
                 <p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px" closable="true" >
                     <h:outputText/>
                     <br/>
-                    <p:inputTextarea value="#{comentario.contenido}" style="width: 100%" rows="10"/>
+                    <p:inputTextarea value="#{crearComentario.comentario.contenido}" style="width: 100%" rows="10"/>
                     <br />
-                    <p:commandButton id='btn' value="Comentar" action="#{crearcomentario.crearComentario()}"
-                                     ajax="false" />
+                    <p:commandButton id='btn' value="Comentar" 
+                                     ajax="false" action="#{crearComentario.agregarComentario()}"/>
                     <br />
                     <h:outputText value="Comentario creado:" />                    
-                    <h:outputText id="display" value="#{comentario.contenido}" style="font-weight: bold" />
+                    <h:outputText id="display"
+                                  value="#{crearComentario.comentario.contenido}" style="font-weight: bold" />
+
                 </p:panel>
-            </h:form>
-            
+            </h:form>            
+
         </b:container>
     </h:body>
 </html>

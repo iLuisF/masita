@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Masita</title>
+        <meta name="author" content="The Author"></meta>
+    </h:head>
+    <!-- Add 50px padding top to the body for the navbar -->
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
+            <h:form styleClass="navbar-form navbar-right">
+                <b:commandButton action="a" value="Regístrate" look="warning" icon="chevron-right" iconAlign="right"/>
+                <b:commandButton action="a" value="Iniciar Sesión" look="success" icon="chevron-right" iconAlign="right"/>
+            </h:form>
+        </b:navBar>
+        <b:jumbotron>
+            <b:container>
+                <h3>Encuentra los mejores lugares para comer y beber en la Facultad de Ciencias</h3>
+                <h:form>
+                    <div class="form-group">
+                        <b:inputText placeholder="Buscar un puesto..." value="a" fieldSize="lg">
+                        </b:inputText>
+                        <b:label text="a" id="label"/>
+                    </div>
+                </h:form>
+                <h:form>
+                    <div>
+                        <b:commandButton action="mapa" value="Buscar puesto en el mapa" look="primary" icon="map-marker" iconAlign="right"/>
+                    </div>
+                </h:form>
+            </b:container>
+        </b:jumbotron>
+        <b:container>
+            <h:form>
+                <b:container>
+                    <b:navbarLinks>
+                        <b:dropMenu value="Ordenar puestos por">
+                            <b:navLink value="A-Z" href="#"></b:navLink>
+                            <b:navLink value="Z-A" href="#"></b:navLink>
+                            <b:navLink value="Calificación" href="#"></b:navLink>
+                        </b:dropMenu>
+                    </b:navbarLinks>
+                </b:container>
+                <b:container>
+                    
+                    <h:dataTable value="#{puestos.getListaPuestos()}" var="c" 
+                                 styleClass="order-table"
+                 headerClass="order-table-header"
+                 rowClasses="order-table-odd-row,order-table-even-row" >
+                        <h:column>
+                            <f:facet name="header">
+                                Nombre
+                            </f:facet>
+                         #{c.nombre}
+                        </h:column>
+                        
+                    </h:dataTable>
+                    
+                
+            <p><b:button outcome="" value="Ver detalles »"/></p>
+                </b:container>
+                </h:form>
+            <hr/>
+            <footer>
+            <p>© KAAB 2017</p>
+            </footer>
+        </b:container>
+    </h:body>
+</html>
