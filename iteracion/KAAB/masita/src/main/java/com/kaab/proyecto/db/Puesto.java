@@ -67,7 +67,17 @@ public class Puesto implements Serializable {
     name="TipoComidaPuesto",
     joinColumns=@JoinColumn(name="idPuesto"),
     inverseJoinColumns=@JoinColumn(name="idTipoComida"))
-    private Collection<TipoComida> tipoComidaCollection;///////*******
+    private Collection<TipoComida> tipoComidaCollection;///////*******  
+
+    ///////
+    public Collection<TipoComida> getTipoComidaCollection() {
+        return tipoComidaCollection;
+    }
+
+    public void setTipoComidaCollection(Collection<TipoComida> tipoComidaCollection) {
+        this.tipoComidaCollection = tipoComidaCollection;
+    }
+    /////////
     
 
     public Puesto() {
