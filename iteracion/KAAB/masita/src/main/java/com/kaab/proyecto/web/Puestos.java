@@ -13,8 +13,10 @@ import java.util.Collection;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 /**
  *
@@ -25,7 +27,8 @@ import javax.persistence.Persistence;
 public class Puestos {
     
     private String nombre;
-    //private Collection<TipoComida> tipoComidaCollection;
+    private String idPuesto;
+    private Collection<TipoComida> tipoComidaCollection;
 
     private PuestoJpaController persona;
 
@@ -33,16 +36,26 @@ public class Puestos {
 
         List<Puesto> p = new ArrayList<Puesto>();
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
+        //
+        EntityManager entityManager = emf.createEntityManager();
+        Query query = entityManager.createNamedQuery("findByTipoComida");
+        
+        //
 
         persona = new PuestoJpaController(emf);
-
         List<Puesto> lugares = persona.findPuestoEntities();
         for (Puesto lugar : lugares) {
+            
             Puesto pp = new Puesto();
             pp.setNombre(lugar.getNombre());
-            //pp.setTipoComidaCollection(lugar.getTipoComidaCollection());
+            pp.setIdPuesto(lugar.getIdPuesto());
+            query.setParameter("idPuesto", lugar.getIdPuesto());
+            List<TipoComida> tc = query.getResultList();
+            pp.setTipoComidaCollection(tc);
+            
             p.add(pp);
         }
         return p;
     }
+    
 }
