@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Puesto.findByNombre", query = "SELECT p FROM Puesto p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "Puesto.findByHorario", query = "SELECT p FROM Puesto p WHERE p.horario = :horario")
     , @NamedQuery(name = "Puesto.findByLatitud", query = "SELECT p FROM Puesto p WHERE p.latitud = :latitud")
-    , @NamedQuery(name = "Puesto.findByLongitud", query = "SELECT p FROM Puesto p WHERE p.longitud = :longitud")})
+    , @NamedQuery(name = "Puesto.findByLongitud", query = "SELECT p FROM Puesto p WHERE p.longitud = :longitud")
+    , @NamedQuery(name = "findByTipoComida", query = "SELECT t.nombre FROM Puesto p JOIN TipoComidaPuesto tc ON p.idPuesto = tc.idPuesto JOIN TipoComida t ON tc.idTipoComida = t.idTipoComida WHERE p.idPuesto = :idPuesto")})
 public class Puesto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -65,7 +66,7 @@ public class Puesto implements Serializable {
     @JoinTable(
     name="TipoComidaPuesto",
     joinColumns=@JoinColumn(name="idPuesto"),
-    inverseJoinColumns=@JoinColumn(name="idSTipoComida"))
+    inverseJoinColumns=@JoinColumn(name="idTipoComida"))
     private Collection<TipoComida> tipoComidaCollection;///////*******
     
 
