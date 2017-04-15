@@ -20,33 +20,37 @@
         <b:jumbotron>
             <b:container>
                 <h3>Eliminar Usuarios</h3>
-                <h:form>
-                    <div class="form-group">
-                        <b:inputText placeholder="Buscar un usuario..." value="a" fieldSize="lg">
-                        </b:inputText>
-                        <b:label text="a" id="label"/>
-                    </div>
-                </h:form>
             </b:container>
         </b:jumbotron>
         <b:container>
-            <h:form>
-                <b:container>
-                    
-                    <h:dataTable value="#{usuarios.getListaUsuarios()}" var="c" 
-                                 styleClass="order-table"
-                 headerClass="order-table-header"
-                 rowClasses="order-table-odd-row,order-table-even-row" >
-                        <h:column>
-                            <f:facet name="header">
-                                Nombre
-                            </f:facet>
-                         #{c.nombre}
-                        </h:column>
+            <h:form id="form">
+                <p:growl id="msgs" showDetail="true" />
+                    <p:dataTable id="listaU" var="c" value="#{editarUsuario.getListaUsuarios()}" editable="true" style="margin-bottom: 20px">
                         
-                    </h:dataTable>
-            
-                </b:container>
+                            <f:facet name="header">
+                               Editar Usuarios
+                            </f:facet>
+                        <p:ajax event="rowEdit" listener="#{editarUsuario.onRowEdit}" update=":form:msgs" />
+                        <p:ajax event="rowEditCancel" listener="#{editarUsuario.onRowCancel}" update=":form:msgs" />
+                        
+                        <p:column headerText="ID Usuario">
+                            <h:outputText value="#{c.idUsuario}" />
+                        </p:column> 
+                        
+                        <p:column headerText="Nombre Usuario">
+                            <h:outputText value="#{c.nombre}" />
+                            <h:outputText value=" #{c.app}" />
+                            <h:outputText value=" #{c.apm}" />
+                        </p:column>
+                        
+                        <p:column headerText="Activo">
+                            <h:outputText value="#{c.activo}" />
+                        </p:column>
+
+                        <p:column style="width:32px">
+                            <p:rowEditor />
+                        </p:column>
+                    </p:dataTable>
                 </h:form>
             <hr/>
             <footer>
