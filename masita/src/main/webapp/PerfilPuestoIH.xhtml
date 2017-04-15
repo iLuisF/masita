@@ -71,7 +71,7 @@
 
                     <p:column headerText="Calificación">
                         <p:rating value="#{comentario.calificacion}" readonly="true" />
-                        
+
                     </p:column>
 
                     <p:column headerText="fecha">
@@ -97,21 +97,25 @@
                     <br/>
                     <p:inputTextarea value="#{crearComentario.comentario.contenido}" style="width: 100%" rows="10"/>
                     <br />                    
-                    
+
                     <p:commandButton id='btn' value="Comentar" 
                                      ajax="false" action="#{crearComentario.agregarComentario()}" image="ui-icon-document" style="float:right; font-size:20px"/>
                     <br />
+                    <f:metadata>
+                        <f:viewParam name="idPuesto" value="#{crearComentario.idPuesto}" />
+                    </f:metadata>
                     <p:rating value="#{crearComentario.calificacion}" stars="5" 
                               cancel="false" onRate="alert('Tu calificaste con: ' + value)" style="float:left; width: 100px; height: 100px">
                         <p:ajax event="rate" listener="#{crearComentario.nuevaCalificacion}"/>
                     </p:rating>
 
-                    <h:outputText value="Comentario creado:" />                    
+                    <h:outputText value="Comentario creado:" />    
+
                     <h:outputText id="display"
                                   value="#{crearComentario.comentario.contenido}" style="font-weight: bold" />
 
                 </p:panel>
-                
+
             </h:form>            
 
 

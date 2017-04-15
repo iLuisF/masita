@@ -32,6 +32,17 @@ public class CrearComentario {
     @Temporal(TemporalType.DATE)
     private final Date fecha = Calendar.getInstance().getTime();    
     private Integer calificacion;
+    private Integer idPuesto;
+
+    public Integer getIdPuesto() {
+        return idPuesto;
+    }
+
+    public void setIdPuesto(Integer idPuesto) {
+        this.idPuesto = idPuesto;
+    }
+    
+    
     
     // Los métodos get and set, son necesarios para que los archivos .xhtml
     // puedan comunicarse con los beans.    
@@ -58,7 +69,7 @@ public class CrearComentario {
      * falta la implementación correspondiente a esto.
      */
     public void agregarComentario(){
-        comentario.setIdPuesto(new Puesto((long) 1));
+        comentario.setIdPuesto(new Puesto((long) this.idPuesto));
         comentario.setIdUsuario(new Usuario((long) 1));
         comentario.setContenido(comentario.getContenido());
         comentario.setFecha(fecha);
