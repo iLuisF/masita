@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:b="http://bootsfaces.net/ui"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <title>Masita</title>
@@ -50,49 +51,72 @@
             </b:container>
 
         </b:jumbotron>       
-      
-        
+
+
         <b:container>
-            <p:dataTable var="comentario" value="#{leerComentario.comentarios}">
-                <p:column headerText="Usuario">
-                    <h:outputText value="#{comentario.idUsuario}" />
-                </p:column>
+            <h:form id="form">
+                <p:growl id="msgs" showDetail="true"/>
+                <p:dataTable var="comentario" value="#{leerComentario.comentarios}" 
+                             editable="true" id="listaC">
+                    <p:ajax event="rowEdit" listener="#{leerComentario.onRowEdit}" update=":form:msgs" />
+                    <p:ajax event="rowEditCancel" listener="#{leerComentario.onRowCancel}" update=":form:msgs" />
 
-                <p:column headerText="Comentario">
-                    <h:outputText value="#{comentario.contenido}" />
-                </p:column>
+                    <p:column headerText="Usuario">
+                        <h:outputText value="#{comentario.idUsuario}" />
+                    </p:column>
 
-                <p:column headerText="Calificación">
-                    <h:outputText value="#{comentario.calificacion}" />
-                </p:column>
+                    <p:column headerText="Comentario">
+                        <h:outputText value="#{comentario.contenido}" />
+                    </p:column>
 
-                <p:column headerText="fecha">
-                    <h:outputText value="#{comentario.fecha}" />
-                </p:column>
-            </p:dataTable>
+                    <p:column headerText="Calificación">
+                        <p:rating value="#{comentario.calificacion}" readonly="true" />
+                        
+                    </p:column>
 
+                    <p:column headerText="fecha">
+                        <h:outputText value="#{comentario.fecha}" />
+                    </p:column>
+                    <p:column style="width:32px">
+                        +                        <p:rowEditor />
+                        +                    </p:column>
+                </p:dataTable>
+            </h:form>
         </b:container>
-        
-            <br />
-            <br />
-        
+
+        <br />
+        <br />
+
         <b:container>      
 
+
             <h:form>
+
                 <p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px" closable="true" >
                     <h:outputText/>
                     <br/>
                     <p:inputTextarea value="#{crearComentario.comentario.contenido}" style="width: 100%" rows="10"/>
-                    <br />
+                    <br />                    
+                    
                     <p:commandButton id='btn' value="Comentar" 
-                                     ajax="false" action="#{crearComentario.agregarComentario()}"/>
+                                     ajax="false" action="#{crearComentario.agregarComentario()}" image="ui-icon-document" style="float:right; font-size:20px"/>
                     <br />
+                    <p:rating value="#{crearComentario.calificacion}" stars="5" 
+                              cancel="false" onRate="alert('Tu calificaste con: ' + value)" style="float:left; width: 100px; height: 100px">
+                        <p:ajax event="rate" listener="#{crearComentario.nuevaCalificacion}"/>
+                    </p:rating>
+
                     <h:outputText value="Comentario creado:" />                    
                     <h:outputText id="display"
                                   value="#{crearComentario.comentario.contenido}" style="font-weight: bold" />
 
                 </p:panel>
+                
             </h:form>            
+
+
+
+
 
         </b:container>
     </h:body>
