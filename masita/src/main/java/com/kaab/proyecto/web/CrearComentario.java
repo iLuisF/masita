@@ -1,4 +1,3 @@
-
 package com.kaab.proyecto.web;
 
 import com.kaab.proyecto.db.controller.ComentarioJpaController;
@@ -6,19 +5,18 @@ import com.kaab.proyecto.db.Comentario;
 import com.kaab.proyecto.db.Puesto;
 import com.kaab.proyecto.db.Usuario;
 import java.util.Calendar;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.persistence.Persistence;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.faces.bean.ViewScoped;
+import com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario;
 
 /**
  * Permite insertar un comentario en la base de datos.
- * 
+ *
  * @author Flores González Luis.
  * @version 1.0 - Abril del 2017
  */
@@ -26,14 +24,106 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class CrearComentario {
 
-    private Comentario comentario = new Comentario();
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
-    private ComentarioJpaController ccomentario = new ComentarioJpaController(emf);
-    @Temporal(TemporalType.DATE)
-    private final Date fecha = Calendar.getInstance().getTime();    
-    private Integer calificacion;
+    private Comentario nuevo = new Comentario();//Comentario que se agregara.
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
+    private final ComentarioJpaController controlador = new ComentarioJpaController(emf);
     private Integer idPuesto;
+    private Integer idUsuario = 1;
 
+    /**
+     * Agrega un comentario a la base de datos, desde el bean. Por el momento no
+     * se tiene el id de cada puesto ni el id de cada usuario, falta la
+     * implementación correspondiente a esto. Además falta el caso donde se 
+     * califica primero al puesto y despues se agrega el comentario.
+     *
+     * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario
+     */
+    public void crearComentario() throws ErrorCrearComentario {
+        nuevo.setIdUsuario(new Usuario((long) this.idUsuario));
+        esRepetido();
+        nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
+        nuevo.setFecha(Calendar.getInstance().getTime());//Fecha actual
+        nuevo.setCalificacion(null);
+        controlador.create(nuevo);
+    }
+
+    /**
+     * Si un usuario ya comento lanza una excepcion.
+     *
+     * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario
+     */
+    private void esRepetido() throws ErrorCrearComentario {                        
+        if (yaComento()) {
+            throw new ErrorCrearComentario("Solo puedes crear un comentario."
+                    + "Debes eliminar tu comentario actual y volver a crear"
+                    + "uno.");
+        }
+    }
+
+    /**
+     * Si el usuario no ha comentado entonces solo crea la calificación sin
+     * contenido en el comentario. Si el usuario ya comento entonces, entonces
+     * edita la calificación a la nueva que se da.
+     */
+    public void calificarPuesto() {        
+        if (!yaComento()) {//No ha comentado.
+            nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
+            nuevo.setIdUsuario(new Usuario((long) this.idUsuario)); //Agregar en la vista.
+            nuevo.setContenido(null);
+            nuevo.setFecha(Calendar.getInstance().getTime());
+            controlador.create(nuevo);
+        } else {//Ya comento.            
+            Integer idComentario = encontrarIdComentario();
+            Comentario temporal = controlador.findComentario((long) idComentario);
+            temporal.setCalificacion(this.nuevo.getCalificacion());
+            try {
+                controlador.edit(temporal);
+            } catch (Exception ex) {
+                Logger.getLogger(CrearComentario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    /**
+     * Encuentra el id del comentario que hizo el usuario anteriormente en el 
+     * puesto actual.
+     * @return id del comentario.
+     */
+    private Integer encontrarIdComentario() {        
+        LeerComentario temporal = new LeerComentario();
+        List<Comentario> coments = temporal.getComentarios();
+        for(int j = 0; j < coments.size(); j++){
+            if(coments.get(j).getIdUsuario().getIdUsuario().intValue()
+                    == this.idUsuario 
+                    && coments.get(j).getIdPuesto().getIdPuesto().intValue() 
+                    == this.idPuesto){
+                return coments.get(j).getIdComentario().intValue();
+            }
+        }
+        return -100;
+    }
+
+    /**
+     * Si el usuario que quiere comentar ya tiene al menos un comentario hecho
+     * entonces regresa true, en otro caso false;
+     * @return 
+     */
+    private boolean yaComento() {         
+        LeerComentario temporal = new LeerComentario();
+        List<Comentario> coments = temporal.getComentarios();
+        for(int j = 0; j < coments.size(); j++){
+            if(coments.get(j).getIdUsuario().getIdUsuario().intValue()
+                    == this.idUsuario
+                     && coments.get(j).getIdPuesto().getIdPuesto().intValue() 
+                    == this.idPuesto){
+                return true;
+            }
+        }
+        return false;
+    }
+       
+    // Los métodos get and set, son necesarios para que los archivos .xhtml
+    // puedan comunicarse con los beans.    
     public Integer getIdPuesto() {
         return idPuesto;
     }
@@ -41,83 +131,20 @@ public class CrearComentario {
     public void setIdPuesto(Integer idPuesto) {
         this.idPuesto = idPuesto;
     }
-    
-    
-    
-    // Los métodos get and set, son necesarios para que los archivos .xhtml
-    // puedan comunicarse con los beans.    
-    
-    public Comentario getComentario() {
-        return comentario;
+
+    public Comentario getNuevo() {
+        return nuevo;
     }
 
-    public void setComentario(Comentario comentario) {
-        this.comentario = comentario;
-    }    
-
-    public Integer getCalificacion() {
-        return calificacion;
+    public void setNuevo(Comentario comentario) {
+        this.nuevo = comentario;
     }
 
-    public void setCalificacion(Integer calificacion) {
-        this.calificacion = calificacion;
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
-    
-    /**
-     * Agrega un comentario a la base de datos, desde el bean.
-     * Por el momento no se tiene el id de cada puesto ni el id de cada usuario,
-     * falta la implementación correspondiente a esto.
-     */
-    public void agregarComentario(){
-        comentario.setIdPuesto(new Puesto((long) this.idPuesto));
-        comentario.setIdUsuario(new Usuario((long) 1));
-        comentario.setContenido(comentario.getContenido());
-        comentario.setFecha(fecha);
-        comentario.setCalificacion(null);
-        ccomentario.create(comentario);
+
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
-    
-    public void nuevaCalificacion(){        
-        //EntityManager entityManager = emf.createEntityManager();
-        //String seleccion = "SELECT a.idComentario FROM Comentario a WHERE a.idUsuario = 1";
-        //Query query = entityManager.createQuery(seleccion);
-        //List<String> list = query.getResultList();//idComentario del usuario actual.        
-        //Integer idUsuario = Integer.parseInt(list.get(0));
-        if(ccomentario.findComentario((long) 36).getIdUsuario() == null){//Cambiar
-            agregarCalificacion();
-        }else{
-            agregarCalificacion2();
-        }        
-    }
-    
-    /**
-     * Agrega solo la calificación, este solo se usa en caso de que el usuario
-     * no haya comentado antes. Es decir, solo se mostrara la calificación. 
-     * Si se usa cuando el usuario creo un comentario, entonces borrara todo y 
-     * solo se mostrara la calificación.
-     */
-    private void agregarCalificacion(){
-        comentario.setIdPuesto(new Puesto((long) 1)); //Cambiar
-        comentario.setIdUsuario(new Usuario((long) 1)); //Cambiar
-        comentario.setContenido(null);
-        comentario.setFecha(fecha);
-        comentario.setCalificacion(getCalificacion());
-        ccomentario.create(comentario);
-    }
-    
-    /**
-     * Agrega la calificación cuando el usuario ya creo un contenido como
-     * comentario, es decir, solo se agregara la calificación sin borrar los otros
-     * datos.
-     * */
-    private void agregarCalificacion2(){    
-        comentario = ccomentario.findComentario((long)36);
-        comentario.setCalificacion(getCalificacion());
-        try {
-            ccomentario.edit(comentario);
-        } catch (Exception ex) {
-            Logger.getLogger(CrearComentario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-           
 }

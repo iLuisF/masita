@@ -7,6 +7,8 @@ package com.kaab.proyecto.db;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author esperanzahigareda
  */
+@ManagedBean
+@ViewScoped
 @Entity
 @Table(name = "Puesto")
 @XmlRootElement
