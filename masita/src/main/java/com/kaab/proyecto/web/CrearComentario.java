@@ -33,7 +33,7 @@ public class CrearComentario {
     /**
      * Agrega un comentario a la base de datos, desde el bean. Por el momento no
      * se tiene el id de cada puesto ni el id de cada usuario, falta la
-     * implementación correspondiente a esto. Además falta el caso donde se 
+     * implementación correspondiente a esto. Además falta el caso donde se
      * califica primero al puesto y despues se agrega el comentario.
      *
      * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario
@@ -41,10 +41,21 @@ public class CrearComentario {
     public void crearComentario() throws ErrorCrearComentario {
         nuevo.setIdUsuario(new Usuario((long) this.idUsuario));
         esRepetido();
-        nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
-        nuevo.setFecha(Calendar.getInstance().getTime());//Fecha actual
-        nuevo.setCalificacion(null);
-        controlador.create(nuevo);
+        if (yaCalifico()) {//Entonces editamos comentario.
+            Integer idComentario = encontrarIdComentario();
+            Comentario temporal = controlador.findComentario((long) idComentario);
+            temporal.setContenido(this.nuevo.getContenido());
+            try {
+                controlador.edit(temporal);
+            } catch (Exception ex) {
+                Logger.getLogger(CrearComentario.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        } else {//Creamos un comentario.
+            nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
+            nuevo.setFecha(Calendar.getInstance().getTime());//Fecha actual
+            nuevo.setCalificacion(null);
+            controlador.create(nuevo);
+        }
     }
 
     /**
@@ -52,11 +63,11 @@ public class CrearComentario {
      *
      * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario
      */
-    private void esRepetido() throws ErrorCrearComentario {                        
+    private void esRepetido() throws ErrorCrearComentario {
         if (yaComento()) {
             throw new ErrorCrearComentario("Solo puedes crear un comentario."
                     + "Debes eliminar tu comentario actual y volver a crear"
-                    + "uno.");
+                    + " uno.");
         }
     }
 
@@ -65,7 +76,7 @@ public class CrearComentario {
      * contenido en el comentario. Si el usuario ya comento entonces, entonces
      * edita la calificación a la nueva que se da.
      */
-    public void calificarPuesto() {        
+    public void calificarPuesto() {
         if (!yaComento()) {//No ha comentado.
             nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
             nuevo.setIdUsuario(new Usuario((long) this.idUsuario)); //Agregar en la vista.
@@ -85,18 +96,19 @@ public class CrearComentario {
     }
 
     /**
-     * Encuentra el id del comentario que hizo el usuario anteriormente en el 
+     * Encuentra el id del comentario que hizo el usuario anteriormente en el
      * puesto actual.
+     *
      * @return id del comentario.
      */
-    private Integer encontrarIdComentario() {        
+    private Integer encontrarIdComentario() {
         LeerComentario temporal = new LeerComentario();
         List<Comentario> coments = temporal.getComentarios();
-        for(int j = 0; j < coments.size(); j++){
-            if(coments.get(j).getIdUsuario().getIdUsuario().intValue()
-                    == this.idUsuario 
-                    && coments.get(j).getIdPuesto().getIdPuesto().intValue() 
-                    == this.idPuesto){
+        for (int j = 0; j < coments.size(); j++) {
+            if (coments.get(j).getIdUsuario().getIdUsuario().intValue()
+                    == this.idUsuario
+                    && coments.get(j).getIdPuesto().getIdPuesto().intValue()
+                    == this.idPuesto) {
                 return coments.get(j).getIdComentario().intValue();
             }
         }
@@ -106,22 +118,39 @@ public class CrearComentario {
     /**
      * Si el usuario que quiere comentar ya tiene al menos un comentario hecho
      * entonces regresa true, en otro caso false;
-     * @return 
+     *
+     * @return
      */
-    private boolean yaComento() {         
+    private boolean yaComento() {
         LeerComentario temporal = new LeerComentario();
         List<Comentario> coments = temporal.getComentarios();
-        for(int j = 0; j < coments.size(); j++){
-            if(coments.get(j).getIdUsuario().getIdUsuario().intValue()
+        for (int j = 0; j < coments.size(); j++) {
+            if (coments.get(j).getIdUsuario().getIdUsuario().intValue()
                     == this.idUsuario
-                     && coments.get(j).getIdPuesto().getIdPuesto().intValue() 
-                    == this.idPuesto){
+                    && coments.get(j).getIdPuesto().getIdPuesto().intValue()
+                    == this.idPuesto
+                    && coments.get(j).getContenido() != null) {
                 return true;
             }
         }
         return false;
     }
-       
+
+    private boolean yaCalifico() {
+        LeerComentario temporal = new LeerComentario();
+        List<Comentario> coments = temporal.getComentarios();
+        for (int j = 0; j < coments.size(); j++) {
+            if (coments.get(j).getIdUsuario().getIdUsuario().intValue()
+                    == this.idUsuario
+                    && coments.get(j).getIdPuesto().getIdPuesto().intValue()
+                    == this.idPuesto
+                    && coments.get(j).getCalificacion() != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Los métodos get and set, son necesarios para que los archivos .xhtml
     // puedan comunicarse con los beans.    
     public Integer getIdPuesto() {
