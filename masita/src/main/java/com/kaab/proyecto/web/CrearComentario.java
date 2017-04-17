@@ -15,7 +15,8 @@ import javax.faces.bean.ViewScoped;
 import com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario;
 
 /**
- * Permite insertar un comentario en la base de datos.
+ * Permite insertar un comentario en la base de datos. Además la
+ * calificación, ya que esta pertenece al comentario.
  *
  * @author Flores González Luis.
  * @version 1.0 - Abril del 2017
@@ -28,20 +29,20 @@ public class CrearComentario {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
     private final ComentarioJpaController controlador = new ComentarioJpaController(emf);
     private Integer idPuesto;
-    private Integer idUsuario = 1;
+    //Se toma un valor constante, ya que no esta el caso de uso implementado.
+    private Integer idUsuario = 1; 
 
     /**
-     * Agrega un comentario a la base de datos, desde el bean. Por el momento no
-     * se tiene el id de cada puesto ni el id de cada usuario, falta la
-     * implementación correspondiente a esto. Además falta el caso donde se
-     * califica primero al puesto y despues se agrega el comentario.
-     *
-     * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario
+     * Crea un comentario en caso de que no haya uno, si hay comentario solo con
+     * calificación entonces solo agrega el contenido al comentario.
+     * 
+     * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario Si
+     * ya hay contenido en el comentario sin importar si tiene calificación o no.
      */
     public void crearComentario() throws ErrorCrearComentario {
         nuevo.setIdUsuario(new Usuario((long) this.idUsuario));
-        esRepetido();
-        if (yaCalifico()) {//Entonces editamos comentario.
+        hayComentario();
+        if (hayCalificacion()) {//Entonces editamos comentario.
             Integer idComentario = encontrarIdComentario();
             Comentario temporal = controlador.findComentario((long) idComentario);
             temporal.setContenido(this.nuevo.getContenido());
@@ -49,7 +50,7 @@ public class CrearComentario {
                 controlador.edit(temporal);
             } catch (Exception ex) {
                 Logger.getLogger(CrearComentario.class.getName()).log(Level.SEVERE, null, ex);
-            }            
+            }
         } else {//Creamos un comentario.
             nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
             nuevo.setFecha(Calendar.getInstance().getTime());//Fecha actual
@@ -59,12 +60,12 @@ public class CrearComentario {
     }
 
     /**
-     * Si un usuario ya comento lanza una excepcion.
+     * Si un usuario ya tiene contenido en el comentario lanza una excepción.
      *
      * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario
      */
-    private void esRepetido() throws ErrorCrearComentario {
-        if (yaComento()) {
+    private void hayComentario() throws ErrorCrearComentario {
+        if (hayContenido()) {
             throw new ErrorCrearComentario("Solo puedes crear un comentario."
                     + "Debes eliminar tu comentario actual y volver a crear"
                     + " uno.");
@@ -77,9 +78,9 @@ public class CrearComentario {
      * edita la calificación a la nueva que se da.
      */
     public void calificarPuesto() {
-        if (!yaComento()) {//No ha comentado.
+        if (!hayContenido()) {//No ha comentado
             nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
-            nuevo.setIdUsuario(new Usuario((long) this.idUsuario)); //Agregar en la vista.
+            nuevo.setIdUsuario(new Usuario((long) this.idUsuario)); 
             nuevo.setContenido(null);
             nuevo.setFecha(Calendar.getInstance().getTime());
             controlador.create(nuevo);
@@ -116,12 +117,12 @@ public class CrearComentario {
     }
 
     /**
-     * Si el usuario que quiere comentar ya tiene al menos un comentario hecho
-     * entonces regresa true, en otro caso false;
+     * Si el usuario que quiere comentar ya tiene al menos un contenido en el 
+     * comentario entonces regresa true, en otro caso false.
      *
      * @return
      */
-    private boolean yaComento() {
+    private boolean hayContenido() {
         LeerComentario temporal = new LeerComentario();
         List<Comentario> coments = temporal.getComentarios();
         for (int j = 0; j < coments.size(); j++) {
@@ -136,7 +137,11 @@ public class CrearComentario {
         return false;
     }
 
-    private boolean yaCalifico() {
+    /**
+     * Determina si el usuario ya tiene una calificación en su comentario.
+     * @return True si hay calificación, false en otro caso.
+     */
+    private boolean hayCalificacion() {
         LeerComentario temporal = new LeerComentario();
         List<Comentario> coments = temporal.getComentarios();
         for (int j = 0; j < coments.size(); j++) {
@@ -153,6 +158,7 @@ public class CrearComentario {
 
     // Los métodos get and set, son necesarios para que los archivos .xhtml
     // puedan comunicarse con los beans.    
+    
     public Integer getIdPuesto() {
         return idPuesto;
     }

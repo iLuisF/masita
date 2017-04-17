@@ -17,7 +17,7 @@ import org.primefaces.event.RowEditEvent;
 /**
  * Permite conocer todos los comentarios que se encuentran en la base de datos.
  *
- * @author Flores González Luis
+ * @author Flores González Luis.
  */
 @ManagedBean
 @ViewScoped
@@ -27,6 +27,7 @@ public class LeerComentario implements Serializable {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
     private ComentarioJpaController ccomentario = new ComentarioJpaController(emf);
     private final List<Comentario> comentarios = ccomentario.findComentarioEntities();
+    //Se toma un valor constante, ya que no esta el caso de uso implementado.
     private Integer idUsuario = 1;
 
     /**
@@ -49,6 +50,7 @@ public class LeerComentario implements Serializable {
 
     // Los métodos get and set, son necesarios para que los archivos .xhtml
     // puedan comunicarse con los beans.
+    
     /**
      * Regresa una lista de comentarios.
      *
@@ -100,7 +102,7 @@ public class LeerComentario implements Serializable {
     /**
      * Busca el id del comentario.
      *
-     * @return
+     * @return Identificador del usuario.
      */
     private Integer buscarIdComentario(Integer idUsuario) {
         for (int j = 0; j < comentarios.size(); j++) {
