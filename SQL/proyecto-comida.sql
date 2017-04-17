@@ -1,142 +1,112 @@
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
 --
--- Base de datos: `Masita`
---
-create database masita;
+-- Crear base de datos: masita
+-- create database masita;
+-- ejecutar este script con
+-- source proyecto-comida.sql
 
 use masita;
 
--- --------------------------------------------------------
-
-CREATE TABLE UsuarioCiencias (
-	id_usuario 					int NOT NULL,
-    contrasenia 				varchar(128) NOT NULL,
-    nombre 						varchar(64) NOT NULL,
-    app 						varchar(64) NOT NULL,
-    apm 						varchar(64) NOT NULL,
-    activo 						varchar(128) NOT NULL,
-    nombre_usuario 				varchar(64) NOT NULL,
-    correo 						varchar(128) NOT NULL,
-    PRIMARY KEY(id_usuario)
-) ; ENGINE=InnoBD DEFAULT CHARSET=utf8;
-
+drop table if exists Usuario;
+drop table if exists Puesto;
+drop table if exists Comentario;
+drop table if exists TipoComida;
+drop table if exists ServicioAdicional;
+drop table if exists TipoComidaPuesto;
+drop table if exists ServicioAdicionalPuesto;
 
 --
--- Estructura de tabla para la tabla `Comentario`
+-- Estructura para la tabla Usuario
 --
-
-CREATE TABLE `Comentario` (
-  `idComentario` int(11) NOT NULL,
-  `idPuesto` int(11) NOT NULL,
-  `idUsuario` int(11) NOT NULL,
-  `contenido` varchar(300) NOT NULL,
-  `fecha` date NOT NULL,
-  `calificacion` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `Puesto`
---
-
-CREATE TABLE `Puesto` (
-  `idPuesto` int(11) NOT NULL,
-  `nombre` varchar(64) NOT NULL,
-  `tipoComida` int(11) NOT NULL,
-  `horario` varchar(16) NOT NULL,
-  `ubicacion` varchar(64) NOT NULL,
-  `idServicio` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
+CREATE TABLE Usuario (
+  idUsuario       serial PRIMARY KEY,
+  correo          varchar(128) NOT NULL,
+  contrasenia     varchar(128) NOT NULL,
+  nombre          varchar(64) NOT NULL,
+  app             varchar(64) NOT NULL,
+  apm             varchar(64) NOT NULL,
+  activo          varchar(128) NOT NULL,
+  nombreUsuario   varchar(64) NOT NULL,
+  esAdministrador int(1) NOT NULL
+) ENGINE=InnoDB default charset=utf8;
 
 --
--- Estructura de tabla para la tabla `ServicioAdicional`
+-- Estructura para la tabla Puesto
 --
-
-CREATE TABLE `ServicioAdicional` (
-  `idServicio` int(11) NOT NULL,
-  `nombre` varchar(64) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `TipoComida`
---
-
-CREATE TABLE `TipoComida` (
-  `idTipoComida` int(11) NOT NULL,
-  `nombre` varchar(64) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
+CREATE TABLE Puesto (
+  idPuesto      serial PRIMARY KEY,
+  nombre        varchar(64) NOT NULL,
+  horario       varchar(16) NOT NULL,
+  latitud		varchar(20) NOT NULL,
+  longitud		varchar(20) NOT NULL
+) ENGINE=InnoDB default charset=utf8;
 
 --
--- Índices para tablas volcadas
+-- Estructura para la tabla Comentario
 --
+CREATE TABLE Comentario (
+  idComentario    serial PRIMARY KEY,
+  idPuesto        bigint(20) unsigned NOT NULL,
+  idUsuario       bigint(20) unsigned NOT NULL,
+  contenido       longtext,
+  fecha           date NOT NULL,
+  calificacion    int(11)
+) ENGINE=InnoDB default charset=utf8;
 
 --
--- Indices de la tabla `Comentario`
+-- Estructura para la tabla TipoComida
 --
-ALTER TABLE `Comentario`
-  ADD PRIMARY KEY (`idComentario`);
+CREATE TABLE TipoComida (
+  idTipoComida  serial PRIMARY KEY,
+  nombre        varchar(64) NOT NULL
+) ENGINE=InnoDB default charset=utf8;
 
 --
--- Indices de la tabla `Puesto`
+-- Estructura para la tabla ServicioAdicional
 --
-ALTER TABLE `Puesto`
-  ADD PRIMARY KEY (`idPuesto`);
+CREATE TABLE ServicioAdicional (
+  idServicio    serial PRIMARY KEY,
+  nombre        varchar(64) NOT NULL
+) ENGINE=InnoDB default charset=utf8;
 
 --
--- Indices de la tabla `ServicioAdicional`
+-- Estructura para la tabla TipoComidaPuesto
 --
-ALTER TABLE `ServicioAdicional`
-  ADD PRIMARY KEY (`idServicio`);
+CREATE TABLE TipoComidaPuesto (
+  idTipoComida  bigint(20) unsigned NOT NULL,
+  idPuesto      bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (idTipoComida, idPuesto)
+) ENGINE=InnoDB default charset=utf8;
 
 --
--- Indices de la tabla `TipoComida`
+-- Estructura para la tabla ServicioPuesto
 --
-ALTER TABLE `TipoComida`
-  ADD PRIMARY KEY (`idTipoComida`);
+CREATE TABLE ServicioAdicionalPuesto (
+  idServicio    bigint(20) unsigned NOT NULL,
+  idPuesto      bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (idServicio, idPuesto)
+) ENGINE=InnoDB default charset=utf8;
+
+-- ---------------------------------------------
 
 --
--- Indices de la tabla `UsuarioCiencias`
+-- Indices de la tabla Usuario
 --
-ALTER TABLE `UsuarioCiencias`
-  ADD PRIMARY KEY (`idUsuario`),
-  ADD UNIQUE KEY `correo` (`correo`);
+ALTER TABLE Usuario ADD UNIQUE KEY correo (correo);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- Indices de la tabla Comentario
 --
+ALTER TABLE Comentario ADD CONSTRAINT fk_Comentario_idPuesto FOREIGN KEY (idPuesto) REFERENCES Puesto (idPuesto) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE Comentario ADD CONSTRAINT fk_Comentario_idUsuario FOREIGN KEY (idUsuario) REFERENCES Usuario (idUsuario) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- AUTO_INCREMENT de la tabla `Comentario`
+-- Indices de la tabla TipoComidaPuesto
 --
-ALTER TABLE `Comentario`
-  MODIFY `idComentario` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE TipoComidaPuesto ADD CONSTRAINT fk_TipoComidaPuesto_idTipoComida FOREIGN KEY (idTipoComida) REFERENCES TipoComida (idTipoComida) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE TipoComidaPuesto ADD CONSTRAINT fk_TipoComidaPuesto_idPuesto FOREIGN KEY (idPuesto) REFERENCES Puesto (idPuesto) ON DELETE CASCADE ON UPDATE CASCADE;
+
 --
--- AUTO_INCREMENT de la tabla `Puesto`
+-- Indices de la tabla ServicioAdicionalPuesto
 --
-ALTER TABLE `Puesto`
-  MODIFY `idPuesto` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `ServicioAdicional`
---
-ALTER TABLE `ServicioAdicional`
-  MODIFY `idServicio` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `TipoComida`
---
-ALTER TABLE `TipoComida`
-  MODIFY `idTipoComida` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `UsuarioCiencias`
---
-ALTER TABLE `UsuarioCiencias`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE ServicioAdicionalPuesto ADD CONSTRAINT fk_ServicioAdicionalPuesto_idServicio FOREIGN KEY (idServicio) REFERENCES ServicioAdicional (idServicio) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE ServicioAdicionalPuesto ADD CONSTRAINT fk_ServicioAdicionalPuesto_idPuesto FOREIGN KEY (idPuesto) REFERENCES Puesto (idPuesto) ON DELETE CASCADE ON UPDATE CASCADE;
