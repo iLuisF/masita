@@ -54,14 +54,21 @@
                             <h:panelGrid columns="2" cellpadding="5">
                                 <h:outputText value="Nombre: " />
                                 <h:outputText value="#{c.nombre}" style="font-weight: bold"/>
+                                <h:outputText value="ID Puesto " />
+                                <h:outputText value="#{c.idPuesto}" style="font-weight: bold"/>
                                 
                                 <h:outputText value="Tipo de Comida: " />
+                                <h:outputText value="Comida corrida" style="font-weight: bold"/>
                                 
+                                <p:link outcome="PerfilPuestoIH" value="Ver más">
+                                    <f:param name="idPuesto" value="#{c.idPuesto}" />
+                                </p:link>
                             </h:panelGrid>
                         </p:outputPanel>
                     </h:panelGrid>
                     <p:separator />
                 </p:dataScroller>
+                
                 <!--<b:container>
                     
             <p><b:button outcome="" value="Ver detalles »"/></p>

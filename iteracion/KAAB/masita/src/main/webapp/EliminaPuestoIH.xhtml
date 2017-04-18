@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Masita</title>
+        <meta name="author" content="The Author"></meta>
+    </h:head>
+
+
+    <!-- Add 50px padding top to the body for the navbar -->
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
+            <h:form styleClass="navbar-form navbar-right">
+                <b:commandButton action="a" value="Regístrate" look="warning" icon="chevron-right" iconAlign="right"/>
+                <b:commandButton action="a" value="Iniciar Sesión" look="success" icon="chevron-right" iconAlign="right"/>
+            </h:form>
+        </b:navBar>
+        <b:jumbotron>
+            <b:container>
+                <h3>Eliminar Puestos</h3>
+            </b:container>
+        </b:jumbotron>
+       <b:container>
+            <h:form id="form">
+                <p:growl id="msgs" showDetail="true"/>
+
+                <p:dataTable id="listaP" var="puesto" value="#{leerPuesto.crearListaPuesto()}" editable="true" style="margin-bottom:20px">
+                    <f:facet name="header">
+                       Eliminar Puestos
+                    </f:facet>
+
+                    <p:ajax event="rowEdit" listener="#{leerPuesto.onRowEdit}" update=":form:msgs" />
+                    <p:ajax event="rowEditCancel" listener="#{leerPuesto.onRowCancel}" update=":form:msgs" />
+
+                    <p:column headerText="Nombre">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{puesto.nombre}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{puesto.nombre}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    
+                    <p:column headerText="Horario">
+                         <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{puesto.horario}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{puesto.horario}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    
+                    <p:column headerText="latitud">
+                         <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{puesto.latitud}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{puesto.latitud}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    
+                    <p:column headerText="Longitud">
+                         <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{puesto.longitud}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{puesto.longitud}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+            </p:dataTable>
+            </h:form>
+
+        </b:container>
+    </h:body>
+    
+</html>
+

@@ -35,7 +35,9 @@
                     <b:column col-lg="4">
                         <b:panel look="success" title="Cafeteria Ciencias">
                             <h5>Comida Corrida</h5>
-                            <p><img src="./imagenes/stars3.png" width="70%"></img></p>
+                            <h:form>
+                            <p:rating value="4" readonly="true" />
+                            </h:form>
                         </b:panel>
                     </b:column>
                     <b:column col-lg="4">
@@ -77,6 +79,7 @@
                     </p:column>
 
                     <p:column headerText="Calificación">
+                        <p:rating value="#{comentario.calificacion}" readonly="true" />
                         <h:outputText value="#{comentario.calificacion}" />
                     </p:column>
 

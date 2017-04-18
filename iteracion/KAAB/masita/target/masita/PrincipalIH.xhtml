@@ -17,14 +17,14 @@
                 <b:commandButton action="a" value="Iniciar Sesión" look="success" icon="chevron-right" iconAlign="right"/>
             </h:form>
         </b:navBar>
-        <b:jumbotron>
+        <b:jumbotron> 
             <b:container>
                 <h3>Encuentra los mejores lugares para comer y beber en la Facultad de Ciencias</h3>
                 <h:form>
                     <div class="form-group">
-                        <b:inputText placeholder="Buscar un puesto..." value="a" fieldSize="lg">
+                        <b:inputText placeholder="Buscar un puesto..." value="#" fieldSize="lg">
                         </b:inputText>
-                        <b:label text="a" id="label"/>
+                        <b:label text="#" id="label"/>
                     </div>
                 </h:form>
                 <h:form>
@@ -34,8 +34,9 @@
                 </h:form>
             </b:container>
         </b:jumbotron>
+        
         <b:container>
-            <h:form>
+            <h:form id="form">
                 <b:container>
                     <b:navbarLinks>
                         <b:dropMenu value="Ordenar puestos por">
@@ -45,24 +46,26 @@
                         </b:dropMenu>
                     </b:navbarLinks>
                 </b:container>
-                <b:container>
+              
+                <p:dataScroller value="#{puestos.getListaPuestos()}" var="c" chunkSize="10">
+                    <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                        <h:graphicImage value="imagenes/edificio.png"/>
+                        <p:outputPanel>
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputText value="Nombre: " />
+                                <h:outputText value="#{c.nombre}" style="font-weight: bold"/>
+                                
+                                <h:outputText value="Tipo de Comida: " />
+                                
+                            </h:panelGrid>
+                        </p:outputPanel>
+                    </h:panelGrid>
+                    <p:separator />
+                </p:dataScroller>
+                <!--<b:container>
                     
-                    <h:dataTable value="#{puestos.getListaPuestos()}" var="c" 
-                                 styleClass="order-table"
-                 headerClass="order-table-header"
-                 rowClasses="order-table-odd-row,order-table-even-row" >
-                        <h:column>
-                            <f:facet name="header">
-                                Nombre
-                            </f:facet>
-                         #{c.nombre}
-                        </h:column>
-                        
-                    </h:dataTable>
-                    
-                
             <p><b:button outcome="" value="Ver detalles »"/></p>
-                </b:container>
+                </b:container>-->
                 </h:form>
             <hr/>
             <footer>

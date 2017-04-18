@@ -1,5 +1,5 @@
 -- Tuplas para probar la base de datos
-
+use masita;
 -- Usuarios
 INSERT INTO Usuario (correo, contrasenia, nombre, app, apm, activo, nombreUsuario, esAdministrador) VALUES ('mayra@ciencias.unam.mx', 'password1', 'Mayra', 'Aceves', 'Higareda', 1, 'mayrica', 1);
 INSERT INTO Usuario (correo, contrasenia, nombre, app, apm, activo, nombreUsuario, esAdministrador) VALUES ('aylin@ciencias.unam.mx', 'password2', 'Aylin', 'Huerta', 'González', 1, 'aylinhg', 1);

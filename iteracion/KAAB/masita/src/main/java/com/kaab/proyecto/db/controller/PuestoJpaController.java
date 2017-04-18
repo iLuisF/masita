@@ -21,11 +21,11 @@ import javax.persistence.criteria.Root;
  * @author esperanzahigareda
  */
 public class PuestoJpaController implements Serializable {
-
+    private EntityManagerFactory emf = null;
+    
     public PuestoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
-    }
-    private EntityManagerFactory emf = null;
+    }   
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();

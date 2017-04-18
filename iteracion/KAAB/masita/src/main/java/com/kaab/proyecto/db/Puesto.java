@@ -6,7 +6,9 @@
 package com.kaab.proyecto.db;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -34,8 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Puesto.findByNombre", query = "SELECT p FROM Puesto p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "Puesto.findByHorario", query = "SELECT p FROM Puesto p WHERE p.horario = :horario")
     , @NamedQuery(name = "Puesto.findByLatitud", query = "SELECT p FROM Puesto p WHERE p.latitud = :latitud")
-    , @NamedQuery(name = "Puesto.findByLongitud", query = "SELECT p FROM Puesto p WHERE p.longitud = :longitud")
-    , @NamedQuery(name = "findByTipoComida", query = "SELECT t.nombre FROM Puesto p JOIN TipoComidaPuesto tc ON p.idPuesto = tc.idPuesto JOIN TipoComida t ON tc.idTipoComida = t.idTipoComida WHERE p.idPuesto = :idPuesto")})
+    , @NamedQuery(name = "Puesto.findByLongitud", query = "SELECT p FROM Puesto p WHERE p.longitud = :longitud")})
 public class Puesto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,23 +63,24 @@ public class Puesto implements Serializable {
     name="ServicioAdicionalPuesto",
     joinColumns=@JoinColumn(name="idPuesto"),
     inverseJoinColumns=@JoinColumn(name="idServicio"))
-    private Collection<ServicioAdicional> servicioAdicionalCollection;///////*******
+    private List<ServicioAdicional> servicioAdicionalLista = new ArrayList<ServicioAdicional>();///////*******
     @ManyToMany     ///////*************** Aquí
     @JoinTable(
     name="TipoComidaPuesto",
     joinColumns=@JoinColumn(name="idPuesto"),
     inverseJoinColumns=@JoinColumn(name="idTipoComida"))
-    private Collection<TipoComida> tipoComidaCollection;///////*******  
+    private List<TipoComida> tipoComidaCollection;///////*******  
 
-    ///////
-    public Collection<TipoComida> getTipoComidaCollection() {
-        return tipoComidaCollection;
+    public List<ServicioAdicional> getServicioAdicionalLista() {
+        return servicioAdicionalLista;
     }
 
-    public void setTipoComidaCollection(Collection<TipoComida> tipoComidaCollection) {
-        this.tipoComidaCollection = tipoComidaCollection;
+    public void setServicioAdicionalLista(List<ServicioAdicional> servicioAdicionalLista) {
+        this.servicioAdicionalLista = servicioAdicionalLista;
     }
-    /////////
+
+    
+    
     
 
     public Puesto() {

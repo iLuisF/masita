@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Masita</title>
+        <meta name="author" content="The Author"></meta>
+    </h:head>
+     <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
+            <h:form styleClass="navbar-form navbar-right">
+                <b:commandButton action="a" value="Regístrate" look="warning" icon="chevron-right" iconAlign="right"/>
+                <b:commandButton action="a" value="Iniciar Sesión" look="success" icon="chevron-right" iconAlign="right"/>
+            </h:form>
+        </b:navBar>
+        <b:jumbotron>
+            <b:container>
+                <h3>Agregar Puesto</h3>
+            </b:container>
+        </b:jumbotron>
+        <b:container>
+            <h:form>
+                <p:messages autoUpdate="true"/>
+                <h:panelGrid columns="3" cellpadding="5">
+                  
+                    <p:outputLabel for="id" value="ID: " />
+                    <p:inputText id="id" value="#{creaPuesto.id}" required="true" label="id"/>
+                    <p:message for="id" display="icon" />
+                    
+                    <p:outputLabel for="nombre" value="Nombre: " />
+                    <p:inputText id="nombre" value="#{creaPuesto.nombre}" required="true"/>
+                    <p:message for="nombre" display="icon" />
+                    
+                    <p:outputLabel for="horario" value="horario:" />
+                    <p:inputMask id="horario" value="#{creaPuesto.horario}" mask="99:99-99:99" required="true"/>
+                    <p:message for="horario" display="icon" />
+                    
+                    <p:outputLabel for="latitud" value="latitud:" />
+                    <p:inputText id="latitud" value="#{creaPuesto.latitud}" required="true"> 
+                        <f:validateDoubleRange minimum="19.0" maximum="20.0" />
+                    </p:inputText>  
+                    <p:message for="latitud" display="icon" />
+                    
+                    <p:outputLabel for="longitud" value="longitud:" />
+                    <p:inputText id="longitud" value="#{creaPuesto.longitud}" required="true">
+                        <f:validateDoubleRange minimum="-100.0" maximum="-99.0" />
+                    </p:inputText>
+                    <p:message for="longitud" display="icon" />
+                    
+                    <H4 style="margin-top:0px">Servicios</H4>   
+                    <p:separator />
+                    <p:separator />
+                    <p:selectManyCheckbox id="grid3" value="#{creaPuesto.servicios}" layout="pageDirection" columns="1">
+                        <f:selectItem itemLabel="Banios" itemValue="Banios" />
+                        <f:selectItem itemLabel="Mesas" itemValue="Mesas" />
+                        <f:selectItem itemLabel="Comida para llevar" itemValue="Comida para llevar" />
+                    </p:selectManyCheckbox>
+                    
+                     <H4 style="margin-top:0px">   </H4>
+                    <p:commandButton value="Reset" type="reset"/>
+                    <p:commandButton value="Submit"  action="#{creaPuesto.AgregaPuesto}"/>
+                    
+                    <p:dialog widgetVar="dlg" modal="true" resizable="false" header="Puesto" showEffect="fade"> 
+                        <p:panelGrid id="display" columns="2" columnClasses="value,value">
+                            
+                            <h:outputText value="id :"/>
+                            <h:outputText id="idValue" value="#{creaPuesto.id}"/>
+
+                            <h:outputText value="Nombre: " />
+                            <h:outputText id="nombreValue" value="#{creaPuesto.nombre}" />
+
+                            <h:outputText value="horario: " />
+                            <h:outputText id="horarioValue" value="#{creaPuesto.horario}"/>
+
+                            <h:outputText value="latitud: " />
+                            <h:outputText id="taxValue" value="#{creaPuesto.latitud}" />
+
+                            <h:outputText value="longitud: " />
+                            <h:outputText id="ssnValue" value="#{creaPuesto.longitud}" />
+                            
+                            <a href="http://localhost:8084/masita/PerfilPuestoIH.xhtml">ir al perfil</a>
+                        </p:panelGrid>
+                    </p:dialog>
+                </h:panelGrid>
+            </h:form>
+        </b:container>
+     </h:body>
+</html>
+
