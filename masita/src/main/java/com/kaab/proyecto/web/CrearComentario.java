@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.faces.bean.ViewScoped;
 import com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario;
+import java.io.IOException;
+import javax.faces.context.FacesContext;
 
 /**
  * Permite insertar un comentario en la base de datos. Además la
@@ -35,11 +37,11 @@ public class CrearComentario {
     /**
      * Crea un comentario en caso de que no haya uno, si hay comentario solo con
      * calificación entonces solo agrega el contenido al comentario.
-     * 
+     * S
      * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario Si
      * ya hay contenido en el comentario sin importar si tiene calificación o no.
      */
-    public void crearComentario() throws ErrorCrearComentario {
+    public void crearComentario() throws ErrorCrearComentario, IOException {
         nuevo.setIdUsuario(new Usuario((long) this.idUsuario));
         hayComentario();
         if (hayCalificacion()) {//Entonces editamos comentario.
@@ -57,6 +59,9 @@ public class CrearComentario {
             nuevo.setCalificacion(null);
             controlador.create(nuevo);
         }
+        String urlPuesto = "/masita/PerfilPuestoIH.xhtml?idPuesto=" + idPuesto.toString();
+        FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect( urlPuesto );
     }
 
     /**
@@ -77,7 +82,7 @@ public class CrearComentario {
      * contenido en el comentario. Si el usuario ya comento entonces, entonces
      * edita la calificación a la nueva que se da.
      */
-    public void calificarPuesto() {
+    public void calificarPuesto() throws IOException {
         if (!hayContenido()) {//No ha comentado
             nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
             nuevo.setIdUsuario(new Usuario((long) this.idUsuario)); 
@@ -94,6 +99,9 @@ public class CrearComentario {
                 Logger.getLogger(CrearComentario.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        String urlPuesto = "/masita/PerfilPuestoIH.xhtml?idPuesto=" + idPuesto.toString();
+        FacesContext contex = FacesContext.getCurrentInstance();
+        contex.getExternalContext().redirect(urlPuesto);
     }
 
     /**

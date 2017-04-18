@@ -29,12 +29,34 @@ public class LeerComentario implements Serializable {
     private final List<Comentario> comentarios = ccomentario.findComentarioEntities();
     //Se toma un valor constante, ya que no esta el caso de uso implementado.
     private Integer idUsuario = 1;
+    private Integer idPuesto;
 
+    public Integer getIdPuesto() {
+        return idPuesto;
+    }
+
+    public void setIdPuesto(Integer idPuesto) {
+        this.idPuesto = idPuesto;
+    }
+
+    public List<Comentario> getComentariosPuesto(){
+        List<Comentario> temporal = new ArrayList<Comentario>();
+        if(idPuesto != null){        
+        for(int i = 0; i < comentarios.size(); i++){
+            if(comentarios.get(i).getIdPuesto().getIdPuesto().intValue() == this.idPuesto){
+                temporal.add(comentarios.get(i));
+            }
+        }
+        
+        }
+        return temporal;
+    }
+    
     /**
      * Crea una lista de comentarios desde la base de datos.
      */
     public void crearListaComentarios() {
-        List<Comentario> nueva = new ArrayList<>();
+        List<Comentario> nueva = new ArrayList<Comentario>();
         for (Comentario actual : comentarios) {
             Comentario nuevo = new Comentario();
             nuevo.setIdPuesto(actual.getIdPuesto());
@@ -100,14 +122,14 @@ public class LeerComentario implements Serializable {
     }
 
     /**
-     * Busca el id del comentario.
+     * Busca el id del comentario del puesto actual.
      *
      * @return Identificador del usuario.
      */
     private Integer buscarIdComentario(Integer idUsuario) {
         for (int j = 0; j < comentarios.size(); j++) {
             if (comentarios.get(j).getIdUsuario().getIdUsuario().intValue()
-                    == idUsuario) {
+                    == idUsuario && comentarios.get(j).getIdPuesto().getIdPuesto().intValue() == this.idPuesto) {
                 return comentarios.get(j).getIdComentario().intValue();
             }
         }

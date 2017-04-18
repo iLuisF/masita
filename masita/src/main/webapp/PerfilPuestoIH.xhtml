@@ -11,7 +11,14 @@
         <meta name="author" content="The Author"></meta>
     </h:head>
 
-    <h:outputStylesheet name="first.css"/>
+    
+
+    <f:metadata>
+        <f:viewParam name="idPuesto" value="#{crearComentario.idPuesto}" />                
+        <f:viewParam name="idPuesto" value="#{leerComentario.idPuesto}" />                
+    </f:metadata>
+    
+    
 
     <!-- Add 50px padding top to the body for the navbar -->
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
@@ -52,11 +59,10 @@
 
         </b:jumbotron>       
 
-
         <b:container>
             <h:form id="form">
-                <p:growl id="msgs" showDetail="true"/>
-                <p:dataTable var="comentario" value="#{leerComentario.comentarios}" 
+                <p:growl id="msgs" showDetail="true"/>                
+                <p:dataTable var="comentario" value="#{leerComentario.comentariosPuesto}" 
                              editable="true" id="listaC">
                     <p:ajax event="rowEdit" listener="#{leerComentario.onRowEdit}" update=":form:msgs" />
                     <p:ajax event="rowEditCancel" listener="#{leerComentario.onRowCancel}" update=":form:msgs" />
@@ -78,8 +84,8 @@
                         <h:outputText value="#{comentario.fecha}" />
                     </p:column>
                     <p:column style="width:32px">
-                                                <p:rowEditor />
-                                            </p:column>
+                        <p:rowEditor />
+                    </p:column>
                 </p:dataTable>
             </h:form>
         </b:container>
@@ -95,15 +101,13 @@
                 <p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px" closable="true" >
                     <h:outputText/>
                     <br/>
-                    <p:inputTextarea value="#{crearComentario.nuevo.contenido}" style="width: 100%" rows="10"/>
+                    <p:inputTextarea value="#{crearComentario.nuevo.contenido}" style="width: 100%" rows="10">
+                    </p:inputTextarea>
                     <br />                    
 
                     <p:commandButton id='btn' value="Comentar" 
                                      ajax="false" action="#{crearComentario.crearComentario()}" image="ui-icon-document" style="float:right; font-size:20px"/>
-                    <br />
-                    <f:metadata>
-                        <f:viewParam name="idPuesto" value="#{crearComentario.idPuesto}" />
-                    </f:metadata>
+                    <br />                    
                     <p:rating value="#{crearComentario.nuevo.calificacion}" stars="5" 
                               cancel="false" onRate="alert('Tu calificaste con: ' + value)" style="float:left; width: 100px; height: 100px">
                         <p:ajax event="rate" listener="#{crearComentario.calificarPuesto()}"/>
