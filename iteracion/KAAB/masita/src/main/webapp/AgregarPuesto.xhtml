@@ -8,6 +8,7 @@
     <h:head>
         <title>Masita</title>
         <meta name="author" content="The Author"></meta>
+        <script src="http://maps.google.com/maps/api/js?key=AIzaSyBlEYhBfp104jOYDy-TOhTYkSd8YBtkLFI"></script>
     </h:head>
      <h:body style="padding-top: 50px; padding-bottom: 20px;">
         <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
@@ -22,68 +23,54 @@
             </b:container>
         </b:jumbotron>
         <b:container>
+            <p:messages autoUpdate="true"/>
+            <p:growl id="messages" showDetail="true" life="2000" />
             <h:form>
-                <p:messages autoUpdate="true"/>
-                <h:panelGrid columns="3" cellpadding="5">
-                  
-                    <p:outputLabel for="id" value="ID: " />
-                    <p:inputText id="id" value="#{creaPuesto.id}" required="true" label="id"/>
-                    <p:message for="id" display="icon" />
+                <h:panelGrid columns="2" cellpadding="5">   
                     
                     <p:outputLabel for="nombre" value="Nombre: " />
                     <p:inputText id="nombre" value="#{creaPuesto.nombre}" required="true"/>
-                    <p:message for="nombre" display="icon" />
-                    
+                                      
                     <p:outputLabel for="horario" value="horario:" />
                     <p:inputMask id="horario" value="#{creaPuesto.horario}" mask="99:99-99:99" required="true"/>
-                    <p:message for="horario" display="icon" />
+                  
                     
                     <p:outputLabel for="latitud" value="latitud:" />
-                    <p:inputText id="latitud" value="#{creaPuesto.latitud}" required="true"> 
-                        <f:validateDoubleRange minimum="19.0" maximum="20.0" />
-                    </p:inputText>  
-                    <p:message for="latitud" display="icon" />
+                    <p:outputLabel id="latitud" value="#{creaPuesto.latitud}"/> 
                     
                     <p:outputLabel for="longitud" value="longitud:" />
-                    <p:inputText id="longitud" value="#{creaPuesto.longitud}" required="true">
-                        <f:validateDoubleRange minimum="-100.0" maximum="-99.0" />
-                    </p:inputText>
-                    <p:message for="longitud" display="icon" />
+                    <p:outputLabel id="longitud" value="#{creaPuesto.longitud}"/>
                     
+                   
+                    <p:gmap id="gmap" center="19.324328359583355,-99.17934268712997" zoom="19" type="ROADMAP" style="width:800%;height:400px">
+                        <p:ajax event="pointSelect" listener="#{creaPuesto.onPointSelect}" update="messages" />
+                        <p:ajax event="pointSelect" update="longitud"/>
+                        <p:ajax event="pointSelect" update="latitud"/> 
+                    </p:gmap>
+                    <p:separator />
                     <H4 style="margin-top:0px">Servicios</H4>   
                     <p:separator />
-                    <p:separator />
                     <p:selectManyCheckbox id="grid3" value="#{creaPuesto.servicios}" layout="pageDirection" columns="1">
-                        <f:selectItem itemLabel="Banios" itemValue="Banios" />
+                        <f:selectItem itemLabel="Baños" itemValue="Baños" />
                         <f:selectItem itemLabel="Mesas" itemValue="Mesas" />
                         <f:selectItem itemLabel="Comida para llevar" itemValue="Comida para llevar" />
                     </p:selectManyCheckbox>
-                    
+                    <p:outputLabel/>
+                    <H4 style="margin-top:0px">Tipos de Comida</H4>   
+                    <p:separator />
+                    <p:selectManyCheckbox id="grid4" value="#{creaPuesto.tipoComida}" layout="pageDirection"  columns="1">
+                        <f:selectItem itemLabel="Comida corrida" itemValue="Comida corrida" />
+                        <f:selectItem itemLabel="Hamburguesas" itemValue="Hamburguesas" />
+                        <f:selectItem itemLabel="Ensaladas" itemValue="Ensaladas" />
+                        <f:selectItem itemLabel="Dulces" itemValue="Dulces" />
+                        <f:selectItem itemLabel="Tortas" itemValue="Tortas" />
+                        <f:selectItem itemLabel="Garnachas" itemValue="Garnachas" />
+                        <f:selectItem itemLabel="Hotdog" itemValue="Hotdog" />
+                        <f:selectItem itemLabel="Tacos" itemValue="Tacos" />
+                        <f:selectItem itemLabel="Sushi" itemValue="Sushi" />
+                    </p:selectManyCheckbox>
                      <H4 style="margin-top:0px">   </H4>
-                    <p:commandButton value="Reset" type="reset"/>
-                    <p:commandButton value="Submit"  action="#{creaPuesto.AgregaPuesto}"/>
-                    
-                    <p:dialog widgetVar="dlg" modal="true" resizable="false" header="Puesto" showEffect="fade"> 
-                        <p:panelGrid id="display" columns="2" columnClasses="value,value">
-                            
-                            <h:outputText value="id :"/>
-                            <h:outputText id="idValue" value="#{creaPuesto.id}"/>
-
-                            <h:outputText value="Nombre: " />
-                            <h:outputText id="nombreValue" value="#{creaPuesto.nombre}" />
-
-                            <h:outputText value="horario: " />
-                            <h:outputText id="horarioValue" value="#{creaPuesto.horario}"/>
-
-                            <h:outputText value="latitud: " />
-                            <h:outputText id="taxValue" value="#{creaPuesto.latitud}" />
-
-                            <h:outputText value="longitud: " />
-                            <h:outputText id="ssnValue" value="#{creaPuesto.longitud}" />
-                            
-                            <a href="http://localhost:8084/masita/PerfilPuestoIH.xhtml">ir al perfil</a>
-                        </p:panelGrid>
-                    </p:dialog>
+                     <p:commandButton value="Aceptar"  actionListener="#{creaPuesto.AgregaPuesto}" type="submit" update="messages"/>         
                 </h:panelGrid>
             </h:form>
         </b:container>

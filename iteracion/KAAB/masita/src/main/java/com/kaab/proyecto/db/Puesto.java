@@ -70,22 +70,10 @@ public class Puesto implements Serializable {
     joinColumns=@JoinColumn(name="idPuesto"),
     inverseJoinColumns=@JoinColumn(name="idTipoComida"))
     private List<TipoComida> tipoComidaCollection;///////*******  
-
-    public List<ServicioAdicional> getServicioAdicionalLista() {
-        return servicioAdicionalLista;
-    }
-
-    public void setServicioAdicionalLista(List<ServicioAdicional> servicioAdicionalLista) {
-        this.servicioAdicionalLista = servicioAdicionalLista;
-    }
-
     
-    
-    
-
-    public Puesto() {
+    public Puesto(){
+        ;
     }
-
     public Puesto(Long idPuesto) {
         this.idPuesto = idPuesto;
     }
@@ -98,9 +86,26 @@ public class Puesto implements Serializable {
         this.longitud = longitud;
     }
 
+    public List<TipoComida> getTipoComidaCollection() {
+        return tipoComidaCollection;
+    }
+
+    public void setTipoComidaCollection(List<TipoComida> tipoComidaCollection) {
+        this.tipoComidaCollection = tipoComidaCollection;
+    }
+
+    public List<ServicioAdicional> getServicioAdicionalLista() {
+        return servicioAdicionalLista;
+    }
+
+    public void setServicioAdicionalLista(List<ServicioAdicional> servicioAdicionalLista) {
+        this.servicioAdicionalLista = servicioAdicionalLista;
+    }
+    
     public Long getIdPuesto() {
         return idPuesto;
     }
+    
 
     public void setIdPuesto(Long idPuesto) {
         this.idPuesto = idPuesto;

@@ -17,10 +17,19 @@ INSERT INTO Comentario (idPuesto, idUsuario, contenido, fecha, calificacion) VAL
 
 -- Tipo de Comida
 INSERT INTO TipoComida (nombre) VALUES ('Comida corrida');
+INSERT INTO TipoComida (nombre) VALUES ('Hamburguesas');
+INSERT INTO TipoComida (nombre) VALUES ('Ensaladas');
+INSERT INTO TipoComida (nombre) VALUES ('Dulces');
+INSERT INTO TipoComida (nombre) VALUES ('Tortas');
+INSERT INTO TipoComida (nombre) VALUES ('Garnachas');
+INSERT INTO TipoComida (nombre) VALUES ('Hotdog');
+INSERT INTO TipoComida (nombre) VALUES ('Tacos');
+INSERT INTO TipoComida (nombre) VALUES ('Sushi');	
 
 -- Servicios Adicionales
 INSERT INTO ServicioAdicional (nombre) VALUES ('Mesas');
 INSERT INTO ServicioAdicional (nombre) VALUES ('Baños');
+INSERT INTO ServicioAdicional (nombre) VALUES ('Comida para llevar');
 
 -- Tipo de Comida del Puesto
 INSERT INTO TipoComidaPuesto (idTipoComida, idPuesto) VALUES (1,1);

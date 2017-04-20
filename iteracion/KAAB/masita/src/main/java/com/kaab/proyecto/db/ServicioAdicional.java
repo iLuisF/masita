@@ -42,7 +42,7 @@ public class ServicioAdicional implements Serializable {
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
-    @ManyToMany(mappedBy = "servicioAdicionalCollection")
+    @ManyToMany(mappedBy = "servicioAdicionalLista")
     private Collection<Puesto> puestoCollection;
 
     public ServicioAdicional() {

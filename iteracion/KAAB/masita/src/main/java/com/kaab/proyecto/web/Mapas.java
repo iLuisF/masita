@@ -53,7 +53,7 @@ public class Mapas implements Serializable {
 //        Lat:19.324328359583355, Lng:-99.17934268712997
 
         //Shared coordinates
-        List<Puesto> lugares = lugarCtrl.findPuestoEntities();
+        List<Puesto> lugares = new LeerPuesto().crearListaPuesto();
         for (Puesto lugar : lugares) {
             Double latitud = Double.parseDouble(lugar.getLatitud());
             Double longitud = Double.parseDouble(lugar.getLongitud());
@@ -68,8 +68,9 @@ public class Mapas implements Serializable {
     }
 
     public void onMarkerSelect(OverlaySelectEvent event) {
+        System.out.println(event.toString());
         marker = (Marker) event.getOverlay();
-        //System.out.println(marker.getTitle());
+        System.out.println(marker.getTitle());
     }
 
     public Marker getMarker() {
@@ -100,7 +101,7 @@ public class Mapas implements Serializable {
         this.lng = lng;
     }
 
-    /*public void addMarker() {
+    public void addMarker() {
         Marker marker = new Marker(new LatLng(lat, lng), nombre);
         Puesto l = new Puesto();
         l.setNombre(nombre);
@@ -109,6 +110,6 @@ public class Mapas implements Serializable {
         lugarCtrl.create(l);
         advancedModel.addOverlay(marker);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Marker Added", "Lat:" + lat + ", Lng:" + lng));
-    }*/
+    }
 
 }

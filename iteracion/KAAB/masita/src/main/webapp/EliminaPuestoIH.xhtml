@@ -32,40 +32,43 @@
                     <f:facet name="header">
                        Eliminar Puestos
                     </f:facet>
-
-                    <p:ajax event="rowEdit" listener="#{leerPuesto.onRowEdit}" update=":form:msgs" />
+                    
+                    <p:ajax event="rowEdit" listener="#{leerPuesto.onRowEdit}"  update=":form:msgs" />
                     <p:ajax event="rowEditCancel" listener="#{leerPuesto.onRowCancel}" update=":form:msgs" />
-
+                    <p:column headerText="id">
+                            <h:outputText value="#{puesto.idPuesto}" />
+                    </p:column>
+                    
                     <p:column headerText="Nombre">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{puesto.nombre}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{puesto.nombre}" style="width:100%"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{leerPuesto.nombre}" placeholder="#{puesto.nombre}"   style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </p:column>
                     
                     <p:column headerText="Horario">
                          <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{puesto.horario}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{puesto.horario}" style="width:100%"/></f:facet>
+                            <f:facet name="input"><p:inputMask value="#{leerPuesto.horario}" placeholder="#{puesto.horario}" mask="99:99-99:99" style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </p:column>
                     
                     <p:column headerText="latitud">
                          <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{puesto.latitud}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{puesto.latitud}" style="width:100%"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{leerPuesto.latitud}" placeholder="#{puesto.latitud}" style="width:100%"/></f:facet>
                         </p:cellEditor>
                     </p:column>
                     
                     <p:column headerText="Longitud">
                          <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{puesto.longitud}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{puesto.longitud}" style="width:100%"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{leerPuesto.longitud}" placeholder="#{puesto.longitud}" style="width:100%"/></f:facet>
                         </p:cellEditor>
-                    </p:column>
-                    
+                    </p:column>   
                     <p:column style="width:32px">
-                        <p:rowEditor />
+                        <p:rowEditor/>
+                        
                     </p:column>
             </p:dataTable>
             </h:form>
