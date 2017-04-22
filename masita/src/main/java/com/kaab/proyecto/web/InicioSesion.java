@@ -24,8 +24,8 @@ public class InicioSesion {
 
     private String correo;
     private String contrasenia;
-    private final HttpServletRequest httpServletRequest; // Obtiene informaci�n de todas las peticiones de usuario.
-    private final FacesContext faceContext; // Obtiene informaci�n de la aplicaci�n
+    private HttpServletRequest httpServletRequest; // Obtiene informaci�n de todas las peticiones de usuario.
+    private  FacesContext faceContext; // Obtiene informaci�n de la aplicaci�n
     private FacesMessage message;
     private Usuario usuario = new Usuario();//Este es el bueno.
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
@@ -119,4 +119,57 @@ public class InicioSesion {
         return null;
     }
     
+    
+    //Código para cambiar contenido de los botones registrarse por nombre del
+    //usuario e iniciar sesión por cerrar sesión.
+    
+        /**
+     * 
+     *
+     * @return El correo del usuario que inicio sesión.
+     */
+    public String getCorreoUsuario() {
+        //HttpServletRequest httpServletRequest;
+        //FacesContext faceContext = FacesContext.getCurrentInstance();
+        httpServletRequest = (HttpServletRequest) faceContext.getExternalContext().getRequest();
+        Usuario sesion = (Usuario) httpServletRequest.getSession().getAttribute("sessionUsuario");
+        if (sesion == null) {//No se inicio sesión.
+            return null;
+        } else {
+            return sesion.getCorreo();
+        }
+    }
+    
+    public boolean haySesion(){
+     return getCorreoUsuario() == null;
+    }    
+    
+    /**
+     * Encuentra el id de un usuario a partir de su correo.
+     * @return 
+     */
+    public String getNombreUsuario(){                
+        UsuarioJpaController controladorUsuario = new UsuarioJpaController(emf);
+        List<Usuario> usuarios = controladorUsuario.findUsuarioEntities();
+        for(int i = 0; i < usuarios.size(); i++){
+            if(usuarios.get(i).getCorreo().toLowerCase().equals(getCorreoUsuario().toLowerCase())){
+                return controladorUsuario.findUsuario(usuarios.get(i).getIdUsuario()).getNombreUsuario();                
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Muestra registrarse o el nombre del usuario.
+     * @return 
+     */
+    public String mostrarBoton(){
+        if(!haySesion()){
+            return getNombreUsuario();
+        }else{
+            return "Registrarse";
+        }
+            
+    }
+        
 }

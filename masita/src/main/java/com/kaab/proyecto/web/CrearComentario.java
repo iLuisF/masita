@@ -197,11 +197,11 @@ public class CrearComentario {
     }
 
     /**
-     * 
+     *
      *
      * @return El correo del usuario que inicio sesión.
      */
-    public String dameCorreoUsuario() {
+    public String getCorreoUsuario() {
         HttpServletRequest httpServletRequest;
         FacesContext faceContext = FacesContext.getCurrentInstance();
         httpServletRequest = (HttpServletRequest) faceContext.getExternalContext().getRequest();
@@ -219,19 +219,22 @@ public class CrearComentario {
      * @return
      */
     public boolean hayUsuario() {
-        return dameCorreoUsuario() != null;
-    }    
+        return getCorreoUsuario() != null;
+    }
 
     /**
      * Encuentra el id de un usuario a partir de su correo.
-     * @return 
+     *
+     * @return
      */
-    private Integer buscarIdUsuario(){                
-        UsuarioJpaController controladorUsuario = new UsuarioJpaController(emf);
-        List<Usuario> usuarios = controladorUsuario.findUsuarioEntities();
-        for(int i = 0; i < usuarios.size(); i++){
-            if(usuarios.get(i).getCorreo().toLowerCase().equals(dameCorreoUsuario().toLowerCase())){
-                return usuarios.get(i).getIdUsuario().intValue();
+    private Integer buscarIdUsuario() {
+        if (getCorreoUsuario() != null) {
+            UsuarioJpaController controladorUsuario = new UsuarioJpaController(emf);
+            List<Usuario> usuarios = controladorUsuario.findUsuarioEntities();
+            for (int i = 0; i < usuarios.size(); i++) {
+                if (usuarios.get(i).getCorreo().toLowerCase().equals(getCorreoUsuario().toLowerCase())) {
+                    return usuarios.get(i).getIdUsuario().intValue();
+                }
             }
         }
         return null;

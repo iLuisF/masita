@@ -7,20 +7,20 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Managed Bean para manejar el cierre de sesión de la aplicación.
+ * Managed Bean para manejar el cierre de sesiï¿½n de la aplicaciï¿½n.
  */
-@ManagedBean // LEER LA DOCUMENTACIÖN DE ESTA ANOTACIÓN: Permite dar de alta al bean en la aplicación
-@RequestScoped // Sólo está disponible a partir de peticiones al bean
+@ManagedBean // LEER LA DOCUMENTACIï¿½N DE ESTA ANOTACIï¿½N: Permite dar de alta al bean en la aplicaciï¿½n
+@RequestScoped // Sï¿½lo estï¿½ disponible a partir de peticiones al bean
 public class CierreSesion {
 
     private String usuario; // Representa el nombre de usuario.
-    private final HttpServletRequest httpServletRequest; // Obtiene información de todas las peticiones de usuario.
-    private final FacesContext faceContext; // Obtiene información de la aplicación
+    private final HttpServletRequest httpServletRequest; // Obtiene informaciï¿½n de todas las peticiones de usuario.
+    private final FacesContext faceContext; // Obtiene informaciï¿½n de la aplicaciï¿½n
     private FacesMessage message; // Permite el envio de mensajes entre el bean y la vista.
 
     /**
      * Constructor para inicializar los valores de faceContext y
-     * httpServletRequest, además de la sesión de usuario.
+     * httpServletRequest, ademï¿½s de la sesiï¿½n de usuario.
      */
     public CierreSesion() {
         faceContext = FacesContext.getCurrentInstance();
@@ -31,7 +31,7 @@ public class CierreSesion {
     }
 
     /**
-     * Método encargado de cerrar la sesión de la aplicación.
+     * Mï¿½todo encargado de cerrar la sesiï¿½n de la aplicaciï¿½n.
      *
      * @return El nombre de la vista que va a responder.
      */
@@ -59,6 +59,18 @@ public class CierreSesion {
      */
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+    
+    /**
+     * Si el usuario inicio sesiÃ³n, entonces se le mostrara el botÃ³n de cerrar
+     * sesiÃ³n.
+     * @return 
+     */
+    public boolean mostrarCierreSesion(){
+        if (httpServletRequest.getSession().getAttribute("sessionUsuario") != null) {
+            return true;
+        }
+            return false;
     }
 
 }

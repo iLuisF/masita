@@ -13,19 +13,19 @@
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
         <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top" onclick="location='/masita/PrincipalIH.xhtml'">
             <h:form styleClass="navbar-form navbar-right">
-                <b:button value="Regístrate" look="warning" onclick="location='/masita/RegistrarCuenta.jsp'"/>
-                <b:dropButton value="Iniciar Sesión " look="success">
+                <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='/masita/RegistrarCuenta.jsp'"/>
+                <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
                     <b:container fluid="true">                        
                             <b:column>
                                 <h:form styleClass="form-signin" prependId="false">
-                                    <h3 class="form-signin-heading">Por favor inicie sesión</h3>
+                                    <!--<h3 class="form-signin-heading">Por favor inicie sesión</h3>-->
                                     <b:messages/>
                                     <b:inputText id="email" placeholder="Correo electrónico" value="#{inicioSesion.usuario.correo}">
                                         <f:facet name="prepend">
                                             <b:icon name="user" />
                                         </f:facet>
                                     </b:inputText>
-                                    <b:inputText id="password" placeholder="Contrasña" type="password" value="#{inicioSesion.usuario.contrasenia}">
+                                    <b:inputText id="password" placeholder="Contraseña" type="password" value="#{inicioSesion.usuario.contrasenia}">
                                         <f:facet name="prepend">
                                             <b:iconAwesome name="key"/>
                                         </f:facet>
@@ -36,6 +36,7 @@
                             </b:column>                       
                     </b:container>                
                 </b:dropButton>
+                <b:commandButton value="Cerrar Sesión" look="btn btn-md btn-danger" rendered="#{cierreSesion.mostrarCierreSesion()}" action="#{cierreSesion.cierreSesion()}"/>
             </h:form>
         </b:navBar>
         <b:jumbotron>
