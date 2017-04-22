@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -11,10 +11,31 @@
     </h:head>
     <!-- Add 50px padding top to the body for the navbar -->
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
-        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
+        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top" onclick="location='/masita/PrincipalIH.xhtml'">
             <h:form styleClass="navbar-form navbar-right">
-                <b:commandButton action="a" value="Regístrate" look="warning" icon="chevron-right" iconAlign="right"/>
-                <b:commandButton action="a" value="Iniciar Sesión" look="success" icon="chevron-right" iconAlign="right"/>
+                <b:button value="Regístrate" look="warning" onclick="location='/masita/RegistrarCuenta.jsp'"/>
+                <b:dropButton value="Iniciar Sesión " look="success">
+                    <b:container fluid="true">                        
+                            <b:column>
+                                <h:form styleClass="form-signin" prependId="false">
+                                    <h3 class="form-signin-heading">Por favor inicie sesión</h3>
+                                    <b:messages/>
+                                    <b:inputText id="email" placeholder="Correo electrónico" value="#{inicioSesion.usuario.correo}">
+                                        <f:facet name="prepend">
+                                            <b:icon name="user" />
+                                        </f:facet>
+                                    </b:inputText>
+                                    <b:inputText id="password" placeholder="Contrasña" type="password" value="#{inicioSesion.usuario.contrasenia}">
+                                        <f:facet name="prepend">
+                                            <b:iconAwesome name="key"/>
+                                        </f:facet>
+                                    </b:inputText>
+                                    <b:selectBooleanCheckbox value="true" caption="Recordarme"/>
+                                    <b:commandButton look="primary btn-block" value="Iniciar sesión" icon="log-in" size="lg" action="#{inicioSesion.inicioSesion()}"/>
+                                </h:form>
+                            </b:column>                       
+                    </b:container>                
+                </b:dropButton>
             </h:form>
         </b:navBar>
         <b:jumbotron>
@@ -22,7 +43,7 @@
                 <h3>Encuentra los mejores lugares para comer y beber en la Facultad de Ciencias</h3>
                 <h:form>
                     <div class="form-group">
-                        <b:inputText placeholder="Buscar un puesto..." value="a" fieldSize="lg">
+                        <b:inputText placeholder="Buscar un puesto..." value="" fieldSize="lg">
                         </b:inputText>
                         <b:label text="a" id="label"/>
                     </div>
@@ -55,18 +76,19 @@
                             <f:facet name="header">
                                 Nombre
                             </f:facet>
-                         #{c.nombre}
+                         
+                         #{inicioSesion.usuario.idUsuario}
                         </h:column>
                         
                     </h:dataTable>
                     
                 
-            <p><b:button outcome="" value="Ver detalles »"/></p>
+            <p><b:button outcome="" value="Ver detalles ..."/></p>
                 </b:container>
                 </h:form>
             <hr/>
             <footer>
-            <p>© KAAB 2017</p>
+            <p>©KAAB 2017</p>
             </footer>
         </b:container>
     </h:body>

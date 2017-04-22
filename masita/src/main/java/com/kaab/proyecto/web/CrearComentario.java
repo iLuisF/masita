@@ -13,12 +13,15 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.faces.bean.ViewScoped;
 import com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario;
+import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
- * Permite insertar un comentario en la base de datos. Además la
- * calificación, ya que esta pertenece al comentario.
+ * Permite insertar un comentario en la base de datos. Además la calificación,
+ * ya que esta pertenece al comentario.
  *
  * @author Flores González Luis.
  * @version 1.0 - Abril del 2017
@@ -32,14 +35,15 @@ public class CrearComentario {
     private final ComentarioJpaController controlador = new ComentarioJpaController(emf);
     private Integer idPuesto;
     //Se toma un valor constante, ya que no esta el caso de uso implementado.
-    private Integer idUsuario = 1; 
+    private Integer idUsuario = 1;
 
     /**
      * Crea un comentario en caso de que no haya uno, si hay comentario solo con
-     * calificación entonces solo agrega el contenido al comentario.
-     * S
-     * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario Si
-     * ya hay contenido en el comentario sin importar si tiene calificación o no.
+     * calificación entonces solo agrega el contenido al comentario. S
+     *
+     * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario
+     * Si ya hay contenido en el comentario sin importar si tiene calificación o
+     * no.
      */
     public void crearComentario() throws ErrorCrearComentario, IOException {
         nuevo.setIdUsuario(new Usuario((long) this.idUsuario));
@@ -61,7 +65,7 @@ public class CrearComentario {
         }
         String urlPuesto = "/masita/PerfilPuestoIH.xhtml?idPuesto=" + idPuesto.toString();
         FacesContext contex = FacesContext.getCurrentInstance();
-            contex.getExternalContext().redirect( urlPuesto );
+        contex.getExternalContext().redirect(urlPuesto);
     }
 
     /**
@@ -85,7 +89,7 @@ public class CrearComentario {
     public void calificarPuesto() throws IOException {
         if (!hayContenido()) {//No ha comentado
             nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
-            nuevo.setIdUsuario(new Usuario((long) this.idUsuario)); 
+            nuevo.setIdUsuario(new Usuario((long) this.idUsuario));
             nuevo.setContenido(null);
             nuevo.setFecha(Calendar.getInstance().getTime());
             controlador.create(nuevo);
@@ -125,7 +129,7 @@ public class CrearComentario {
     }
 
     /**
-     * Si el usuario que quiere comentar ya tiene al menos un contenido en el 
+     * Si el usuario que quiere comentar ya tiene al menos un contenido en el
      * comentario entonces regresa true, en otro caso false.
      *
      * @return
@@ -147,6 +151,7 @@ public class CrearComentario {
 
     /**
      * Determina si el usuario ya tiene una calificación en su comentario.
+     *
      * @return True si hay calificación, false en otro caso.
      */
     private boolean hayCalificacion() {
@@ -166,7 +171,6 @@ public class CrearComentario {
 
     // Los métodos get and set, son necesarios para que los archivos .xhtml
     // puedan comunicarse con los beans.    
-    
     public Integer getIdPuesto() {
         return idPuesto;
     }
@@ -190,4 +194,31 @@ public class CrearComentario {
     public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    /**
+     *
+     *
+     * @return El correo del usuario que inicio sesión.
+     */
+    public String dameCorreoUsuario() {
+        HttpServletRequest httpServletRequest;
+        FacesContext faceContext = FacesContext.getCurrentInstance();
+        httpServletRequest = (HttpServletRequest) faceContext.getExternalContext().getRequest();
+        Usuario sesion = (Usuario) httpServletRequest.getSession().getAttribute("sessionUsuario");
+        if (sesion == null) {//No se inicio sesión.
+            return null;
+        } else {
+            return sesion.getCorreo();
+        }
+    }
+
+    /**
+     * True si un usuario inicio sesión.
+     *
+     * @return
+     */
+    public boolean hayUsuario() {
+        return dameCorreoUsuario() != null;
+    }    
+
 }
