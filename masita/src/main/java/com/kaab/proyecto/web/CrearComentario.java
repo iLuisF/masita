@@ -4,6 +4,7 @@ import com.kaab.proyecto.db.controller.ComentarioJpaController;
 import com.kaab.proyecto.db.Comentario;
 import com.kaab.proyecto.db.Puesto;
 import com.kaab.proyecto.db.Usuario;
+import com.kaab.proyecto.db.controller.UsuarioJpaController;
 import java.util.Calendar;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -35,7 +36,7 @@ public class CrearComentario {
     private final ComentarioJpaController controlador = new ComentarioJpaController(emf);
     private Integer idPuesto;
     //Se toma un valor constante, ya que no esta el caso de uso implementado.
-    private Integer idUsuario = 1;
+    private Integer idUsuario = buscarIdUsuario();
 
     /**
      * Crea un comentario en caso de que no haya uno, si hay comentario solo con
@@ -196,7 +197,7 @@ public class CrearComentario {
     }
 
     /**
-     *
+     * 
      *
      * @return El correo del usuario que inicio sesión.
      */
@@ -221,4 +222,18 @@ public class CrearComentario {
         return dameCorreoUsuario() != null;
     }    
 
+    /**
+     * Encuentra el id de un usuario a partir de su correo.
+     * @return 
+     */
+    private Integer buscarIdUsuario(){                
+        UsuarioJpaController controladorUsuario = new UsuarioJpaController(emf);
+        List<Usuario> usuarios = controladorUsuario.findUsuarioEntities();
+        for(int i = 0; i < usuarios.size(); i++){
+            if(usuarios.get(i).getCorreo().toLowerCase().equals(dameCorreoUsuario().toLowerCase())){
+                return usuarios.get(i).getIdUsuario().intValue();
+            }
+        }
+        return null;
+    }
 }
