@@ -29,28 +29,28 @@
                 <h:panelGrid columns="2" cellpadding="5">   
                     
                     <p:outputLabel for="nombre" value="Nombre: " />
-                    <p:inputText id="nombre" value="#{creaPuesto.nombre}" required="true"/>
+                    <p:inputText id="nombre" value="#{controladorPuesto.nombre}" required="true"/>
                                       
                     <p:outputLabel for="horario" value="horario:" />
-                    <p:inputMask id="horario" value="#{creaPuesto.horario}" mask="99:99-99:99" required="true"/>
+                    <p:inputMask id="horario" value="#{controladorPuesto.horario}" mask="99:99-99:99" required="true"/>
                   
                     
                     <p:outputLabel for="latitud" value="latitud:" />
-                    <p:outputLabel id="latitud" value="#{creaPuesto.latitud}"/> 
+                    <p:outputLabel id="latitud" value="#{controladorPuesto.latitud}"/> 
                     
                     <p:outputLabel for="longitud" value="longitud:" />
-                    <p:outputLabel id="longitud" value="#{creaPuesto.longitud}"/>
+                    <p:outputLabel id="longitud" value="#{controladorPuesto.longitud}"/>
                     
                    
                     <p:gmap id="gmap" center="19.324328359583355,-99.17934268712997" zoom="19" type="ROADMAP" style="width:800%;height:400px">
-                        <p:ajax event="pointSelect" listener="#{creaPuesto.onPointSelect}" update="messages" />
+                        <p:ajax event="pointSelect" listener="#{controladorPuesto.onPointSelect}" update="messages" />
                         <p:ajax event="pointSelect" update="longitud"/>
                         <p:ajax event="pointSelect" update="latitud"/> 
                     </p:gmap>
                     <p:separator />
                     <H4 style="margin-top:0px">Servicios</H4>   
                     <p:separator />
-                    <p:selectManyCheckbox id="grid3" value="#{creaPuesto.servicios}" layout="pageDirection" columns="1">
+                    <p:selectManyCheckbox id="grid3" value="#{controladorPuesto.servicios}" layout="pageDirection" columns="1">
                         <f:selectItem itemLabel="Baños" itemValue="Baños" />
                         <f:selectItem itemLabel="Mesas" itemValue="Mesas" />
                         <f:selectItem itemLabel="Comida para llevar" itemValue="Comida para llevar" />
@@ -58,7 +58,7 @@
                     <p:outputLabel/>
                     <H4 style="margin-top:0px">Tipos de Comida</H4>   
                     <p:separator />
-                    <p:selectManyCheckbox id="grid4" value="#{creaPuesto.tipoComida}" layout="pageDirection"  columns="1">
+                    <p:selectManyCheckbox id="grid4" value="#{controladorPuesto.tipoComida}" layout="pageDirection"  columns="1">
                         <f:selectItem itemLabel="Comida corrida" itemValue="Comida corrida" />
                         <f:selectItem itemLabel="Hamburguesas" itemValue="Hamburguesas" />
                         <f:selectItem itemLabel="Ensaladas" itemValue="Ensaladas" />
@@ -70,7 +70,7 @@
                         <f:selectItem itemLabel="Sushi" itemValue="Sushi" />
                     </p:selectManyCheckbox>
                      <H4 style="margin-top:0px">   </H4>
-                     <p:commandButton value="Aceptar"  actionListener="#{creaPuesto.AgregaPuesto}" type="submit" update="messages"/>         
+                     <p:commandButton value="Aceptar"  actionListener="#{controladorPuesto.AgregaPuesto}" type="submit" update="messages"/>         
                 </h:panelGrid>
             </h:form>
         </b:container>
