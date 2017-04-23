@@ -13,7 +13,7 @@
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
         <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top" onclick="location='/masita/PrincipalIH.xhtml'">
             <h:form styleClass="navbar-form navbar-right">
-                <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='/masita/RegistrarCuenta.jsp'"/>
+                <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='#{inicioSesion.redireccionBoton()}'"/>
                 <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
                     <b:container fluid="true">                        
                             <b:column>

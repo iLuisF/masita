@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  * Bean manejado que se utiliza para el manejo de Inicio de Sesi�n en
- * la aplicaci�n web.
+ * la aplicación web.
  *
- * @author miguel
+ * @author 
  */
 @ManagedBean 
 @RequestScoped // S�lo est� disponible a partir de peticiones al bean
@@ -69,25 +69,25 @@ public class InicioSesion {
     }
 
     /**
-     * Regresa la contrase�a del usuario.
+     * Regresa la contraseña del usuario.
      *
-     * @return La contrase�a del usuario.
+     * @return La contraseña del usuario.
      */
     public String getContrasenia() {
         return contrasenia;
     }
 
     /**
-     * Establece la contrase�a del usuario.
+     * Establece la contraseña del usuario.
      *
-     * @param contrasenia La contrase�a del usuario a establecer.
+     * @param contrasenia La contraseña del usuario a establecer.
      */
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
 
     /**
-     * M�todo encargado de validar el inicio de sesi�n.
+     * Método encargado de validar el inicio de sesión.
      *
      * @return El nombre de la vista que va a responder.
      */
@@ -145,7 +145,7 @@ public class InicioSesion {
     }    
     
     /**
-     * Encuentra el id de un usuario a partir de su correo.
+     * Encuentra el nombre de un usuario a partir de su correo.
      * @return 
      */
     public String getNombreUsuario(){                
@@ -160,16 +160,45 @@ public class InicioSesion {
     }
     
     /**
-     * Muestra registrarse o el nombre del usuario.
+     * Encuentra el id de un usuario a partir de su correo.
      * @return 
      */
+    public Integer getIdUsuario(){                
+        UsuarioJpaController controladorUsuario = new UsuarioJpaController(emf);
+        List<Usuario> usuarios = controladorUsuario.findUsuarioEntities();
+        for(int i = 0; i < usuarios.size(); i++){
+            if(usuarios.get(i).getCorreo().toLowerCase().equals(getCorreoUsuario().toLowerCase())){
+                return usuarios.get(i).getIdUsuario().intValue();                
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Muestra registrarse si no ha iniciado sesión o el nombre del usuario en
+     * otro caso.
+     * 
+     * @return Cadena para mostrarse en el botón.
+     */
     public String mostrarBoton(){
-        if(!haySesion()){
+        if(!haySesion()){            
             return getNombreUsuario();
         }else{
             return "Registrarse";
+        }            
+    }
+    
+    /**
+     * Si muestra registrarse entonces dirige a la página de registro, en otro caso
+     * dirige a la página de editar perfil.
+     * @return 
+     */
+    public String redireccionBoton(){
+        if(!haySesion()){            
+            return "EditarPerfilIH.xhtml?idUsuario=" + getIdUsuario().toString();
+        }else{
+            return "/masita/RegistrarCuentaIH.xhtml";
         }
-            
     }
         
 }
