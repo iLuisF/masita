@@ -18,6 +18,11 @@ Si quieren cambiar el nombre del usuario, también es necesario hacerlo en el ar
 <property name="javax.persistence.jdbc.password" value="welce"/>
 ```
 
+En mysql, hay que crear una base de datos con el comando:
+```
+create database masita;
+```
+
 Después de eso, hay que cargar el script proyecto-comida.sql para que se construya el modelo de la base de datos. Una forma de hacerlo puede ser de la siguiente forma:
 
 ```
