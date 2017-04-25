@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Masita</title>
+    </h:head>
+    <!-- Add 50px padding top to the body for the navbar -->
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        
+        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top" onclick="location='/masita/PrincipalIH.xhtml'">
+            <h:form styleClass="navbar-form navbar-right">
+                <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='/masita/RegistrarCuentaIH.xhtml'"/>
+                <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
+                    <b:container fluid="true">                        
+                        <b:column>
+                            <h:form styleClass="form-signin" prependId="false">
+                                <!--<h3 class="form-signin-heading">Por favor inicie sesión</h3>-->
+                                <b:messages/>
+                                <b:inputText id="email" placeholder="Correo electrónico" value="#{inicioSesion.usuario.correo}">
+                                    <f:facet name="prepend">
+                                        <b:icon name="user" />
+                                    </f:facet>
+                                </b:inputText>
+                                <b:inputText id="password" placeholder="Contraseña" type="password" value="#{inicioSesion.usuario.contrasenia}">
+                                    <f:facet name="prepend">
+                                        <b:iconAwesome name="key"/>
+                                    </f:facet>
+                                </b:inputText>
+                                <b:selectBooleanCheckbox value="true" caption="Recordarme"/>
+                                <b:commandButton look="primary btn-block" value="Iniciar sesión" icon="log-in" size="lg" action="#{inicioSesion.inicioSesion()}"/>
+                            </h:form>
+                        </b:column>                       
+                    </b:container>                
+                </b:dropButton>
+                <b:commandButton value="Cerrar Sesión" look="btn btn-md btn-danger" rendered="#{cierreSesion.mostrarCierreSesion()}" action="#{cierreSesion.cierreSesion()}"/>
+            </h:form>
+        </b:navBar>
+        
+        <b:jumbotron>
+            
+            <b:container>
+                <p class="text-primary">Registrar Cuenta</p>
+                <h4 class="text-danger">Por favor proporciona los datos que se te solicitan a continuación:</h4>
+                <br/> <br/>
+                <!--Nombre--> 
+                <h:form>
+                    
+                    <p:panel id="panel" header="Nuevo Usuario">
+
+                        <p:messages id="msgs" />
+
+                        <h:panelGrid columns="3" cellpadding="5">
+                            <p:outputLabel for="nombre" value="Nombre:" />
+                            <p:inputText id="nombre" value="#{altaUsuario.usuario.nombre}" required="true" label="nombre" style="width: 250px">
+                                <f:validateLength minimum="2" />
+                            </p:inputText>
+                            <p:message for="nombre" display="icon" />
+
+                            <p:outputLabel for="app" value="Apellido Paterno:" />
+                            <p:inputText id="app" value="#{altaUsuario.usuario.app}" label="app" required="true" style="width: 250px">
+                                <f:validateLength minimum="2" />
+                            </p:inputText>
+                            <p:message for="app" display="icon" />
+                            
+                            <p:outputLabel for="apm" value="Apellido Materno:" />
+                            <p:inputText id="apm" value="#{altaUsuario.usuario.apm}" label="apm" required="true" style="width: 250px">
+                                <f:validateLength minimum="2" />
+                            </p:inputText>
+                            <p:message for="apm" display="icon" />
+                            
+                            <p:outputLabel for="nombreUsuario" value="Nombre Usuario:" />
+                            <p:inputText id="nombreUsuario" value="#{altaUsuario.usuario.nombreUsuario}" label="nombreUsuario" required="true" style="width: 250px">
+                                <f:validateLength minimum="2" />
+                            </p:inputText>
+                            <p:message for="nombreUsuario" display="icon" />
+                            
+                            <p:outputLabel for="correo" value="Correo: " />
+                            <p:inputText id="correo" value="#{altaUsuario.usuario.correo}" label="correo" required="true" style="width: 250px">
+                                <p:watermark for="correo" value="correo@ciencias.unam.mx" id="watermark" />
+                                <f:validator validatorId="custom.emailValidator" />
+                                <f:validateLength minimum="2" />
+                            </p:inputText>
+                            <p:message for="correo" display="icon" />
+                            
+                            <p:outputLabel for="contrasenia" value="Contraseña: (mín. 6 caracteres)" />
+                            <p:password id="contrasenia" value="#{altaUsuario.usuario.contrasenia}" match="contrasenia2" label="contrasenia" required="true" feedback="true" style="width: 250px">
+                                <f:validateLength minimum="6" />
+                            </p:password>
+                            <p:message for="contrasenia" display="icon" />
+
+                            <p:outputLabel for="contrasenia2" value="RepetirContraseña: " />
+                            <p:password id="contrasenia2" label="contrasenia" required="true" feedback="true" style="width: 250px">
+                                <f:validateLength minimum="6" />
+                            </p:password>
+                            <p:message for="contrasenia" display="icon" />
+                           
+                        </h:panelGrid>
+                        <p:commandButton actionListener="#{altaUsuario.darAltaUsuario()}"  value="Enviar" icon="chevron-right" update="panel" />
+                        <a href="PrincipalIH.xhtml"><b:button value="Cancelar" look="danger" icon="chevron-right" iconAlign="right"/></a>
+                        
+                    </p:panel>
+                </h:form>
+            </b:container>
+        </b:jumbotron>
+        <b:container>
+           
+            <footer>
+            <p>© KAAB 2017</p>
+            </footer>
+        </b:container>
+    </h:body>
+</html>
+
