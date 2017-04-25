@@ -1,7 +1,9 @@
 package com.kaab.proyecto.web;
 
 import com.kaab.proyecto.db.Comentario;
+import com.kaab.proyecto.db.Usuario;
 import com.kaab.proyecto.db.controller.ComentarioJpaController;
+import com.kaab.proyecto.db.controller.UsuarioJpaController;
 import com.kaab.proyecto.db.controller.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.servlet.http.HttpServletRequest;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -26,9 +29,8 @@ public class LeerComentario implements Serializable {
     private Comentario comentario = new Comentario();
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
     private ComentarioJpaController ccomentario = new ComentarioJpaController(emf);
-    private final List<Comentario> comentarios = ccomentario.findComentarioEntities();
-    //Se toma un valor constante, ya que no esta el caso de uso implementado.
-    private Integer idUsuario = 1;
+    private final List<Comentario> comentarios = ccomentario.findComentarioEntities();    
+    private final Integer idUsuario = buscarIdUsuario();
     private Integer idPuesto;
 
     public Integer getIdPuesto() {
@@ -136,4 +138,38 @@ public class LeerComentario implements Serializable {
         return -100;
     }
 
+    /**
+     * Encuentra el id de un usuario a partir de su correo.
+     *
+     * @return
+     */
+    private Integer buscarIdUsuario() {
+        if (getCorreoUsuario() != null) {
+            UsuarioJpaController controladorUsuario = new UsuarioJpaController(emf);
+            List<Usuario> usuarios = controladorUsuario.findUsuarioEntities();
+            for (int i = 0; i < usuarios.size(); i++) {
+                if (usuarios.get(i).getCorreo().toLowerCase().equals(getCorreoUsuario().toLowerCase())) {
+                    return usuarios.get(i).getIdUsuario().intValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     *
+     * @return El correo del usuario que inicio sesión.
+     */
+    public String getCorreoUsuario() {
+        HttpServletRequest httpServletRequest;
+        FacesContext faceContext = FacesContext.getCurrentInstance();
+        httpServletRequest = (HttpServletRequest) faceContext.getExternalContext().getRequest();
+        Usuario sesion = (Usuario) httpServletRequest.getSession().getAttribute("sessionUsuario");
+        if (sesion == null) {//No se inicio sesión.
+            return null;
+        } else {
+            return sesion.getCorreo();
+        }
+    }    
 }
