@@ -45,10 +45,19 @@ public class CrearComentario {
      * @throws com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario
      * Si ya hay contenido en el comentario sin importar si tiene calificación o
      * no.
+     * @throws java.io.IOException
      */
     public void crearComentario() throws ErrorCrearComentario, IOException {
         nuevo.setIdUsuario(new Usuario((long) this.idUsuario));
         hayComentario();
+        if (this.nuevo.getContenido().length() == 0) {
+            throw new ErrorCrearComentario("Tu comentario no puede ser"
+                    + " vacío.");
+        }
+        if (this.nuevo.getContenido().length() > 1500) {
+            throw new ErrorCrearComentario("Tu comentario no puede tener"
+                    + " más de 1500 caracteres.");
+        }
         if (hayCalificacion()) {//Entonces editamos comentario.
             Integer idComentario = encontrarIdComentario();
             Comentario temporal = controlador.findComentario((long) idComentario);
