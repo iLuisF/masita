@@ -235,7 +235,7 @@ public class ControladorPuesto implements Serializable{
                 mensaje = new FacesMessage("Puesto Agregado Correctamente");
                 FacesContext.getCurrentInstance().addMessage(null, mensaje);
                 FacesContext context= FacesContext.getCurrentInstance();
-                context.getExternalContext().redirect("/masita/EliminaPuestoIH.xhtml");
+                context.getExternalContext().redirect("/masita/PerfilPuestoIH.xhtml?idPuesto="+ actual.getIdPuesto());
             } catch (IOException ex) {
                ;
             }

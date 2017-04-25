@@ -31,6 +31,7 @@ public class EliminacionUsuario implements Serializable {
     private String nombre;
     private String app;
     private String apm;
+    private String activo;
     private List<Usuario> listaU;       // Lista de todos los usuarios
     private List<Usuario> usuariosFiltrados;    // Lista de usuarios filtrada por nombre
     
@@ -68,6 +69,27 @@ public class EliminacionUsuario implements Serializable {
         }
         return listaU;
     }
+    
+    public void MandaAdmin(Long idUsuario){
+        this.idUsuario = idUsuario;   
+    }
+    
+    public void hacerAdmin() throws Exception{
+        Usuario u = usuario.findUsuario(idUsuario);
+        u.setEsAdministrador(1);
+        if("0".equals(u.getActivo())){
+            
+        }else{
+        u.setActivo("1");
+        usuario.edit(u);
+        
+        FacesMessage msg = new FacesMessage("Este Usuario es Administrador", "Usuario ID: " +Long.toString((u).getIdUsuario()));
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext context= FacesContext.getCurrentInstance();
+        context.getExternalContext().redirect("/masita/EliminarUsuarioIH.xhtml");
+    
+        }
+       }
    
     /**
      * Si se selecciona el simbolo "paloma", se mantiene al usuario activo.

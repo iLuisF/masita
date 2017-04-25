@@ -57,8 +57,7 @@
         <p:ajax event="overlaySelect" listener="#{mapas.onMarkerSelect}"/>
         <p:gmapInfoWindow id="infoWindow">
           <p:outputPanel style="text-align: center; display: block; margin: auto">
-            <h:outputText value="#{mapas.marker.title}" />
-            <h:outputText value="#{mapas.marker.data}"/>
+              <p:commandLink value="#{mapas.marker.title}" actionListener="#{mapas.redirige(mapas.marker.title)}"/>
           </p:outputPanel>
         </p:gmapInfoWindow>
       </p:gmap>

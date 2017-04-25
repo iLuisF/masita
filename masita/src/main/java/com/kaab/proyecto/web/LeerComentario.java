@@ -5,6 +5,7 @@ import com.kaab.proyecto.db.Usuario;
 import com.kaab.proyecto.db.controller.ComentarioJpaController;
 import com.kaab.proyecto.db.controller.UsuarioJpaController;
 import com.kaab.proyecto.db.controller.exceptions.NonexistentEntityException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +110,7 @@ public class LeerComentario implements Serializable {
      * @param event
      * @throws NonexistentEntityException
      */
-    public void onRowCancel(RowEditEvent event) throws NonexistentEntityException {
+    public void onRowCancel(RowEditEvent event) throws NonexistentEntityException, IOException {
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");        
         if (buscarIdComentario(idUsuario) == (((Comentario) event.getObject()).getIdComentario()).intValue()) {
             ccomentario = new ComentarioJpaController(emf);
@@ -117,12 +118,16 @@ public class LeerComentario implements Serializable {
 
             FacesMessage msg = new FacesMessage("Comentario Eliminado", Long.toString(((Comentario) event.getObject()).getIdComentario()));
             FacesContext.getCurrentInstance().addMessage(null, msg);
+            FacesContext context= FacesContext.getCurrentInstance();
+            context.getExternalContext().redirect("/masita/PerfilPuestoIH.xhtml?idPuesto="+idPuesto);
         } else if (esAdministrador(idUsuario)) {
             ccomentario = new ComentarioJpaController(emf);
             ccomentario.destroy(((Comentario) event.getObject()).getIdComentario());
 
             FacesMessage msg = new FacesMessage("Comentario Eliminado", Long.toString(((Comentario) event.getObject()).getIdComentario()));
             FacesContext.getCurrentInstance().addMessage(null, msg);
+            FacesContext context= FacesContext.getCurrentInstance();
+            context.getExternalContext().redirect("/masita/PerfilPuestoIH.xhtml?idPuesto="+idPuesto);
         }else {
             FacesMessage msg = new FacesMessage("No puedes eliminar comentarios de otros.", Long.toString(((Comentario) event.getObject()).getIdComentario()));
             FacesContext.getCurrentInstance().addMessage(null, msg);

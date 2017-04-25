@@ -2,6 +2,7 @@ package com.kaab.proyecto.web;
 
 import com.kaab.proyecto.db.Puesto;
 import com.kaab.proyecto.db.controller.PuestoJpaController;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -50,8 +51,25 @@ public class Mapas implements Serializable {
             System.out.println(latitud + ", " + longitud + ", " + nombre);
             advancedModel.addOverlay(new Marker(new LatLng(latitud, longitud), nombre));
         }
+        
     }
-  
+    
+    private Puesto busca(String nombre , List<Puesto> lugares){
+        Puesto resultado= null;
+        for(Puesto i : lugares){
+            if(i.getNombre().equals(nombre)){
+                resultado = i;
+            }
+        }
+        return resultado;
+    }
+    
+    public void redirige(String nombrePuesto) throws IOException{
+         List<Puesto> lugares = lugarCtrl.findPuestoEntities();
+        Long idPuesto = this.busca(nombrePuesto, lugares).getIdPuesto();
+        FacesContext context= FacesContext.getCurrentInstance();
+        context.getExternalContext().redirect("/masita/PerfilPuestoIH.xhtml?idPuesto="+idPuesto);
+    }
     /**
      * Obtiene un modelo del mapa.
      * @return un modelo del mapa
