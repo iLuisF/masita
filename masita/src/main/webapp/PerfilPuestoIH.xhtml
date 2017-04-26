@@ -90,7 +90,7 @@
                     <p:ajax event="rowEditCancel" listener="#{leerComentario.onRowCancel}" update=":form:msgs" />
 
                     <p:column headerText="Usuario">
-                        <h:outputText value="#{comentario.idUsuario}" />
+                        <h:outputText value="#{comentario.idUsuario.nombreUsuario}" />
                     </p:column>
 
                     <p:column headerText="Comentario">
