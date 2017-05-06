@@ -15,7 +15,7 @@
     <!-- Add 50px padding top to the body for the navbar -->
     <h:body style="padding-top: 50px; padding-bottom: 20px;" rendered="#{inicioSesion.haySesionAdmin()}">
         
-        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top" onclick="location='/masita/PrincipalIH.xhtml'">
+        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top" onclick="location='/masita/PrincipalIH.xhtml'" >
             <h:form styleClass="navbar-form navbar-right">
                 <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='#{inicioSesion.redireccionBoton()}'"/>
                 <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
@@ -46,7 +46,7 @@
         
         <b:jumbotron>
             <b:container>
-                <h3>Eliminar Puestos</h3>
+                <h3>Información Puestos</h3>
                 <p:link outcome="PerfilAdministradorIH" value="Regresar al Perfil"/>
             </b:container>
         </b:jumbotron>
@@ -55,7 +55,7 @@
             <h:form id="form">               
                 <p:dataTable id="listaP" var="puesto" value="#{controladorPuesto.crearListaPuesto()}" editable="false" style="margin-bottom:20px">
                     <f:facet name="header">
-                        Eliminar Puestos
+                        Información Puestos
                     </f:facet>
 
                     <p:column headerText="Nombre">
@@ -91,7 +91,7 @@
                      <p:commandButton value="No" oncomplete="PF('dlg1').hide();"/>     
                 </p:dialog>
                 
-                <p:dialog widgetVar="dlg" modal="true" resizable="true" header="Values" showEffect="fade" height="500" width="700" closable="false"> 
+                <p:dialog widgetVar="dlg" modal="true" resizable="false" header="Values" showEffect="fade" height="500" width="700" closable="false"> 
                     <p:panelGrid id="display" columns="2" columnClasses="value,value">
                         <h:outputText value="Nombre: " />
                         <p:inputText id="valorNombre" value="#{controladorPuesto.nombre}"/>
@@ -104,11 +104,12 @@
                         <h:outputText value="Latitud: " />
                         <h:outputText id="valorLatitud" value="#{controladorPuesto.latitud}" />   
                        
-                        <p:gmap id="gmap" center="19.324328359583355,-99.17934268712997" zoom="19" type="ROADMAP" style="width:750%;height:400px">
-                            <p:ajax event="pointSelect" listener="#{controladorPuesto.onPointSelect}" />
+                         <p:gmap id="gmap" center="19.324328359583355,-99.17934268712997" zoom="19" type="HYBRID" model="#{controladorPuesto.advancedModel}" style="width:750%;height:400px">
+                            <p:ajax event="pointSelect" listener="#{controladorPuesto.onPointSelect}" update="msgs" />
                             <p:ajax event="pointSelect" update="valorLongitud"/>
                             <p:ajax event="pointSelect" update="valorLatitud"/> 
-                        </p:gmap>
+                            <p:ajax event="pointSelect" update="gmap"/> 
+                         </p:gmap>
                         <p:separator />
                         <h:outputText value="Servicios: " />
                         <p:selectManyCheckbox id="grid3" value="#{controladorPuesto.servicios}" layout="pageDirection" columns="1">
@@ -130,7 +131,7 @@
                             <f:selectItem itemLabel="Sushi" itemValue="Sushi" />
                         </p:selectManyCheckbox>
                         
-                        <p:commandButton  value="Guardar" actionListener="#{controladorPuesto.edita}"/>
+                        <p:commandButton  value="Guardar" actionListener="#{controladorPuesto.edita}" update="msgs"/>
                         <p:commandButton  value="Salir" oncomplete="PF('dlg').hide();" update="msgs"/>
                         
                     </p:panelGrid>

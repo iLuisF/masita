@@ -67,10 +67,11 @@
                     <p:outputLabel id="longitud" value="#{controladorPuesto.longitud}"/>
                     
                    
-                    <p:gmap id="gmap" center="19.324328359583355,-99.17934268712997" zoom="19" type="ROADMAP" style="width:800%;height:400px">
+                    <p:gmap id="gmap" center="19.324328359583355,-99.17934268712997" zoom="19" type="HYBRID" model="#{controladorPuesto.advancedModel}" style="width:800%;height:400px">
                         <p:ajax event="pointSelect" listener="#{controladorPuesto.onPointSelect}" update="messages" />
                         <p:ajax event="pointSelect" update="longitud"/>
                         <p:ajax event="pointSelect" update="latitud"/> 
+                        <p:ajax event="pointSelect" update="gmap"/> 
                     </p:gmap>
                     <p:separator />
                     <H4 style="margin-top:0px">Servicios</H4>   

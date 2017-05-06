@@ -21,12 +21,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.map.PointSelectEvent;
+import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 
 /**
  * Controlador para un Puesto.
@@ -44,6 +45,8 @@ public class ControladorPuesto implements Serializable{
     private String[] tipoComida;
     private PuestoJpaController cpuesto;
     private List<Puesto> listaP;
+    private MapModel advancedModel;
+    private LatLng coordenadas;
 
     /**
      * Regresa el id de un puesto.
@@ -53,6 +56,15 @@ public class ControladorPuesto implements Serializable{
         return id;
     }
 
+    public MapModel getAdvancedModel() {
+        return advancedModel;
+    }
+
+    public void setAdvancedModel(MapModel advancedModel) {
+        this.advancedModel = advancedModel;
+    }
+    
+    
     /**
      * Cambia el id de un puesto.
      * @param id el nuevo id de un puesto
@@ -141,6 +153,15 @@ public class ControladorPuesto implements Serializable{
         this.servicios = servicios;
     }
 
+    public LatLng getCoordenadas() {
+        return coordenadas;
+    }
+
+    public void setCoordenadas(LatLng coordenadas) {
+        this.coordenadas = coordenadas;
+    }
+    
+    
     /**
      * Obtiene el tipo de comida de un puesto.
      * @return el tipo de comida de un puesto
@@ -190,6 +211,8 @@ public class ControladorPuesto implements Serializable{
         LatLng latlng = event.getLatLng();
         this.setLatitud(String.valueOf(latlng.getLat()));
         this.setLongitud(String.valueOf(latlng.getLng()));
+        advancedModel = new DefaultMapModel();
+        advancedModel.addOverlay(new Marker(latlng, "puesto actual", "http://maps.google.com/mapfiles/ms/micons/blue-dot.png"));
     }
     
     /**
@@ -223,7 +246,7 @@ public class ControladorPuesto implements Serializable{
     public void AgregaPuesto(){
         Puesto actual = new Puesto(-1l,this.getNombre(), this.getHorario() , this.getLatitud() , this.getLongitud());
         FacesMessage mensaje;
-        boolean condicion = this.ValidaNombre() && this.verificaCoordenadas();
+        boolean condicion = this.ValidaNombre() && this.verificaCoordenadas() && this.horarioValido(this.getHorario().trim());
         
         if(condicion){
             this.agregaServiciosAdicionales(actual);
@@ -277,7 +300,6 @@ public class ControladorPuesto implements Serializable{
             if (servicio.equals("Comida para llevar")) {
                 serv_actual = new ServicioAdicional(3l,"Comida para llevar");
             }
-            System.out.println("el nombre es :" + serv_actual.getNombre());
             servi.add(serv_actual);
         }
         p.setServicioAdicionalLista(servi);
@@ -375,6 +397,10 @@ public class ControladorPuesto implements Serializable{
             this.getTipoComida()[i] = x.getNombre();
             i++;
         }
+        this.setAdvancedModel(new DefaultMapModel());
+        this.setCoordenadas(new LatLng(Double.valueOf(this.getLatitud()) , Double.valueOf(this.getLongitud())));
+        this.getAdvancedModel().addOverlay(new Marker(this.getCoordenadas(), "puesto actual", "http://maps.google.com/mapfiles/ms/micons/blue-dot.png"));
+ 
     }
     
     /**
@@ -393,11 +419,40 @@ public class ControladorPuesto implements Serializable{
        if(this.getHorario().trim().equals("")){
            mensaje = new FacesMessage("Horario vacio se necesita el nombre del puesto para continuar");
            FacesContext.getCurrentInstance().addMessage(null, mensaje);
-           condicion = false;
+           condicion = false;     
+       }else{
+            condicion = this.horarioValido(this.getHorario());
        }
        return condicion;
     }
     
+    private boolean horarioValido(String horario){
+        String[] partes = horario.split("-");
+        String[] parte_der = partes[0].split(":");
+        String[] parte_izq = partes[1].split(":");
+         FacesMessage mensaje;
+        int[] numeros = new int[4];
+        for(int i = 0 ; i < 4 ; i++){
+            if(i < 2){
+                numeros[i] = Integer.valueOf(parte_izq[i]);
+            }else{
+                numeros[i] = Integer.valueOf(parte_der[i-2]);
+            }
+        }
+        boolean condicion = true;
+        if(numeros[0] > 23 || numeros[2] > 23){
+            mensaje = new FacesMessage("Horario invalido: la hora esperada es menor a 24");
+            FacesContext.getCurrentInstance().addMessage(null, mensaje);
+            condicion = false;
+        }else{
+            if(numeros[1] > 59 || numeros[3] > 59){
+                mensaje = new FacesMessage("Horario invalido: los minutos esperados son menores a 60");
+                FacesContext.getCurrentInstance().addMessage(null, mensaje);
+                condicion = false;
+            }
+        }
+        return condicion;
+    }
     /**
      * Edita un puesto en la base de datos.
      */
@@ -406,7 +461,6 @@ public class ControladorPuesto implements Serializable{
         boolean condicion = this.VerificaCampos() && this.ValidaNombre() && this.verificaCoordenadas();
         FacesMessage mensaje;
         if(condicion){
-            System.out.println(this.getNombre());
             try {
                 Puesto actual = new Puesto(this.getId());
                 actual.setNombre(this.getNombre());

@@ -76,11 +76,26 @@
                         <p:column headerText="Activo">
                             <h:outputText value="#{c.activo}" />
                         </p:column>
+                        
+                        <p:column headerText="Es Administrador">
+                            <h:outputText value="#{c.esAdministrador}" />
+                        </p:column>
+                        
+                        <p:column style="width:100px">
+                            <p:commandLink value="Hacer Admin"  actionListener="#{editarUsuario.MandaAdmin(c.idUsuario)}" oncomplete="PF('dlg1').show();"/>
+                        </p:column>
 
                         <p:column style="width:32px">
                             <p:rowEditor />
                         </p:column>
                     </p:dataTable>
+                    <p:dialog widgetVar="dlg1" modal="true" resizable="false" showEffect="fade" header="Confirmación" closable="false" > 
+                        <h:outputText value="Seguro de que desea hacer a este usuario administrador" />
+                        <br/><br/>
+                        <p:commandButton value="Si" actionListener="#{editarUsuario.hacerAdmin()}" oncomplete="PF('dlg1').hide();" />
+                        <h:outputText value="     " />
+                        <p:commandButton value="No" oncomplete="PF('dlg1').hide();"/>     
+                    </p:dialog>
                 </h:form>
             <hr/>
             <footer>
