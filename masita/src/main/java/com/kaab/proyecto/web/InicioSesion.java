@@ -188,16 +188,19 @@ public class InicioSesion {
     
     /**
      * Encuentra el id de un usuario a partir de su correo.
-     * @return 
+     *
+     * @return
      */
-    public Integer getIdUsuario(){                
+    public Integer getIdUsuario() {
         UsuarioJpaController controladorUsuario = new UsuarioJpaController(emf);
         List<Usuario> usuarios = controladorUsuario.findUsuarioEntities();
-        for(int i = 0; i < usuarios.size(); i++){
-            if(usuarios.get(i).getCorreo().toLowerCase().equals(getCorreoUsuario().toLowerCase())){
-                return usuarios.get(i).getIdUsuario().intValue();                
+        if (getCorreoUsuario() != null) {
+            for (int i = 0; i < usuarios.size(); i++) {
+                if (usuarios.get(i).getCorreo().toLowerCase().equals(getCorreoUsuario().toLowerCase())) {
+                    return usuarios.get(i).getIdUsuario().intValue();
+                }
             }
-        }
+        }    
         return null;
     }
     
