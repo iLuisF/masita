@@ -8,7 +8,9 @@ import com.kaab.proyecto.db.controller.exceptions.NonexistentEntityException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -31,7 +33,6 @@ public class LeerComentario implements Serializable {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
     private ComentarioJpaController ccomentario = new ComentarioJpaController(emf);
     private final List<Comentario> comentarios = ccomentario.findComentarioEntities();    
-    private final Integer idUsuario = buscarIdUsuario();
     private Integer idPuesto;
 
     public Integer getIdPuesto() {
@@ -42,40 +43,21 @@ public class LeerComentario implements Serializable {
         this.idPuesto = idPuesto;
     }
 
-    public List<Comentario> getComentariosPuesto(){
+    public List<Comentario> getComentariosPuesto() {
         List<Comentario> temporal = new ArrayList<Comentario>();
-        if(idPuesto != null){        
-        for(int i = 0; i < comentarios.size(); i++){
-            if(comentarios.get(i).getIdPuesto().getIdPuesto().intValue() == this.idPuesto){
-                temporal.add(comentarios.get(i));
+        if (idPuesto != null) {
+            for (int i = 0; i < comentarios.size(); i++) {
+                if (comentarios.get(i).getIdPuesto().getIdPuesto().intValue() == this.idPuesto) {
+                    temporal.add(comentarios.get(i));
+                }
             }
-        }
-        
+
         }
         return temporal;
-    }
-    
-    /**
-     * Crea una lista de comentarios desde la base de datos.
-     */
-    public void crearListaComentarios() {
-        List<Comentario> nueva = new ArrayList<Comentario>();
-        for (Comentario actual : comentarios) {
-            Comentario nuevo = new Comentario();
-            nuevo.setIdPuesto(actual.getIdPuesto());
-            nuevo.setIdUsuario(actual.getIdUsuario());
-            nuevo.setContenido(actual.getContenido());
-            nuevo.setFecha(actual.getFecha());
-            nuevo.setCalificacion(actual.getCalificacion());
-            nueva.add(nuevo);
-        }
-        this.comentarios.clear();
-        //this.comentarios.
     }
 
     // Los métodos get and set, son necesarios para que los archivos .xhtml
     // puedan comunicarse con los beans.
-    
     /**
      * Regresa una lista de comentarios.
      *
@@ -109,44 +91,44 @@ public class LeerComentario implements Serializable {
      *
      * @param event
      * @throws NonexistentEntityException
+     * @throws java.io.IOException
      */
     public void onRowCancel(RowEditEvent event) throws NonexistentEntityException, IOException {
         //EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");        
-        if (buscarIdComentario(idUsuario) == (((Comentario) event.getObject()).getIdComentario()).intValue()) {
+        if (Objects.equals(buscarIdUsuario(), getIdUsuario((((Comentario) event.getObject()).getIdComentario()).intValue()))) {
             ccomentario = new ComentarioJpaController(emf);
             ccomentario.destroy(((Comentario) event.getObject()).getIdComentario());
 
             FacesMessage msg = new FacesMessage("Comentario Eliminado", Long.toString(((Comentario) event.getObject()).getIdComentario()));
             FacesContext.getCurrentInstance().addMessage(null, msg);
-            FacesContext context= FacesContext.getCurrentInstance();
-            context.getExternalContext().redirect("/masita/PerfilPuestoIH.xhtml?idPuesto="+idPuesto);
-        } else if (esAdministrador(idUsuario)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().redirect("/masita/PerfilPuestoIH.xhtml?idPuesto=" + idPuesto);
+        } else if (esAdministrador(buscarIdUsuario())) {
             ccomentario = new ComentarioJpaController(emf);
             ccomentario.destroy(((Comentario) event.getObject()).getIdComentario());
 
             FacesMessage msg = new FacesMessage("Comentario Eliminado", Long.toString(((Comentario) event.getObject()).getIdComentario()));
             FacesContext.getCurrentInstance().addMessage(null, msg);
-            FacesContext context= FacesContext.getCurrentInstance();
-            context.getExternalContext().redirect("/masita/PerfilPuestoIH.xhtml?idPuesto="+idPuesto);
-        }else {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().redirect("/masita/PerfilPuestoIH.xhtml?idPuesto=" + idPuesto);
+        } else {
             FacesMessage msg = new FacesMessage("No puedes eliminar comentarios de otros.", Long.toString(((Comentario) event.getObject()).getIdComentario()));
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
 
     /**
-     * Busca el id del comentario del puesto actual.
+     * Obtiene el identificador de algun comentario.
      *
      * @return Identificador del usuario.
      */
-    private Integer buscarIdComentario(Integer idUsuario) {
-        for (int j = 0; j < comentarios.size(); j++) {
-            if (comentarios.get(j).getIdUsuario().getIdUsuario().intValue()
-                    == idUsuario && comentarios.get(j).getIdPuesto().getIdPuesto().intValue() == this.idPuesto) {
-                return comentarios.get(j).getIdComentario().intValue();
-            }
+    private Integer getIdUsuario(Integer idComentario) {
+        HashMap<Integer, Integer> mapa = new HashMap();
+        for (int i = 0; i < comentarios.size(); i++) {
+            mapa.put(comentarios.get(i).getIdComentario().intValue(),
+                    comentarios.get(i).getIdUsuario().getIdUsuario().intValue());
         }
-        return -100;
+        return mapa.get(idComentario);
     }
 
     /**
@@ -182,13 +164,14 @@ public class LeerComentario implements Serializable {
         } else {
             return sesion.getCorreo();
         }
-    }    
-    
+    }
+
     public boolean esAdministrador(Integer idUsuario) {
         UsuarioJpaController controladorUsuario = new UsuarioJpaController(emf);
-        Usuario u = controladorUsuario.findUsuario((long)idUsuario);
-        if (u.getEsAdministrador() == 1)
+        Usuario u = controladorUsuario.findUsuario((long) idUsuario);
+        if (u.getEsAdministrador() == 1) {
             return true;
+        }
         return false;
     }
 }

@@ -12,11 +12,10 @@
         <script src="http://maps.google.com/maps/api/js?key=AIzaSyBlEYhBfp104jOYDy-TOhTYkSd8YBtkLFI" type="text/javascript"></script>
     </h:head>
 
-    <f:metadata>
-        <f:viewParam name="idPuesto" value="#{crearComentario.idPuesto}" />                
-        <f:viewParam name="idPuesto" value="#{lecturaComentarios.idPuesto}" /> 
-        <f:viewParam name="idPuesto" value="#{informacionPuesto.idPuesto}" />
-        <f:viewParam name="idPuesto" value="#{leerComentario.idPuesto}" />
+    <f:metadata>        
+        <f:viewParam name="idPuesto" value="#{controladorComentario.idPuesto}" />    
+        <f:viewParam name="idPuesto" value="#{lecturaComentarios.idPuesto}" />                     
+        <f:viewParam name="idPuesto" value="#{informacionPuesto.idPuesto}" />        
     </f:metadata>
     
     <!-- Add 50px padding top to the body for the navbar -->
@@ -118,10 +117,10 @@
         <b:container>
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true"/>                
-                <p:dataTable var="comentario" value="#{leerComentario.comentariosPuesto}" 
-                             editable="true" id="listaC">
-                    <p:ajax event="rowEdit" listener="#{leerComentario.onRowEdit}" update=":form:msgs" />
-                    <p:ajax event="rowEditCancel" listener="#{leerComentario.onRowCancel}" update=":form:msgs" />
+                <p:dataTable var="comentario" value="#{controladorComentario.comentariosPuesto}" 
+                             editable="true" id="listaC" >
+                    <p:ajax event="rowEdit" listener="#{controladorComentario.onRowEdit}" update=":form:msgs" />
+                    <p:ajax event="rowEditCancel" listener="#{controladorComentario.onRowCancel}" update=":form:msgs"/>
                     <p:column headerText="Usuario">
                         <h:outputText value="#{comentario.idUsuario}" />
                     </p:column>
@@ -138,8 +137,8 @@
                     <p:column headerText="fecha">
                         <h:outputText value="#{comentario.fecha}" />
                     </p:column>
-                    <p:column style="width:32px" >
-                        <p:rowEditor />
+                    <p:column style="width:32px">
+                        <p:rowEditor rendered="#{controladorComentario.mostrarEdicion(comentario.idUsuario.idUsuario)}"/>
                     </p:column>
                     <p:column headerText="Eliminar (Admin)" rendered="#{inicioSesion.haySesionAdmin()}">
                         <p:rowEditor />
@@ -156,20 +155,21 @@
 
             <h:form>
 
-                <p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px" closable="true" rendered="#{crearComentario.hayUsuario()}">
+                <p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px" closable="true" rendered="#{controladorComentario.hayUsuario()}">
                     <h:outputText/>
                     <br/>
-                    <p:inputTextarea value="#{crearComentario.nuevo.contenido}" style="width: 100%" rows="10">
+                    <p:inputTextarea value="#{controladorComentario.nuevo.contenido}" style="width: 100%" rows="10">
                     </p:inputTextarea>
                     <br />                    
 
                     <p:commandButton id='btn' value="Comentar" 
-                                     ajax="false" action="#{crearComentario.crearComentario()}" image="ui-icon-document" style="float:right; font-size:20px"/>
+                                     ajax="false" action="#{controladorComentario.crearComentario()}" image="ui-icon-document" style="float:right; font-size:20px"/>
                     <br />                    
-                    <p:rating value="#{crearComentario.nuevo.calificacion}" stars="5" 
+                    <p:rating value="#{controladorComentario.nuevo.calificacion}" stars="5" 
                               cancel="false" onRate="alert('Tu calificaste con: ' + value)" style="float:left; width: 100px; height: 100px">
-                        <p:ajax event="rate" listener="#{crearComentario.calificarPuesto()}"/>
+                        <p:ajax event="rate" listener="#{controladorComentario.calificarPuesto()}"/>
                     </p:rating>
+                    
                     <br/>
                 </p:panel>
             </h:form>            
