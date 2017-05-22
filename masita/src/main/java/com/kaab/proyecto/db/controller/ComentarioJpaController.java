@@ -21,17 +21,27 @@ import javax.persistence.criteria.Root;
  * @author esperanzahigareda
  */
 public class ComentarioJpaController implements Serializable {
-
-    public ComentarioJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    /**
+     * Interfaz para hacer consultas en la base de datos.
+     * @param pEmf EntityManagerFactory.
+     */
+    public ComentarioJpaController(final EntityManagerFactory pEmf) {
+        this.emf = pEmf;
     }
+    /**
+     * Interfaz para hacer consultas en la base de datos.
+     */
     private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
+    /**
+     * @return emf
+     */
+    public final EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
-    public void create(Comentario comentario) {
+    /**
+     * @param comentario comentario que se creará.
+     */
+    public final void create(final Comentario comentario) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -44,8 +54,13 @@ public class ComentarioJpaController implements Serializable {
             }
         }
     }
-
-    public void edit(Comentario comentario) throws NonexistentEntityException, Exception {
+    /**
+     * @param comentario el comentario a editar.
+     * @throws NonexistentEntityException excepcion.
+     * @throws Exception excepcion.
+     */
+    public final void edit(Comentario comentario) throws
+            NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -57,7 +72,8 @@ public class ComentarioJpaController implements Serializable {
             if (msg == null || msg.length() == 0) {
                 Long id = comentario.getIdComentario();
                 if (findComentario(id) == null) {
-                    throw new NonexistentEntityException("The comentario with id " + id + " no longer exists.");
+                    throw new NonexistentEntityException(
+                        "The comentario with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -67,8 +83,11 @@ public class ComentarioJpaController implements Serializable {
             }
         }
     }
-
-    public void destroy(Long id) throws NonexistentEntityException {
+    /**
+     * @param id id del comentario
+     * @throws NonexistentEntityException excepcion
+     */
+    public final void destroy(final Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -78,7 +97,8 @@ public class ComentarioJpaController implements Serializable {
                 comentario = em.getReference(Comentario.class, id);
                 comentario.getIdComentario();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The comentario with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The comentario with id "
+                        + id + " no longer exists.", enfe);
             }
             em.remove(comentario);
             em.getTransaction().commit();
@@ -88,16 +108,29 @@ public class ComentarioJpaController implements Serializable {
             }
         }
     }
-
-    public List<Comentario> findComentarioEntities() {
+    /**
+     * @return ComentarioEntities
+     */
+    public final List<Comentario> findComentarioEntities() {
         return findComentarioEntities(true, -1, -1);
     }
-
-    public List<Comentario> findComentarioEntities(int maxResults, int firstResult) {
+    /**
+     * @param maxResults numero.
+     * @param firstResult resultado.
+     * @return ComentarioEntities.
+     */
+    public final List<Comentario> findComentarioEntities(final int maxResults,
+            final int firstResult) {
         return findComentarioEntities(false, maxResults, firstResult);
     }
-
-    private List<Comentario> findComentarioEntities(boolean all, int maxResults, int firstResult) {
+    /**
+     * @param all all.
+     * @param maxResults numero.
+     * @param firstResult resultado.
+     * @return ResultList
+     */
+    private List<Comentario> findComentarioEntities(final boolean all,
+            final int maxResults, final int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -112,8 +145,11 @@ public class ComentarioJpaController implements Serializable {
             em.close();
         }
     }
-
-    public Comentario findComentario(Long id) {
+    /**
+     * @param id id del comentario
+     * @return comentario
+     */
+    public final Comentario findComentario(final Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Comentario.class, id);
@@ -121,8 +157,11 @@ public class ComentarioJpaController implements Serializable {
             em.close();
         }
     }
-
-    public int getComentarioCount() {
+    /**
+     * getComentarioCount.
+     * @return numero
+     */
+    public final int getComentarioCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -134,5 +173,4 @@ public class ComentarioJpaController implements Serializable {
             em.close();
         }
     }
-    
 }

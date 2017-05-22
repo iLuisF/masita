@@ -2,19 +2,30 @@ package com.kaab.proyecto.db.controller.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author esponjoso
+ */
 public class IllegalOrphanException extends Exception {
+    /**
+     * Mensajes.
+     */
     private List<String> messages;
-    public IllegalOrphanException(List<String> messages) {
-        super((messages != null && messages.size() > 0 ? messages.get(0) : null));
-        if (messages == null) {
+    /**
+     * @param messagesIOE mensajes.
+     */
+    public IllegalOrphanException(final List<String> messagesIOE) {
+      super((messagesIOE != null
+              && 0 <= messagesIOE.size() ? messagesIOE.get(0) : null));
+        if (messagesIOE == null) {
             this.messages = new ArrayList<String>();
-        }
-        else {
-            this.messages = messages;
+        } else {
+            this.messages = messagesIOE;
         }
     }
-    public List<String> getMessages() {
+    /**
+     * @return  messages.
+     */
+    public final List<String> getMessages() {
         return messages;
     }
 }

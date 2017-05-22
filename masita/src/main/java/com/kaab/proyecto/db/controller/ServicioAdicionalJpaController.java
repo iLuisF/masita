@@ -21,17 +21,26 @@ import javax.persistence.criteria.Root;
  * @author esperanzahigareda
  */
 public class ServicioAdicionalJpaController implements Serializable {
-
-    public ServicioAdicionalJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    /**
+     * @param pEmf EntityManagerFactory
+     */
+    public ServicioAdicionalJpaController(final EntityManagerFactory pEmf) {
+        this.emf = pEmf;
     }
+    /**
+     * Interfaz para hacer consultas en la base de datos.
+     */
     private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
+    /**
+     * @return emf
+     */
+    public final EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
-    public void create(ServicioAdicional servicioAdicional) {
+    /**
+     * @param servicioAdicional servicioAdicional a crear.
+     */
+    public final void create(final ServicioAdicional servicioAdicional) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -44,8 +53,13 @@ public class ServicioAdicionalJpaController implements Serializable {
             }
         }
     }
-
-    public void edit(ServicioAdicional servicioAdicional) throws NonexistentEntityException, Exception {
+    /**
+     * @param servicioAdicional Servicio adicional a editar.
+     * @throws NonexistentEntityException excepcion
+     * @throws Exception excepcion
+     */
+    public final void edit(ServicioAdicional servicioAdicional)
+            throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -57,7 +71,9 @@ public class ServicioAdicionalJpaController implements Serializable {
             if (msg == null || msg.length() == 0) {
                 Long id = servicioAdicional.getIdServicio();
                 if (findServicioAdicional(id) == null) {
-                    throw new NonexistentEntityException("The servicioAdicional with id " + id + " no longer exists.");
+                    throw new NonexistentEntityException(
+                        "The servicioAdicional with id " + id
+                                + " no longer exists.");
                 }
             }
             throw ex;
@@ -67,18 +83,24 @@ public class ServicioAdicionalJpaController implements Serializable {
             }
         }
     }
-
-    public void destroy(Long id) throws NonexistentEntityException {
+    /**
+     * @param id el id del ServicioAdicional
+     * @throws NonexistentEntityException excepcion
+     */
+    public final void destroy(final Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             ServicioAdicional servicioAdicional;
             try {
-                servicioAdicional = em.getReference(ServicioAdicional.class, id);
+                servicioAdicional
+                        = em.getReference(ServicioAdicional.class, id);
                 servicioAdicional.getIdServicio();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The servicioAdicional with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException(
+                    "The servicioAdicional with id " + id
+                        + " no longer exists.", enfe);
             }
             em.remove(servicioAdicional);
             em.getTransaction().commit();
@@ -88,16 +110,29 @@ public class ServicioAdicionalJpaController implements Serializable {
             }
         }
     }
-
-    public List<ServicioAdicional> findServicioAdicionalEntities() {
+    /**
+     * @return ServicioAdicionalEntities
+     */
+    public final List<ServicioAdicional> findServicioAdicionalEntities() {
         return findServicioAdicionalEntities(true, -1, -1);
     }
-
-    public List<ServicioAdicional> findServicioAdicionalEntities(int maxResults, int firstResult) {
+    /**
+     * @param maxResults resultados
+     * @param firstResult resultado
+     * @return  ServicioAdicionalEntities
+     */
+    public final List<ServicioAdicional> findServicioAdicionalEntities(
+            final int maxResults, final int firstResult) {
         return findServicioAdicionalEntities(false, maxResults, firstResult);
     }
-
-    private List<ServicioAdicional> findServicioAdicionalEntities(boolean all, int maxResults, int firstResult) {
+    /**
+     * @param all all
+     * @param maxResults resultados
+     * @param firstResult resultado
+     * @return ResultList
+     */
+    private List<ServicioAdicional> findServicioAdicionalEntities(
+            final boolean all, final int maxResults, final int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -112,8 +147,11 @@ public class ServicioAdicionalJpaController implements Serializable {
             em.close();
         }
     }
-
-    public ServicioAdicional findServicioAdicional(Long id) {
+    /**
+     * @param id del servicioAdicional
+     * @return em
+     */
+    public final ServicioAdicional findServicioAdicional(final Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(ServicioAdicional.class, id);
@@ -121,8 +159,10 @@ public class ServicioAdicionalJpaController implements Serializable {
             em.close();
         }
     }
-
-    public int getServicioAdicionalCount() {
+    /**
+     * @return numero
+     */
+    public final int getServicioAdicionalCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -134,5 +174,4 @@ public class ServicioAdicionalJpaController implements Serializable {
             em.close();
         }
     }
-    
 }

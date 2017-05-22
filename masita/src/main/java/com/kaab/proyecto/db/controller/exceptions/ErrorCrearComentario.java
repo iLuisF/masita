@@ -9,18 +9,24 @@ package com.kaab.proyecto.db.controller.exceptions;
  *
  * @author luis
  */
-public class ErrorCrearComentario extends Exception{
-    
-    public ErrorCrearComentario(){
+public class ErrorCrearComentario extends Exception {
+    /**
+     * Error.
+     */
+    public ErrorCrearComentario() {
         super();
     }
-    
-    public ErrorCrearComentario(String mensaje){
+    /**
+     * @param mensaje string
+     */
+    public ErrorCrearComentario(final String mensaje) {
         super(mensaje);
     }
-
-    public ErrorCrearComentario(String string, String viewId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * @param string string
+     * @param viewId string
+     */
+    public ErrorCrearComentario(final String string, final String viewId) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-    
 }

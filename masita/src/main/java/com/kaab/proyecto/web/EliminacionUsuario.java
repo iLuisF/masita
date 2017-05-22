@@ -19,48 +19,74 @@ import javax.persistence.Persistence;
 import org.primefaces.event.RowEditEvent;
 
 /**
- * Clase que elimina Usuarios (activa o desactiva) 
+ * Clase que elimina Usuarios (activa o desactiva).
  */
-@ManagedBean (name="editarUsuario")
+@ManagedBean (name = "editarUsuario")
 @ViewScoped
 public class EliminacionUsuario implements Serializable {
-    
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
-    private UsuarioJpaController usuario = new UsuarioJpaController(emf);
+
+    /**
+     * Entity Manager Factory para tener persistencia.
+     */
+    private final EntityManagerFactory emf
+            = Persistence.createEntityManagerFactory("MiProyectoPU");
+    /**
+     * Controlador de un Usuario.
+     */
+    private final UsuarioJpaController usuario = new UsuarioJpaController(emf);
+    /**
+     * El id de un usuario.
+     */
     private Long idUsuario;
+    /**
+     * El nombre de un usuario.
+     */
     private String nombre;
+    /**
+     * El apellido materno de un usuario.
+     */
     private String app;
+    /**
+     * El apellido materno de un usuario.
+     */
     private String apm;
+    /**
+     * Indica si un usuario está activo o no.
+     */
     private String activo;
-    private List<Usuario> listaU;       // Lista de todos los usuarios
-    private List<Usuario> usuariosFiltrados;    // Lista de usuarios filtrada por nombre
-    
+    /**
+     * Lista de todos los usuarios.
+     */
+    private List<Usuario> listaU;
+    /**
+     * Lista de usuarios, filtrados por nombre.
+     */
+    private List<Usuario> usuariosFiltrados;
+
     /**
      * Obtiene la lista filtrada de usuarios por nombre.
      * @return lista filtrada de usuarios por nombre
      */
-    public List<Usuario> getUsuariosFiltrados() {
+    public final List<Usuario> getUsuariosFiltrados() {
         return usuariosFiltrados;
     }
 
     /**
      * Modifica lista filtrada de usuarios por nombre.
-     * @param usuariosFiltrados nueva lista filtrada de usuarios por nombre
+     * @param pUsuariosFiltrados nueva lista filtrada de usuarios por nombre
      */
-    public void setUsuariosFiltrados(List<Usuario> usuariosFiltrados) {
-        this.usuariosFiltrados = usuariosFiltrados;
+    public final void setUsuariosFiltrados(final List<Usuario>
+            pUsuariosFiltrados) {
+        this.usuariosFiltrados = pUsuariosFiltrados;
     }
-    
+
     /**
      * Obtiene la lista de usuarios.
      * @return lista de usuarios
      */
-    public List<Usuario> getListaUsuarios(){
+    public final List<Usuario> getListaUsuarios() {
         listaU = new ArrayList<Usuario>();
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MiProyectoPU");
-        usuario = new UsuarioJpaController(emf);
         List<Usuario> usuarios = usuario.findUsuarioEntities();
-        
         for (Usuario u : usuarios) {
             u.setIdUsuario(u.getIdUsuario());
             u.setNombre(u.getNombre());
@@ -69,39 +95,49 @@ public class EliminacionUsuario implements Serializable {
         }
         return listaU;
     }
-    
-    public void MandaAdmin(Long idUsuario){
-        this.idUsuario = idUsuario;   
+
+    /**
+     * Manda el id del Usuario al dar click.
+     * @param pIdUsuario el id del usuario.
+     */
+    public final void mandaAdmin(final Long pIdUsuario) {
+        this.idUsuario = pIdUsuario;
     }
-    
-    public void hacerAdmin() throws Exception{
+
+    /**
+     * Hace administrador a un usuario activo.
+     * @throws Exception si no encuentra al usuario.
+     */
+    public final void hacerAdmin() throws Exception {
         Usuario u = usuario.findUsuario(idUsuario);
         u.setEsAdministrador(1);
-        if("0".equals(u.getActivo())){
-            
-        }else{
-        u.setActivo("1");
-        usuario.edit(u);
-        
-        FacesMessage msg = new FacesMessage("Este Usuario es Administrador", "Usuario ID: " +Long.toString((u).getIdUsuario()));
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        FacesContext context= FacesContext.getCurrentInstance();
-        context.getExternalContext().redirect("/masita/EliminarUsuarioIH.xhtml");
-    
+        if ("0".equals(u.getActivo())) {
+            System.out.println("No puede ser administrador. No es activo.");
+        } else {
+            u.setActivo("1");
+            usuario.edit(u);
+            FacesMessage msg = new FacesMessage("Este Usuario es Administrador",
+                    "Usuario ID: " + Long.toString((u).getIdUsuario()));
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().redirect("/masita"
+                    + "/EliminarUsuarioIH.xhtml");
         }
-       }
-   
+    }
+
     /**
      * Si se selecciona el simbolo "paloma", se mantiene al usuario activo.
      * @param event el evento
      * @throws Exception si no se puede editar el usuario
      */
-    public void onRowEdit(RowEditEvent event) throws Exception {
-        Usuario u = usuario.findUsuario(((Usuario) event.getObject()).getIdUsuario());
+    public final void onRowEdit(final RowEditEvent event) throws Exception {
+        Usuario u = usuario.findUsuario(((Usuario)
+                event.getObject()).getIdUsuario());
         u.setActivo("1");
         usuario.edit(u);
-        
-        FacesMessage msg = new FacesMessage("Usuario Activado", "Usuario ID: " +Long.toString(((Usuario) event.getObject()).getIdUsuario()));
+        FacesMessage msg = new FacesMessage("Usuario Activado",
+                "Usuario ID: " + Long.toString(((Usuario)
+                        event.getObject()).getIdUsuario()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -110,13 +146,14 @@ public class EliminacionUsuario implements Serializable {
      * @param event el evento
      * @throws Exception si no se puede editar el usuario
      */
-    public void onRowCancel(RowEditEvent event) throws Exception {
-        Usuario u = usuario.findUsuario(((Usuario) event.getObject()).getIdUsuario());
+    public final void onRowCancel(final RowEditEvent event) throws Exception {
+        Usuario u = usuario.findUsuario(((Usuario)
+                event.getObject()).getIdUsuario());
         u.setActivo("0");
         usuario.edit(u);
-        
-        FacesMessage msg = new FacesMessage("Usuario Desactivado", "Usuario ID: "+ Long.toString(((Usuario) event.getObject()).getIdUsuario()));
+        FacesMessage msg = new FacesMessage("Usuario Desactivado",
+                "Usuario ID: " + Long.toString(((Usuario)
+                        event.getObject()).getIdUsuario()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
 }

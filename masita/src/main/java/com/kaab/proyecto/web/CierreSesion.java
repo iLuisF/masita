@@ -9,14 +9,26 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Managed Bean para manejar el cierre de sesión de la aplicación.
  */
-@ManagedBean // LEER LA DOCUMENTACION DE ESTA ANOTACION: Permite dar de alta al bean en la aplicacion
+@ManagedBean // Permite dar de alta al bean en la aplicacion.
 @RequestScoped // Solo esta disponible a partir de peticiones al bean
 public class CierreSesion {
 
-    private String usuario; // Representa el nombre de usuario.
-    private final HttpServletRequest httpServletRequest; // Obtiene informacion de todas las peticiones de usuario.
-    private final FacesContext faceContext; // Obtiene informacion de la aplicacion
-    private FacesMessage message; // Permite el envio de mensajes entre el bean y la vista.
+    /**
+     * Representa el nombre de usuario.
+     */
+    private String usuario;
+    /**
+     * Obtiene informacion de todas las peticiones de usuario.
+     */
+    private final HttpServletRequest httpServletRequest;
+    /**
+     * Obtiene informacion de la aplicacion.
+     */
+    private final FacesContext faceContext;
+    /**
+     * Permite el envio de mensajes entre el bean y la vista.
+     */
+    private FacesMessage message;
 
     /**
      * Constructor para inicializar los valores de faceContext y
@@ -24,53 +36,54 @@ public class CierreSesion {
      */
     public CierreSesion() {
         faceContext = FacesContext.getCurrentInstance();
-        httpServletRequest = (HttpServletRequest) faceContext.getExternalContext().getRequest();
-        if (httpServletRequest.getSession().getAttribute("sessionUsuario") != null) {
-            usuario = httpServletRequest.getSession().getAttribute("sessionUsuario").toString();
+        httpServletRequest = (HttpServletRequest)
+                faceContext.getExternalContext().getRequest();
+        if (httpServletRequest.getSession().getAttribute("sessionUsuario")
+                != null) {
+            usuario = httpServletRequest.getSession().getAttribute("session"
+                    + "Usuario").toString();
         }
     }
 
     /**
      * Método encargado de cerrar la sesión de la aplicación.
-     *
      * @return El nombre de la vista que va a responder.
      */
-    public String cierreSesion() {
+    public final String cierreSesion() {
         httpServletRequest.getSession().removeAttribute("sessionUsuario");
         // httpServletRequest.getSession().destroy();
-        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Session cerrada correctamente", null);
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Session "
+                + "cerrada correctamente", null);
         faceContext.addMessage(null, message);
         return "PrincipalIH";
     }
 
     /**
      * Regresa el nombre de usuario.
-     *
      * @return El nombre de usuario.
      */
-    public String getUsuario() {
+    public final String getUsuario() {
         return usuario;
     }
 
     /**
      * Establece el nombre de usuario.
-     *
-     * @param usuario El nombre de usuario a establecer.
+     * @param pUsuario El nombre de usuario a establecer.
      */
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public final void setUsuario(final String pUsuario) {
+        this.usuario = pUsuario;
     }
-    
+
     /**
      * Si el usuario inicio sesión, entonces se le mostrara el botón de cerrar
      * sesión.
-     * @return 
+     * @return si se debe mostrar el cierre de sesión.
      */
-    public boolean mostrarCierreSesion(){
-        if (httpServletRequest.getSession().getAttribute("sessionUsuario") != null) {
+    public final boolean mostrarCierreSesion() {
+        if (httpServletRequest.getSession().getAttribute("sessionUsuario")
+                != null) {
             return true;
         }
             return false;
     }
-
 }

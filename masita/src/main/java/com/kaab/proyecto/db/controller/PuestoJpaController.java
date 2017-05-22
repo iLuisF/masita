@@ -8,7 +8,6 @@ package com.kaab.proyecto.db.controller;
 import com.kaab.proyecto.db.Puesto;
 import com.kaab.proyecto.db.controller.exceptions.NonexistentEntityException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,17 +21,26 @@ import javax.persistence.criteria.Root;
  * @author esperanzahigareda
  */
 public class PuestoJpaController implements Serializable {
-
-    public PuestoJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    /**
+     * @param pEmf EntityManagerFactory
+     */
+    public PuestoJpaController(final EntityManagerFactory pEmf) {
+        this.emf = pEmf;
     }
+    /**
+     * Interfaz para hacer consultas en la base de datos.
+     */
     private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
+    /**
+     * @return emf
+     */
+    public final EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
-    public void create(Puesto puesto) {
+    /**
+     * @param puesto puesto a crear
+     */
+    public final void create(final Puesto puesto) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -45,8 +53,13 @@ public class PuestoJpaController implements Serializable {
             }
         }
     }
-
-    public void edit(Puesto puesto) throws NonexistentEntityException, Exception {
+    /**
+     * @param puesto el puesto a editar.
+     * @throws NonexistentEntityException excepcion
+     * @throws Exception excepcion
+     */
+    public final void edit(Puesto puesto) throws NonexistentEntityException,
+        Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -58,7 +71,8 @@ public class PuestoJpaController implements Serializable {
             if (msg == null || msg.length() == 0) {
                 Long id = puesto.getIdPuesto();
                 if (findPuesto(id) == null) {
-                    throw new NonexistentEntityException("The puesto with id " + id + " no longer exists.");
+                    throw new NonexistentEntityException("The puesto with id "
+                        + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -68,8 +82,11 @@ public class PuestoJpaController implements Serializable {
             }
         }
     }
-
-    public void destroy(Long id) throws NonexistentEntityException {
+    /**
+     * @param id id del puesto
+     * @throws NonexistentEntityException excepcion
+     */
+    public final void destroy(final Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -79,7 +96,8 @@ public class PuestoJpaController implements Serializable {
                 puesto = em.getReference(Puesto.class, id);
                 puesto.getIdPuesto();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The puesto with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The puesto with id "
+                    + id + " no longer exists.", enfe);
             }
             em.remove(puesto);
             em.getTransaction().commit();
@@ -89,16 +107,29 @@ public class PuestoJpaController implements Serializable {
             }
         }
     }
-
-    public List<Puesto> findPuestoEntities() {
+    /**
+     * @return PuestoEntities
+     */
+    public final List<Puesto> findPuestoEntities() {
         return findPuestoEntities(true, -1, -1);
     }
-
-    public List<Puesto> findPuestoEntities(int maxResults, int firstResult) {
+    /**
+     * @param maxResults resultados
+     * @param firstResult resultado
+     * @return PuestoEntities
+     */
+    public final List<Puesto> findPuestoEntities(final int maxResults,
+        final int firstResult) {
         return findPuestoEntities(false, maxResults, firstResult);
     }
-
-    private List<Puesto> findPuestoEntities(boolean all, int maxResults, int firstResult) {
+    /**
+     * @param all all
+     * @param maxResults resultados
+     * @param firstResult resultado
+     * @return ResultList
+     */
+    private List<Puesto> findPuestoEntities(final boolean all,
+            final int maxResults, final int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -113,8 +144,11 @@ public class PuestoJpaController implements Serializable {
             em.close();
         }
     }
-
-    public Puesto findPuesto(Long id) {
+    /**
+     * @param id id del puesto.
+     * @return em.
+     */
+    public final Puesto findPuesto(final Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Puesto.class, id);
@@ -122,8 +156,10 @@ public class PuestoJpaController implements Serializable {
             em.close();
         }
     }
-
-    public int getPuestoCount() {
+    /**
+     * @return numero
+     */
+    public final int getPuestoCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -135,5 +171,4 @@ public class PuestoJpaController implements Serializable {
             em.close();
         }
     }
-    
 }

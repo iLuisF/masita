@@ -24,11 +24,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.persistence.*;
 
 /**
- *
- * @author esperanzahigareda
+ * Clase que modela un comentario.
+ * @author KAAB
  */
 @ManagedBean
 @ViewScoped
@@ -36,119 +35,207 @@ import javax.persistence.*;
 @Table(name = "Comentario")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Comentario.findAll", query = "SELECT c FROM Comentario c")
-    , @NamedQuery(name = "Comentario.findByIdComentario", query = "SELECT c FROM Comentario c WHERE c.idComentario = :idComentario")
-    , @NamedQuery(name = "Comentario.findByFecha", query = "SELECT c FROM Comentario c WHERE c.fecha = :fecha")
-    , @NamedQuery(name = "Comentario.findByCalificacion", query = "SELECT c FROM Comentario c WHERE c.calificacion = :calificacion")
-    , @NamedQuery(name = "seleccionarComentariosPuesto", query = "SELECT c FROM Comentario c WHERE c.idPuesto = :idPuesto")})
-    //, @NamedQuery(name = "calificacionPuesto", query = "SELECT AVG(c.calificacion) FROM Comentario c WHERE c.idPuesto = :idPuesto")})
+    @NamedQuery(name = "Comentario.findAll",
+            query = "SELECT c FROM Comentario c"),
+    @NamedQuery(name = "Comentario.findByIdComentario",
+            query = "SELECT c FROM Comentario c WHERE c.idComentario "
+                    + "= :idComentario"),
+    @NamedQuery(name = "Comentario.findByFecha",
+            query = "SELECT c FROM Comentario c WHERE c.fecha = :fecha"),
+    @NamedQuery(name = "Comentario.findByCalificacion",
+            query = "SELECT c FROM Comentario c WHERE c.calificacion "
+                    + "= :calificacion"),
+    @NamedQuery(name = "seleccionarComentariosPuesto",
+            query = "SELECT c FROM Comentario c WHERE c.idPuesto = :idPuesto")})
 public class Comentario implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    /**
+     * El id del comentario.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idComentario")
     private Long idComentario;
+    /**
+     * El contenido del comentario.
+     */
     @Lob
     @Column(name = "contenido")
     private String contenido;
+    /**
+     * La fecha del comentario.
+     */
     @Basic(optional = false)
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    /**
+     * La calificación asociada al comentario.
+     */
     @Column(name = "calificacion")
     private Integer calificacion;
+    /**
+     * Tabla que hace join con la tabla Puesto en el atributo idPuesto.
+     */
     @JoinColumn(name = "idPuesto", referencedColumnName = "idPuesto")
     @ManyToOne(optional = false)
     private Puesto idPuesto;
+    /**
+     * Tabla que hace join con la tabla Usuario en el atributo idUsuario.
+     */
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     @ManyToOne(optional = false)
     private Usuario idUsuario;
 
+    /**
+     * Constructor por omisión.
+     */
     public Comentario() {
     }
 
-    public Comentario(Long idComentario) {
-        this.idComentario = idComentario;
+    /**
+     * Constructor para Comentario.
+     * Inicializa un comentario con su id.
+     * @param pIdComentario el nuevo id del comentario.
+     */
+    public Comentario(final Long pIdComentario) {
+        this.idComentario = pIdComentario;
     }
 
-    public Comentario(Long idComentario, Date fecha) {
-        this.idComentario = idComentario;
-        this.fecha = fecha;
+    /**
+     * Constructor para Comentario.
+     * Inicializa un comentario con su id y fecha.
+     * @param pIdComentario el id del comentario
+     * @param pFecha la fecha de creación del comentario
+     */
+    public Comentario(final Long pIdComentario, final Date pFecha) {
+        this.idComentario = pIdComentario;
+        this.fecha = pFecha;
     }
 
+    /**
+     * Regresa el id del comentario.
+     * @return el id del comentario.
+     */
     public Long getIdComentario() {
         return idComentario;
     }
 
-    public void setIdComentario(Long idComentario) {
-        this.idComentario = idComentario;
+    /**
+     * Modifica el id del comentario.
+     * @param pIdComentario el nuevo id del comentario.
+     */
+    public void setIdComentario(final Long pIdComentario) {
+        this.idComentario = pIdComentario;
     }
 
+    /**
+     * Regresa el contenido de un comentario.
+     * @return el contenido de un comentario.
+     */
     public String getContenido() {
         return contenido;
     }
 
-    public void setContenido(String contenido) {
-        this.contenido = contenido;
+    /**
+     * Modifica el contenido de un comentario.
+     * @param pContenido el nuevo contenido del comentario.
+     */
+    public void setContenido(final String pContenido) {
+        this.contenido = pContenido;
     }
 
+    /**
+     * Regresa la fecha de un comentario.
+     * @return la fecha de un comentario.
+     */
     public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    /**
+     * Modifica la fecha de un comentario.
+     * @param pFecha le nueva fecha de un comentario.
+     */
+    public void setFecha(final Date pFecha) {
+        this.fecha = pFecha;
     }
 
+    /**
+     * Regresa la calificación asociada a un comentario.
+     * @return la calificación asociada a un comentario.
+     */
     public Integer getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(Integer calificacion) {
-        this.calificacion = calificacion;
+    /**
+     * Modifica la calificación asociada a un comentario.
+     * @param pCalificacion la nueva calificación asociada a un comentario.
+     */
+    public void setCalificacion(final Integer pCalificacion) {
+        this.calificacion = pCalificacion;
     }
 
+    /**
+     * Regresa el id del puesto asociado al comentario.
+     * @return el id del puesto asociado al comentario.
+     */
     public Puesto getIdPuesto() {
         return idPuesto;
     }
 
-    public void setIdPuesto(Puesto idPuesto) {
-        this.idPuesto = idPuesto;
+    /**
+     * Modifica el id del puesto asociado al comentario.
+     * @param pIdPuesto el nuevo id del puesto asociado al comentario.
+     */
+    public void setIdPuesto(final Puesto pIdPuesto) {
+        this.idPuesto = pIdPuesto;
     }
 
+    /**
+     * Regresa el id del usuario asociado al comentario.
+     * @return el id del usuario asociado al comentario.
+     */
     public Usuario getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
+    /**
+     * Modifica el id del usuario asociado al comentario.
+     * @param pIdUsuario el nuevo id del usuario asociado al comentario.
+     */
+    public void setIdUsuario(final Usuario pIdUsuario) {
+        this.idUsuario = pIdUsuario;
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         int hash = 0;
-        hash += (idComentario != null ? idComentario.hashCode() : 0);
+        if (idComentario != null) {
+            hash += idComentario.hashCode();
+        } else {
+            hash += 0;
+        }
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public final boolean equals(final Object object) {
         if (!(object instanceof Comentario)) {
             return false;
         }
         Comentario other = (Comentario) object;
-        if ((this.idComentario == null && other.idComentario != null) || (this.idComentario != null && !this.idComentario.equals(other.idComentario))) {
-            return false;
-        }
-        return true;
+        return !((this.idComentario == null && other.idComentario != null)
+                || (!this.idComentario.equals(other.idComentario)
+                && this.idComentario != null));
     }
 
     @Override
-    public String toString() {
-        return "com.kaab.proyecto.db.Comentario[ idComentario=" + idComentario + " ]";
+    public final String toString() {
+        return "com.kaab.proyecto.db.Comentario[ idComentario="
+                + idComentario + " ]";
     }
-    
 }

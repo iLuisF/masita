@@ -19,7 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.persistence.*;
+
 
 /**
  *
@@ -29,83 +29,128 @@ import javax.persistence.*;
 @Table(name = "TipoComida")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TipoComida.findAll", query = "SELECT t FROM TipoComida t")
-    , @NamedQuery(name = "TipoComida.findByIdTipoComida", query = "SELECT t FROM TipoComida t WHERE t.idTipoComida = :idTipoComida")
-    , @NamedQuery(name = "TipoComida.findByNombre", query = "SELECT t FROM TipoComida t WHERE t.nombre = :nombre")})
+    @NamedQuery(name = "TipoComida.findAll", query
+            = "SELECT t FROM TipoComida t"),
+    @NamedQuery(name = "TipoComida.findByIdTipoComida", query
+           = "SELECT t FROM TipoComida t WHERE t.idTipoComida = :idTipoComida"),
+    @NamedQuery(name = "TipoComida.findByNombre", query
+            = "SELECT t FROM TipoComida t WHERE t.nombre = :nombre")})
 public class TipoComida implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    /**
+     * Long idTipoComida, el id del tipo de comida.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idTipoComida")
     private Long idTipoComida;
+    /**
+     * String nombre, el nombre del tipo de comida.
+     */
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
+    /**
+     * Collection puestoCollection, puestos.
+     */
     @ManyToMany(mappedBy = "tipoComidaCollection")
     private Collection<Puesto> puestoCollection;
-
+    /**
+     * TipoComida.
+     */
     public TipoComida() {
     }
-
-    public TipoComida(Long idTipoComida) {
-        this.idTipoComida = idTipoComida;
+    /**
+     * @param pIdTipoComida el id del tipo de comida.
+     */
+    public TipoComida(final Long pIdTipoComida) {
+        this.idTipoComida = pIdTipoComida;
     }
-
-    public TipoComida(Long idTipoComida, String nombre) {
-        this.idTipoComida = idTipoComida;
-        this.nombre = nombre;
+    /**
+     * @param pIdTipoComida Id del tipo de comida.
+     * @param pNombre nombre del tipo de comida.
+     */
+    public TipoComida(final Long pIdTipoComida, final String pNombre) {
+        this.idTipoComida = pIdTipoComida;
+        this.nombre = pNombre;
     }
-
+    /**
+     * Regresa el id del tipo de comida.
+     * @return idTipoComida el id del tipo de comida
+     */
     public Long getIdTipoComida() {
         return idTipoComida;
     }
-
-    public void setIdTipoComida(Long idTipoComida) {
-        this.idTipoComida = idTipoComida;
+    /**
+     * Modifica el id del tipo de comida.
+     * @param pIdTipoComida el nuevo id del tipo de comida.
+     */
+    public void setIdTipoComida(Long pIdTipoComida) {
+        this.idTipoComida = pIdTipoComida;
     }
-
+    /**
+     * Regresa el nombre del tipo de comida.
+     * @return  nombre el nombre del tipo de comida.
+     */
     public String getNombre() {
         return nombre;
     }
-
+    /**
+     * Modifica el nombre del tipo de comida.
+     * @param nombre el nuevo nomrbe del tipo de comida.
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    /**
+     * @return puestoCollection.
+     */
     @XmlTransient
-    public Collection<Puesto> getPuestoCollection() {
+    public final Collection<Puesto> getPuestoCollection() {
         return puestoCollection;
     }
-
-    public void setPuestoCollection(Collection<Puesto> puestoCollection) {
-        this.puestoCollection = puestoCollection;
+    /**
+     * @param pPuestoCollection puestos.
+     */
+    public final void setPuestoCollection(
+            final Collection<Puesto> pPuestoCollection) {
+        this.puestoCollection = pPuestoCollection;
     }
-
+    /**
+     * @return hash.
+     */
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         int hash = 0;
         hash += (idTipoComida != null ? idTipoComida.hashCode() : 0);
         return hash;
     }
-
+    /**
+     * Indica si un objeto es igual a otro.
+     * @param object el objeto a comparar.
+     * @return boolean.
+     */
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+    public final boolean equals(final Object object) {
         if (!(object instanceof TipoComida)) {
             return false;
         }
         TipoComida other = (TipoComida) object;
-        if ((this.idTipoComida == null && other.idTipoComida != null) || (this.idTipoComida != null && !this.idTipoComida.equals(other.idTipoComida))) {
+        if ((this.idTipoComida == null && other.idTipoComida != null)
+                || (this.idTipoComida != null
+                && !this.idTipoComida.equals(other.idTipoComida))) {
             return false;
         }
         return true;
     }
-
+    /**
+     * @return String.
+     */
     @Override
-    public String toString() {
-        return "com.kaab.proyecto.db.TipoComida[ idTipoComida=" + idTipoComida + " ]";
+    public final String toString() {
+        return "com.kaab.proyecto.db.TipoComida[ idTipoComida=" + idTipoComida
+                + " ]";
     }
-    
 }
