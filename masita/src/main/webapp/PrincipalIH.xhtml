@@ -11,7 +11,10 @@
     </h:head>
     <!-- Add 50px padding top to the body for the navbar -->
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
-        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top" onclick="location='/masita/PrincipalIH.xhtml'">
+        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
+            <b:navbarLinks>
+            <b:navLink value="Inicio" href="/masita/PrincipalIH.xhtml" style="" ></b:navLink>
+            </b:navbarLinks>
             <h:form styleClass="navbar-form navbar-right">
                 <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='#{inicioSesion.redireccionBoton()}'"/>
                 <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
