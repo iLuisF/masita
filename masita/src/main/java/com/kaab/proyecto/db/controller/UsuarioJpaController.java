@@ -13,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -22,17 +21,26 @@ import javax.persistence.criteria.Root;
  * @author esperanzahigareda
  */
 public class UsuarioJpaController implements Serializable {
-
-    public UsuarioJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    /**
+     * @param pEmf Entity Manager Factory
+     */
+    public UsuarioJpaController(final EntityManagerFactory pEmf) {
+        this.emf = pEmf;
     }
+    /**
+     * Interfaz para hacer consultas en la base de datos.
+     */
     private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
+    /**
+     * @return emf
+     */
+    public final EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
-    public void create(Usuario usuario) {
+    /**
+     * @param usuario el usuario a crear
+     */
+    public final void create(final Usuario usuario) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -45,8 +53,13 @@ public class UsuarioJpaController implements Serializable {
             }
         }
     }
-
-    public void edit(Usuario usuario) throws NonexistentEntityException, Exception {
+    /**
+     * @param usuario el usuario a editar
+     * @throws NonexistentEntityException excepcion
+     * @throws Exception excepcion
+     */
+    public final void edit(Usuario usuario) throws NonexistentEntityException,
+            Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -58,7 +71,8 @@ public class UsuarioJpaController implements Serializable {
             if (msg == null || msg.length() == 0) {
                 Long id = usuario.getIdUsuario();
                 if (findUsuario(id) == null) {
-                    throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.");
+                    throw new NonexistentEntityException("The usuario with id "
+                            + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -68,8 +82,11 @@ public class UsuarioJpaController implements Serializable {
             }
         }
     }
-
-    public void destroy(Long id) throws NonexistentEntityException {
+    /**
+     * @param id del Usuario
+     * @throws NonexistentEntityException excepcion
+     */
+    public final void destroy(final Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -79,7 +96,8 @@ public class UsuarioJpaController implements Serializable {
                 usuario = em.getReference(Usuario.class, id);
                 usuario.getIdUsuario();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The usuario with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The usuario with id "
+                    + id + " no longer exists.", enfe);
             }
             em.remove(usuario);
             em.getTransaction().commit();
@@ -89,16 +107,29 @@ public class UsuarioJpaController implements Serializable {
             }
         }
     }
-
-    public List<Usuario> findUsuarioEntities() {
+    /**
+     * @return UsuarioEntities
+     */
+    public final List<Usuario> findUsuarioEntities() {
         return findUsuarioEntities(true, -1, -1);
     }
-
-    public List<Usuario> findUsuarioEntities(int maxResults, int firstResult) {
+    /**
+     * @param maxResults resultados
+     * @param firstResult   resultado
+     * @return  UsuarioEntities
+     */
+    public final List<Usuario> findUsuarioEntities(final int maxResults,
+            final int firstResult) {
         return findUsuarioEntities(false, maxResults, firstResult);
     }
-
-    private List<Usuario> findUsuarioEntities(boolean all, int maxResults, int firstResult) {
+    /**
+     * @param all all
+     * @param maxResults resultados
+     * @param firstResult resultado
+     * @return ResultList
+     */
+    private List<Usuario> findUsuarioEntities(final boolean all,
+            final int maxResults, final int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -113,8 +144,11 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-
-    public Usuario findUsuario(Long id) {
+    /**
+     * @param id id del Usuario
+     * @return  Usuario
+     */
+    public final Usuario findUsuario(final Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Usuario.class, id);
@@ -122,8 +156,10 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-
-    public int getUsuarioCount() {
+    /**
+     * @return numero
+     */
+    public final int getUsuarioCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -135,15 +171,17 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-    
-    public List<Usuario> getUsuarios() {
+    /**
+     * @return ResultList
+     */
+    public final List<Usuario> getUsuarios() {
         EntityManager em = getEntityManager();
         try {
-            javax.persistence.Query q = em.createQuery("select idUsuario, concat(nombre, \" \", app) as nombre_completo, activo from Usuario");
+            javax.persistence.Query q = em.createQuery("select idUsuario,"
+       + " concat(nombre, \" \", app) as nombre_completo, activo from Usuario");
             return (List<Usuario>) q.getResultList();
         } finally {
             em.close();
         }
     }
-   
 }

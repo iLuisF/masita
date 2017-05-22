@@ -21,17 +21,26 @@ import javax.persistence.criteria.Root;
  * @author esperanzahigareda
  */
 public class TipoComidaJpaController implements Serializable {
-
-    public TipoComidaJpaController(EntityManagerFactory emf) {
-        this.emf = emf;
+    /**
+     * @param pEmf Entity Manager Factory
+     */
+    public TipoComidaJpaController(final EntityManagerFactory pEmf) {
+        this.emf = pEmf;
     }
+    /**
+     * Interfaz para hacer consultas en la base de datos.
+     */
     private EntityManagerFactory emf = null;
-
-    public EntityManager getEntityManager() {
+    /**
+     * @return emf
+     */
+    public final EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
-    public void create(TipoComida tipoComida) {
+    /**
+     * @param tipoComida tipoComida a crear.
+     */
+    public final void create(final TipoComida tipoComida) {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -44,8 +53,13 @@ public class TipoComidaJpaController implements Serializable {
             }
         }
     }
-
-    public void edit(TipoComida tipoComida) throws NonexistentEntityException, Exception {
+    /**
+     * @param tipoComida tipoComida a editar
+     * @throws NonexistentEntityException excepcion
+     * @throws Exception excepcion
+     */
+    public final void edit(TipoComida tipoComida)
+            throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -57,7 +71,8 @@ public class TipoComidaJpaController implements Serializable {
             if (msg == null || msg.length() == 0) {
                 Long id = tipoComida.getIdTipoComida();
                 if (findTipoComida(id) == null) {
-                    throw new NonexistentEntityException("The tipoComida with id " + id + " no longer exists.");
+                    throw new NonexistentEntityException(
+                        "The tipoComida with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -67,8 +82,11 @@ public class TipoComidaJpaController implements Serializable {
             }
         }
     }
-
-    public void destroy(Long id) throws NonexistentEntityException {
+    /**
+     * @param id id del Tipo de Comida
+     * @throws NonexistentEntityException excepcion
+     */
+    public final void destroy(final Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -78,7 +96,8 @@ public class TipoComidaJpaController implements Serializable {
                 tipoComida = em.getReference(TipoComida.class, id);
                 tipoComida.getIdTipoComida();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The tipoComida with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The tipoComida with id "
+                    + id + " no longer exists.", enfe);
             }
             em.remove(tipoComida);
             em.getTransaction().commit();
@@ -88,16 +107,29 @@ public class TipoComidaJpaController implements Serializable {
             }
         }
     }
-
-    public List<TipoComida> findTipoComidaEntities() {
+    /**
+     * @return TipoComidaEntities.
+     */
+    public final List<TipoComida> findTipoComidaEntities() {
         return findTipoComidaEntities(true, -1, -1);
     }
-
-    public List<TipoComida> findTipoComidaEntities(int maxResults, int firstResult) {
+    /**
+     * @param maxResults resultados
+     * @param firstResult resultado
+     * @return TipoComidaEntities
+     */
+    public final List<TipoComida> findTipoComidaEntities(final int maxResults,
+        final int firstResult) {
         return findTipoComidaEntities(false, maxResults, firstResult);
     }
-
-    private List<TipoComida> findTipoComidaEntities(boolean all, int maxResults, int firstResult) {
+    /**
+     * @param all all
+     * @param maxResults resultados
+     * @param firstResult resultado
+     * @return ResultList
+     */
+    private List<TipoComida> findTipoComidaEntities(final boolean all,
+            final int maxResults, final int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -112,8 +144,11 @@ public class TipoComidaJpaController implements Serializable {
             em.close();
         }
     }
-
-    public TipoComida findTipoComida(Long id) {
+    /**
+     * @param id id del tipo de comida
+     * @return  em
+     */
+    public final TipoComida findTipoComida(final Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(TipoComida.class, id);
@@ -121,8 +156,10 @@ public class TipoComidaJpaController implements Serializable {
             em.close();
         }
     }
-
-    public int getTipoComidaCount() {
+    /**
+     * @return numero
+     */
+    public final int getTipoComidaCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -134,5 +171,4 @@ public class TipoComidaJpaController implements Serializable {
             em.close();
         }
     }
-    
 }

@@ -1,10 +1,20 @@
 package com.kaab.proyecto.db.controller.exceptions;
-
+/**
+ * @author esponjoso
+ */
 public class PreexistingEntityException extends Exception {
-    public PreexistingEntityException(String message, Throwable cause) {
+    /**
+     * @param message mensaje
+     * @param cause causa
+     */
+    public PreexistingEntityException(final String message,
+            final Throwable cause) {
         super(message, cause);
     }
-    public PreexistingEntityException(String message) {
+    /**
+     * @param message mensaje.
+     */
+    public PreexistingEntityException(final String message) {
         super(message);
     }
 }

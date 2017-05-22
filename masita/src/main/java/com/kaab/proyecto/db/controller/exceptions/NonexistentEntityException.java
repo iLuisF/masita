@@ -1,10 +1,20 @@
 package com.kaab.proyecto.db.controller.exceptions;
-
+/**
+ * @author esponjoso
+ */
 public class NonexistentEntityException extends Exception {
-    public NonexistentEntityException(String message, Throwable cause) {
+    /**
+     * @param message mensaje
+     * @param cause causa
+     */
+    public NonexistentEntityException(final String message,
+            final Throwable cause) {
         super(message, cause);
     }
-    public NonexistentEntityException(String message) {
+    /**
+     * @param message mensaje
+     */
+    public NonexistentEntityException(final String message) {
         super(message);
     }
 }
