@@ -173,4 +173,20 @@ public class ComentarioJpaController implements Serializable {
             em.close();
         }
     }
+    
+    /**
+     * Regresa el promedio de las calificaciones de un puesto.
+     * @param idPuesto el id del puesto a calcular la calificación
+     * @return el promedio de las calificaciones de un puesto
+     */
+    public Double getPromedio(Integer idPuesto) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("select AVG(c.calificacion) from Comentario c where c.calificacion IS NOT NULL and c.idPuesto.idPuesto = " + idPuesto);
+            Double result = (Double) q.getSingleResult();
+            return result;
+        } finally {
+            em.close();
+        }
+    }
 }

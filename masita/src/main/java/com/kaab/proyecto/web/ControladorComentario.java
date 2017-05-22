@@ -284,32 +284,10 @@ public class ControladorComentario {
      *
      * @return la calificación de un puesto
      */
-    public final String obtenerCalificacionGral() {
-        Double calif;
-        String result = "0.0";
-        List<Comentario> lista = comentarios;
-        calif = 0.0;
-        Integer numCalif = 0;
-        if (lista.isEmpty()) {
-            return result;
-        }
-        for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getCalificacion() != null
-                    && lista.get(i).getIdPuesto().getIdPuesto().intValue()
-                    == idPuesto
-                    && comentarios.get(i).getContenido() == null) {
-                calif += lista.get(i).getCalificacion();
-            }
-            if (comentarios.get(i).getIdPuesto().getIdPuesto().intValue()
-                    == this.idPuesto
-                    && comentarios.get(i).getContenido() == null) {
-                numCalif++;
-            }
-        }
-        if (numCalif != 0) {
-            calif = calif / numCalif;
-        } else {
-            calif = 0.0;
+    public final String obtenerCalificacionGral(Integer idPuesto) {
+        Double calif = controlador.getPromedio(idPuesto);
+        if (calif == null) {
+            calif = 0.00;
         }
         return String.format("%.2f", calif);
     }
@@ -321,7 +299,7 @@ public class ControladorComentario {
      * @return la calificación de un puesto redondeada
      */
     public final long redondearCalificacionGral() {
-        Double calif = Double.parseDouble(obtenerCalificacionGral());
+        Double calif = Double.parseDouble(obtenerCalificacionGral(this.idPuesto));
         return Math.round(calif);
     }
 
