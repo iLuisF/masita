@@ -307,31 +307,9 @@ public class ControladorComentario {
      * @return promedio general del puesto.
      */
     public final String obtenerCalificacionGral(final Integer idNuevoPuesto) {
-        Double calif;
-        String result = "0.0";
-        List<Comentario> lista = comentarios;
-        calif = 0.0;
-        Integer numCalif = 0;
-        if (lista.isEmpty()) {
-            return result;
-        }
-        for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getCalificacion() != null
-                    && lista.get(i).getIdPuesto().getIdPuesto().intValue()
-                    == idNuevoPuesto
-                    && comentarios.get(i).getContenido() == null) {
-                calif += lista.get(i).getCalificacion();
-            }
-            if (comentarios.get(i).getIdPuesto().getIdPuesto().intValue()
-                    == idNuevoPuesto
-                    && comentarios.get(i).getContenido() == null) {
-                numCalif++;
-            }
-        }
-        if (numCalif != 0) {
-            calif = calif / numCalif;
-        } else {
-            calif = 0.0;
+        Double calif = controlador.getPromedio(idNuevoPuesto);
+        if (calif == null) {
+            calif = 0.00;
         }
         return String.format("%.2f", calif);
     }
