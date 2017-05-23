@@ -16,15 +16,15 @@
         <f:viewParam name="idPuesto" value="#{controladorComentario.idPuesto}" />                             
         <f:viewParam name="idPuesto" value="#{informacionPuesto.idPuesto}" />        
     </f:metadata>
-    
+
     <!-- Add 50px padding top to the body for the navbar -->
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
         <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
             <b:navbarLinks>
-            <b:navLink value="Inicio" href="/masita/PrincipalIH.xhtml" style="" ></b:navLink>
+                <b:navLink value="Inicio" href="/masita/PrincipalIH.xhtml" style="" ></b:navLink>
             </b:navbarLinks>
             <h:form styleClass="navbar-form navbar-right">
-                <b:button value="#{inicioSesion.mostrarBoton()}" look="warning"  onclick="location='#{inicioSesion.redireccionBoton()}'"/>
+                <b:button value="#{inicioSesion.mostrarBoton()}" look="warning"  onclick="location = '#{inicioSesion.redireccionBoton()}'"/>
                 <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
                     <b:container fluid="true">                        
                         <b:column>
@@ -50,7 +50,7 @@
                 <b:commandButton value="Cerrar Sesión" look="btn btn-md btn-danger" rendered="#{cierreSesion.mostrarCierreSesion()}" action="#{cierreSesion.cierreSesion()}"/>
             </h:form>
         </b:navBar>
-        
+
         <p:dataList value="#{informacionPuesto.getInformacionPuesto()}" var="c" type="ordered" lazy="true">
             <b:jumbotron>
                 <b:container>
@@ -107,7 +107,7 @@
                                     <f:selectItem itemLabel="Tacos" itemValue="Tacos" />
                                     <f:selectItem itemLabel="Sushi" itemValue="Sushi" />
                                 </p:selectManyCheckbox>
-                                
+
                             </b:panel>
                         </b:column>
                     </b:row>                                        
@@ -115,25 +115,27 @@
             </b:jumbotron>  
         </p:dataList>
 
-        
+
         <b:container>
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true"/>                
                 <p:dataTable var="comentario" value="#{controladorComentario.comentariosPuesto}" 
-                             editable="true" id="listaC" >
+                             editable="true" id="listaC" >                                        
                     <p:ajax event="rowEdit" listener="#{controladorComentario.onRowEdit}" update=":form:msgs" />
                     <p:ajax event="rowEditCancel" listener="#{controladorComentario.onRowCancel}" update=":form:msgs"/>
                     <p:column headerText="Usuario" style="width:200px">
                         <h:outputText value="#{comentario.idUsuario.nombreUsuario}" />
                     </p:column>
-
-                    <p:column headerText="Comentario">
-                        <h:outputText value="#{comentario.contenido}" />
+                    <p:column headerText="Comentario">                        
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{comentario.contenido}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="modelInput" value="#{comentario.contenido}" style="width:100%"/></f:facet>
+                        </p:cellEditor>                        
                     </p:column>
-                    <p:column headerText="fecha" style="width:200px">
+                    <p:column headerText="Fecha" style="width:200px">
                         <h:outputText value="#{comentario.fecha}" />
                     </p:column>
-                    <p:column style="width:70px" headerText="Eliminar" rendered="#{!inicioSesion.haySesion()}">
+                    <p:column style="width:100px" headerText="Editar/Eliminar" rendered="#{!inicioSesion.haySesion()}">
                         <p:rowEditor rendered="#{controladorComentario.mostrarEdicion(comentario.idUsuario.idUsuario)}"/>
                     </p:column>                    
                 </p:dataTable>

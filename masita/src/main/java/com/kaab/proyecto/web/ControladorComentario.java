@@ -149,14 +149,26 @@ public class ControladorComentario {
     }
 
     /**
-     * Edita un comentario. Falta implementar.
+     * Edita un comentario, pero solo su contenido.
      *
      * @param event Comentario que sera editado.
+     * @throws java.lang.Exception en caso de no poder hacer el cast.
      */
-    public final void onRowEdit(final RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Comentario sin cambios",
-                Long.toString(((Comentario) event.getObject()).
-                        getIdComentario()));
+    public final void onRowEdit(final RowEditEvent event) throws Exception {
+        String mensaje;
+        Comentario tmp = controlador.findComentario(((Comentario)
+                event.getObject()).getIdComentario());
+        boolean esEditado = !tmp.getContenido().equals(((Comentario)
+                event.getObject()).getContenido());
+        if (esEditado) {
+            mensaje = "Comentario editado exitosamente.";
+        } else {
+            mensaje = "Comentario sin cambios.";
+        }
+        tmp.setContenido(((Comentario) event.getObject()).getContenido());
+        controlador.edit(tmp);
+        FacesMessage msg = new FacesMessage(mensaje, Long.toString(((Comentario)
+                event.getObject()).getIdComentario()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -280,14 +292,46 @@ public class ControladorComentario {
     }
 
     /**
-     * Regresa la calificación de un puesto.
+     * Regresa la calificación del puesto actual.
      *
      * @return la calificación de un puesto
      */
-    public final String obtenerCalificacionGral(Integer idPuesto) {
-        Double calif = controlador.getPromedio(idPuesto);
-        if (calif == null) {
-            calif = 0.00;
+    public final String obtenerCalificacionGral() {
+        return obtenerCalificacionGral(this.idPuesto);
+    }
+
+    /**
+     * Regresa la calificación de algun puesto en especifico.
+     *
+     * @param idNuevoPuesto identificador del puesto.
+     * @return promedio general del puesto.
+     */
+    public final String obtenerCalificacionGral(final Integer idNuevoPuesto) {
+        Double calif;
+        String result = "0.0";
+        List<Comentario> lista = comentarios;
+        calif = 0.0;
+        Integer numCalif = 0;
+        if (lista.isEmpty()) {
+            return result;
+        }
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getCalificacion() != null
+                    && lista.get(i).getIdPuesto().getIdPuesto().intValue()
+                    == idNuevoPuesto
+                    && comentarios.get(i).getContenido() == null) {
+                calif += lista.get(i).getCalificacion();
+            }
+            if (comentarios.get(i).getIdPuesto().getIdPuesto().intValue()
+                    == idNuevoPuesto
+                    && comentarios.get(i).getContenido() == null) {
+                numCalif++;
+            }
+        }
+        if (numCalif != 0) {
+            calif = calif / numCalif;
+        } else {
+            calif = 0.0;
         }
         return String.format("%.2f", calif);
     }
@@ -299,7 +343,7 @@ public class ControladorComentario {
      * @return la calificación de un puesto redondeada
      */
     public final long redondearCalificacionGral() {
-        Double calif = Double.parseDouble(obtenerCalificacionGral(this.idPuesto));
+        Double calif = Double.parseDouble(obtenerCalificacionGral());
         return Math.round(calif);
     }
 
