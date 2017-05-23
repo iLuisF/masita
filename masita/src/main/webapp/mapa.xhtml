@@ -60,7 +60,11 @@
         <p:ajax event="overlaySelect" listener="#{mapas.onMarkerSelect}"/>
         <p:gmapInfoWindow id="infoWindow">
           <p:outputPanel style="text-align: center; display: block; margin: auto">
-              <p:commandLink value="#{mapas.marker.title}" actionListener="#{mapas.redirige(mapas.marker.title)}"/>
+              <p:commandLink value="Puesto: #{mapas.marker.title}" actionListener="#{mapas.redirige(mapas.marker.title)}"/>
+              <p></p>
+              <p:outputLabel value="Calificación: #{mapas.buscarCalificacion(mapas.marker.title)}"></p:outputLabel>
+              <p></p>
+              <p:rating value="#{mapas.redondearCalificacionGral()}" readonly="true" />
           </p:outputPanel>
         </p:gmapInfoWindow>
       </p:gmap>

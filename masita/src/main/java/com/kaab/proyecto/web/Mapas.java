@@ -1,6 +1,7 @@
 package com.kaab.proyecto.web;
 
 import com.kaab.proyecto.db.Puesto;
+import com.kaab.proyecto.db.controller.ComentarioJpaController;
 import com.kaab.proyecto.db.controller.PuestoJpaController;
 import java.io.IOException;
 import java.io.Serializable;
@@ -54,6 +55,21 @@ public class Mapas implements Serializable {
      * El id del puesto de comida.
      */
     private int idPuesto;
+    /**
+     * Para la persistencia con la base de datos.
+     */
+    private final EntityManagerFactory emf =
+            Persistence.createEntityManagerFactory("MiProyectoPU");
+    /**
+     * Controlador para Comentario.
+     */
+    private final ComentarioJpaController controlador =
+            new ComentarioJpaController(emf);
+
+    /**
+     * La calificación del puesto.
+     */
+    private String calificacion;
 
     /**
      * Inicia un mapa.
@@ -71,6 +87,7 @@ public class Mapas implements Serializable {
             String nombrePuesto = lugar.getNombre();
             System.out.println(latitud + ", " + longitud + ", "
                     + nombrePuesto);
+            System.out.println("ID PUESTO: " + lugar.getIdPuesto());
             advancedModel.addOverlay(new Marker(new LatLng(latitud, longitud),
                     nombrePuesto));
         }
@@ -191,5 +208,42 @@ public class Mapas implements Serializable {
      */
     public final void setIdPuesto(final int pIdPuesto) {
         this.idPuesto = pIdPuesto;
+    }
+
+    /**
+     * Busca la calificaión de un puesto por su nombre.
+     * @param nombrePuesto el nombre del puesto.
+     * @return la calificación del puesto.
+     */
+    public final String buscarCalificacion(final String nombrePuesto) {
+        List<Puesto> lugares = lugarCtrl.findPuestoEntities();
+        Long pIdPuesto = this.busca(nombrePuesto, lugares).getIdPuesto();
+        calificacion = obtenerCalificacionGral(pIdPuesto.intValue());
+        return calificacion;
+    }
+
+    /**
+     * Regresa la calificación de un puesto.
+     *
+     * @param idPuesto el id del puesto a obtener la calificación.
+     * @return la calificación de un puesto
+     */
+    public final String obtenerCalificacionGral(Integer idPuesto) {
+        Double calif = controlador.getPromedio(idPuesto);
+        if (calif == null) {
+            calif = 0.00;
+        }
+        return String.format("%.2f", calif);
+    }
+
+    /**
+     * Regresa la calificación de un puesto redondeada, para poder usar las
+     * estrellas de primefaces.
+     *
+     * @return la calificación de un puesto redondeada
+     */
+    public final long redondearCalificacionGral() {
+        Double calif = Double.parseDouble(calificacion);
+        return Math.round(calif);
     }
 }
