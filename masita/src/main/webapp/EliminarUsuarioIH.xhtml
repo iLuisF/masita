@@ -46,7 +46,7 @@
         
         <b:jumbotron>
             <b:container>
-                <h3>Eliminar Usuarios</h3>
+                <h3>Desactivar Usuarios</h3>
                 <p:link outcome="PerfilAdministradorIH" value="Regresar al Perfil"/>
                 <p>Recuerda que sólo desactivamos a los usuarios para tener un registro de los mismos.</p>
                 <p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Activar</p>
@@ -66,7 +66,7 @@
                         <p:ajax event="rowEdit" listener="#{editarUsuario.onRowEdit}" update=":form:msgs" />
                         <p:ajax event="rowEditCancel" listener="#{editarUsuario.onRowCancel}" update=":form:msgs" />
                         
-                        <p:column headerText="ID Usuario">
+                        <p:column headerText="ID Usuario" style="width:100px">
                             <h:outputText value="#{c.idUsuario}" />
                         </p:column> 
                         
@@ -76,24 +76,24 @@
                             <h:outputText value=" #{c.apm}" />
                         </p:column>
                         
-                        <p:column headerText="Activo">
+                        <p:column headerText="Activo" style="width:100px">
                             <h:outputText value="#{c.activo}" />
                         </p:column>
                         
-                        <p:column headerText="Es Administrador">
+                        <p:column headerText="Es Administrador" style="width:100px">
                             <h:outputText value="#{c.esAdministrador}" />
                         </p:column>
                         
-                        <p:column style="width:100px">
-                            <p:commandLink value="Hacer Admin"  actionListener="#{editarUsuario.MandaAdmin(c.idUsuario)}" oncomplete="PF('dlg1').show();"/>
+                        <p:column style="width:100px" headerText="Hacer Administrador">
+                            <p:commandLink value="Hacer Admin"  actionListener="#{editarUsuario.mandaAdmin(c.idUsuario)}" oncomplete="PF('dlg1').show();"/>
                         </p:column>
 
-                        <p:column style="width:32px">
+                        <p:column style="width:100px" headerText="Activar / Desactivar">
                             <p:rowEditor />
                         </p:column>
                     </p:dataTable>
                     <p:dialog widgetVar="dlg1" modal="true" resizable="false" showEffect="fade" header="Confirmación" closable="false" > 
-                        <h:outputText value="Seguro de que desea hacer a este usuario administrador" />
+                        <h:outputText value="¿Seguro de que desea hacer a este usuario administrador?" />
                         <br/><br/>
                         <p:commandButton value="Si" actionListener="#{editarUsuario.hacerAdmin()}" oncomplete="PF('dlg1').hide();" />
                         <h:outputText value="     " />
