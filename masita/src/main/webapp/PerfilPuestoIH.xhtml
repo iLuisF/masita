@@ -13,8 +13,7 @@
     </h:head>
 
     <f:metadata>        
-        <f:viewParam name="idPuesto" value="#{controladorComentario.idPuesto}" />    
-        <f:viewParam name="idPuesto" value="#{lecturaComentarios.idPuesto}" />                     
+        <f:viewParam name="idPuesto" value="#{controladorComentario.idPuesto}" />                                
         <f:viewParam name="idPuesto" value="#{informacionPuesto.idPuesto}" />        
     </f:metadata>
     
@@ -118,20 +117,22 @@
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true"/>                
                 <p:dataTable var="comentario" value="#{controladorComentario.comentariosPuesto}" 
-                             editable="true" id="listaC" >
+                             editable="true" id="listaC" >                                        
                     <p:ajax event="rowEdit" listener="#{controladorComentario.onRowEdit}" update=":form:msgs" />
                     <p:ajax event="rowEditCancel" listener="#{controladorComentario.onRowCancel}" update=":form:msgs"/>
                     <p:column headerText="Usuario" style="width:200px">
                         <h:outputText value="#{comentario.idUsuario.nombreUsuario}" />
                     </p:column>
-
-                    <p:column headerText="Comentario">
-                        <h:outputText value="#{comentario.contenido}" />
+                    <p:column headerText="Comentario">                        
+                          <p:cellEditor>
+                              <f:facet name="output"><h:outputText value="#{comentario.contenido}" /></f:facet>
+                              <f:facet name="input"><p:inputText id="modelInput" value="#{comentario.contenido}" style="width:100%"/></f:facet>
+                          </p:cellEditor>                        
                     </p:column>
-                    <p:column headerText="fecha" style="width:200px">
+                    <p:column headerText="Fecha" style="width:200px">
                         <h:outputText value="#{comentario.fecha}" />
                     </p:column>
-                    <p:column style="width:70px" headerText="Eliminar" rendered="#{!inicioSesion.haySesion()}">
+                    <p:column style="width:100px" headerText="Editar/Eliminar" rendered="#{!inicioSesion.haySesion()}">
                         <p:rowEditor rendered="#{controladorComentario.mostrarEdicion(comentario.idUsuario.idUsuario)}"/>
                     </p:column>                    
                 </p:dataTable>

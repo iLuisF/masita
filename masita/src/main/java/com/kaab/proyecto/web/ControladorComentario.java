@@ -149,14 +149,26 @@ public class ControladorComentario {
     }
 
     /**
-     * Edita un comentario. Falta implementar.
+     * Edita un comentario, pero solo su contenido.
      *
      * @param event Comentario que sera editado.
+     * @throws java.lang.Exception en caso de no poder hacer el cast.
      */
-    public final void onRowEdit(final RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Comentario sin cambios",
-                Long.toString(((Comentario) event.getObject()).
-                        getIdComentario()));
+    public final void onRowEdit(final RowEditEvent event) throws Exception {
+        String mensaje;
+        Comentario tmp = controlador.findComentario(((Comentario)
+                event.getObject()).getIdComentario());
+        boolean esEditado = !tmp.getContenido().equals(((Comentario)
+                event.getObject()).getContenido());
+        if (esEditado) {
+            mensaje = "Comentario editado exitosamente.";
+        } else {
+            mensaje = "Comentario sin cambios.";
+        }
+        tmp.setContenido(((Comentario) event.getObject()).getContenido());
+        controlador.edit(tmp);
+        FacesMessage msg = new FacesMessage(mensaje, Long.toString(((Comentario)
+                event.getObject()).getIdComentario()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
