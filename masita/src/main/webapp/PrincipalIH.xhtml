@@ -63,7 +63,7 @@
         
         <b:container>
             <h:form id="form">
-                <b:container>
+                <!--<b:container>
                     <b:navbarLinks>
                         <b:dropMenu value="Ordenar puestos por">
                             <b:navLink value="A-Z" href="#"></b:navLink>
@@ -71,7 +71,7 @@
                             <b:navLink value="Calificación" href="#"></b:navLink>
                         </b:dropMenu>
                     </b:navbarLinks>
-                </b:container>
+                </b:container>-->
               
                 <p:dataScroller value="#{informacionPuesto.getListaPuestos()}" var="c" chunkSize="10">
                     <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
@@ -82,8 +82,10 @@
                                 <h:outputText value="#{c.nombre}" style="font-weight: bold"/>
                                 <h:outputText value="Horario: " />
                                 <h:outputText value="#{c.horario}" style="font-weight: bold"/>
+                                <h:outputText value="Calificación: " />
+                                <h:outputText value="#{controladorComentario.obtenerCalificacionGral(c.idPuesto)}" style="font-weight: bold"/>
                                 
-                                <p:link outcome="PerfilPuestoIH" value="Ver más">
+                                <p:link outcome="PerfilPuestoIH" value="Ver más" style="font-size: 140%">
                                     <f:param name="idPuesto" value="#{c.idPuesto}" />
                                 </p:link>
                                 
