@@ -21,45 +21,45 @@
             </b:navbarLinks>
             <h:form styleClass="navbar-form navbar-right">
                 <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='#{inicioSesion.redireccionBoton()}'"/>
-                <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
+                <b:dropButton value="Iniciar SesiÃ³n " look="success" rendered="#{inicioSesion.haySesion()}">
                     <b:container fluid="true">                        
                         <b:column>
                             <h:form styleClass="form-signin" prependId="false">
-                                <!--<h3 class="form-signin-heading">Por favor inicie sesión</h3>-->
+                                <!--<h3 class="form-signin-heading">Por favor inicie sesiÃ³n</h3>-->
                                 <b:messages/>
-                                <b:inputText id="email" placeholder="Correo electrónico" value="#{inicioSesion.usuario.correo}">
+                                <b:inputText id="email" placeholder="Correo electrÃ³nico" value="#{inicioSesion.usuario.correo}">
                                     <f:facet name="prepend">
                                         <b:icon name="user" />
                                     </f:facet>
                                 </b:inputText>
-                                <b:inputText id="password" placeholder="Contraseña" type="password" value="#{inicioSesion.usuario.contrasenia}">
+                                <b:inputText id="password" placeholder="ContraseÃ±a" type="password" value="#{inicioSesion.usuario.contrasenia}">
                                     <f:facet name="prepend">
                                         <b:iconAwesome name="key"/>
                                     </f:facet>
                                 </b:inputText>
                                 <b:selectBooleanCheckbox value="true" caption="Recordarme"/>
-                                <b:commandButton look="primary btn-block" value="Iniciar sesión" icon="log-in" size="lg" action="#{inicioSesion.inicioSesion()}"/>
+                                <b:commandButton look="primary btn-block" value="Iniciar sesiÃ³n" icon="log-in" size="lg" action="#{inicioSesion.inicioSesion()}"/>
                             </h:form>
                         </b:column>                       
                     </b:container>                
                 </b:dropButton>
-                <b:commandButton value="Cerrar Sesión" look="btn btn-md btn-danger" rendered="#{cierreSesion.mostrarCierreSesion()}" action="#{cierreSesion.cierreSesion()}"/>
+                <b:commandButton value="Cerrar SesiÃ³n" look="btn btn-md btn-danger" rendered="#{cierreSesion.mostrarCierreSesion()}" action="#{cierreSesion.cierreSesion()}"/>
             </h:form>
         </b:navBar>
         
         <b:jumbotron>
             <b:container>
-                <h3>Se ha enviado un correo electrónico a tu dirección:</h3>
+                <h3>Se ha enviado un correo electrÃ³nico a tu direcciÃ³n:</h3>
                 <b:column>
                     <h2>#{altaUsuario.correo}</h2>
                 </b:column>
-                <h3>Para confirmar que es la dirección de tu correo electrónico, haz click en el hipervínculo de validación que se mostrará en el mismo.</h3>
+                <h3>Para confirmar que es la direcciÃ³n de tu correo electrÃ³nico, haz click en el hipervÃ­nculo de validaciÃ³n que se mostrarÃ¡ en el mismo.</h3>
             </b:container>
         </b:jumbotron>
         <b:container>
             <hr/>
             <footer>
-            <p>©KAAB 2017</p>
+            <p>Â©KAAB 2017</p>
             </footer>
         </b:container>
     </h:body>

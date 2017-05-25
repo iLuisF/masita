@@ -1,5 +1,5 @@
 -- Tuplas para probar la base de datos
-use masita;
+
 -- Usuarios
 INSERT INTO Usuario (correo, contrasenia, nombre, app, apm, activo, nombreUsuario, esAdministrador) VALUES ('mayra@ciencias.unam.mx', 'password1', 'Mayra', 'Aceves', 'Higareda', 1, 'mayrica', 1);
 INSERT INTO Usuario (correo, contrasenia, nombre, app, apm, activo, nombreUsuario, esAdministrador) VALUES ('aylin@ciencias.unam.mx', 'password2', 'Aylin', 'Huerta', 'González', 1, 'aylinhg', 1);
@@ -17,31 +17,15 @@ INSERT INTO Comentario (idPuesto, idUsuario, contenido, fecha, calificacion) VAL
 
 -- Tipo de Comida
 INSERT INTO TipoComida (nombre) VALUES ('Comida corrida');
-INSERT INTO TipoComida (nombre) VALUES ('Hamburguesas');
-INSERT INTO TipoComida (nombre) VALUES ('Ensaladas');
-INSERT INTO TipoComida (nombre) VALUES ('Dulces');
-INSERT INTO TipoComida (nombre) VALUES ('Tortas');
-INSERT INTO TipoComida (nombre) VALUES ('Garnachas');
-INSERT INTO TipoComida (nombre) VALUES ('Hotdog');
-INSERT INTO TipoComida (nombre) VALUES ('Tacos');
-INSERT INTO TipoComida (nombre) VALUES ('Sushi');	
 
 -- Servicios Adicionales
 INSERT INTO ServicioAdicional (nombre) VALUES ('Mesas');
 INSERT INTO ServicioAdicional (nombre) VALUES ('Baños');
-INSERT INTO ServicioAdicional (nombre) VALUES ('Comida para llevar');
 
 -- Tipo de Comida del Puesto
 INSERT INTO TipoComidaPuesto (idTipoComida, idPuesto) VALUES (1,1);
 INSERT INTO TipoComidaPuesto (idTipoComida, idPuesto) VALUES (1,2);
 INSERT INTO TipoComidaPuesto (idTipoComida, idPuesto) VALUES (1,3);
-INSERT INTO TipoComidaPuesto (idTipoComida, idPuesto) VALUES (2,1);
-INSERT INTO TipoComidaPuesto (idTipoComida, idPuesto) VALUES (3,1);
 
 -- Servicios Adicionales del Puesto
 INSERT INTO ServicioAdicionalPuesto (idServicio, idPuesto) VALUES (1,1);
-INSERT INTO ServicioAdicionalPuesto (idServicio, idPuesto) VALUES (2,1);
-INSERT INTO ServicioAdicionalPuesto (idServicio, idPuesto) VALUES (3,1);
-INSERT INTO ServicioAdicionalPuesto (idServicio, idPuesto) VALUES (1,2);
-INSERT INTO ServicioAdicionalPuesto (idServicio, idPuesto) VALUES (3,2);
-INSERT INTO ServicioAdicionalPuesto (idServicio, idPuesto) VALUES (3,3);
