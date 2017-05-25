@@ -213,7 +213,7 @@ public class AltaUsuario implements Serializable {
         
         boolean agregado = condicion1 && condicion2;
         if (agregado) {
-            usuario.setActivo("1");
+            usuario.setActivo("0");
             usuario.setNombre(usuario.getNombre());
             usuario.setCorreo(usuario.getCorreo());
             usuario.setApp(usuario.getApp());
@@ -225,7 +225,8 @@ public class AltaUsuario implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().redirect(
                 "/masita/ValidarCuentaIH.xhtml");
-            EnviaMail.envia(usuario.getCorreo());
+            EnviaMail mensaje = new EnviaMail();
+            mensaje.envia(usuario.getCorreo());
         }
     }
     private long buscaUsuario(){
@@ -275,5 +276,18 @@ public class AltaUsuario implements Serializable {
             }
         }
         return condicion;
+    }
+    
+    public void activa(){
+        Usuario user = controlador.findUsuario(this.getIdUsuario());
+        user.setActivo("1");
+        try {
+            controlador.edit(user);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().redirect("/masita/PrincipalIH.xhtml");
+        } catch (Exception ex) {
+            Logger.getLogger(AltaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }

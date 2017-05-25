@@ -9,9 +9,10 @@
         <title>Masita</title>
         <meta name="author" content="The Author"></meta>
     </h:head>
-    <f:metadata>
-        <f:viewParam name="correo" value="#{altaUsuario.correo}" />
+     <f:metadata>
+        <f:viewParam name="idUsuario" value="#{altaUsuario.idUsuario}" /> 
     </f:metadata>
+    
     <!-- Add 50px padding top to the body for the navbar -->
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
         
@@ -49,8 +50,8 @@
         
         <b:jumbotron>
             <b:container>
-                <h3>Su cuenta ha sido validada exitosamente</h3>
-                <p:commandLink value="ir a la pagina principal"/>
+                <h3>Presione el boton para validar su cuenta</h3>
+                <p:commandButton value="Validar Cuenta" actionListener="#{altaUsuario.activa()}"/>
             </b:container>
         </b:jumbotron>
         <b:container>

@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package com.kaab.proyecto.web;
+import com.kaab.proyecto.db.Usuario;
+import com.kaab.proyecto.db.controller.UsuarioJpaController;
 import java.io.Serializable;
 import java.util.*;
 import javax.mail.*;
@@ -11,6 +13,8 @@ import javax.mail.internet.*;
 import javax.activation.*;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 /**
  *
  * @author Ernesto Palacios
@@ -18,14 +22,19 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class EnviaMail implements Serializable {
+    private final EntityManagerFactory emf
+            = Persistence.createEntityManagerFactory("MiProyectoPU");
+     private final UsuarioJpaController controlador = new UsuarioJpaController(emf);
     
-     public static void envia(String correo){
+    
+    
+    
+     public void envia(String correo){
        // La dirección de envío (to)
        String para = correo;
 
        // La dirección de la cuenta de envío (from)
        String de = "kaabcompany@gmail.com";
-       System.out.println("de : " + de + "para :" + para);
        // El servidor (host). En este caso usamos localhost
        String host = "localhost";
 
@@ -47,7 +56,6 @@ public class EnviaMail implements Serializable {
                 return new PasswordAuthentication(de, "seguridadImportante");
             }
           });
-       System.out.println("cree algo");
        try{
          // Creamos un objeto mensaje tipo MimeMessage por defecto.
          MimeMessage mensaje = new MimeMessage(sesion);
@@ -59,11 +67,12 @@ public class EnviaMail implements Serializable {
          mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(para));
 
          // Asignamos el asunto
-         mensaje.setSubject("Primer correo sencillo");
-
+         mensaje.setSubject("Validacion de cuenta");
+         String aux = "<h1>presione el link para proceder a validar su cuenta</h1>"
+                             + "<a href=http://localhost:8084/masita/CuentaValidadaIH.xhtml?idUsuario=" + buscaid(para) + "> presione aqui para ir a la página<a/>";
+         System.out.println(aux);
          // Asignamos el mensaje como tal
-          mensaje.setContent("<h1>validacion de la cuenta</h1>"
-                             + "<a href=http://localhost:8084/masita/CuentaValidadaIH.xhtml>pagina inicio<a/>","text/html" );
+          mensaje.setContent(aux ,"text/html" );
 
          // Enviamos el correo
          Transport.send(mensaje);
@@ -72,4 +81,14 @@ public class EnviaMail implements Serializable {
             e.printStackTrace();
        }
     }
+     
+     private long buscaid (String correo){
+         List<Usuario> usuarios = controlador.findUsuarioEntities();
+         for(Usuario x : usuarios ){
+             if(x.getCorreo().equals(correo)){
+                 return x.getIdUsuario();
+             }
+         }
+         return -1;
+     }
 }
