@@ -288,6 +288,8 @@ public class AltaUsuario implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(AltaUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        InicioSesion aux = new InicioSesion();
+        aux.setUsuario(user);
+        aux.inicioSesion();
     }
 }
