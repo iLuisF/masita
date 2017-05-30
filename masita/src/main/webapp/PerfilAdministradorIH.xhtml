@@ -14,10 +14,17 @@ and open the template in the editor.
         <title>Masita</title>
         <meta name="author" content="The Author"></meta>
     </h:head>
+    <style>
+        #brand-image{
+            height: 25px;
+        }
+    </style>
     <!-- Add 50px padding top to the body for the navbar -->
     <h:body style="padding-top: 50px; padding-bottom: 20px;">
-        
-        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top" onclick="location='/masita/PrincipalIH.xhtml'">
+        <b:navBar brandHref="#" inverse="true" fixed="top" onclick="location='/masita/PrincipalIH.xhtml'">
+            <a class="navbar-brand" href="/masita/PrincipalIH.xhtml" >
+                <img id="brand-image" alt="Website Logo" src="imagenes/masita.png"/>
+            </a>
             <h:form styleClass="navbar-form navbar-right">
                 <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='#{inicioSesion.redireccionBoton()}'"/>
                 <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
@@ -36,7 +43,6 @@ and open the template in the editor.
                                         <b:iconAwesome name="key"/>
                                     </f:facet>
                                 </b:inputText>
-                                <b:selectBooleanCheckbox value="true" caption="Recordarme"/>
                                 <b:commandButton look="primary btn-block" value="Iniciar sesión" icon="log-in" size="lg" action="#{inicioSesion.inicioSesion()}"/>
                             </h:form>
                         </b:column>                       
@@ -50,7 +56,7 @@ and open the template in the editor.
             <p>Recuerda que si eres Administrador de Masita, debes tener la sesión iniciada. </p>
             <b:container rendered="#{inicioSesion.haySesionAdmin()}">
                 <h3>Tareas del Administrador:</h3>
-                <p:link outcome="EliminarUsuarioIH" value="Desactivar Usuarios" style="font-size:150%"/>
+                <p:link outcome="EliminarUsuarioIH" value="Eliminar Usuarios" style="font-size:150%"/>
                 <br/>
                 <p:link outcome="AgregarPuesto" value="Agregar Puestos" style="font-size:150%"/>
                 <br/>
