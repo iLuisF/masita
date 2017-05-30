@@ -403,5 +403,25 @@ public class EdicionPerfil implements Serializable {
         }
         return condicion;
     }
+    /**
+     *Establece el id del usuario a desactivar.
+     * @param pIdUsuario 
+     */
+    public final void mandaEliminar(final Long pIdUsuario) {
+       this.setIdUsuario(pIdUsuario);
+    }
+    /**
+     * Convierte el atributo "Activo" de un usuario en 0.
+     *
+     */
+    public final void desactiva() throws Exception {
+        Usuario u = controlador.findUsuario(this.getIdUsuario());
+        controlador.destroy(u.getIdUsuario());
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().redirect("/masita/PrincipalIH.xhtml");
+        //CierreSesion cs = new CierreSesion();
+        //cs.setUsuario(String.valueOf(this.getIdUsuario()));
+        //cs.cierreSesion();
+    }
 
 }
