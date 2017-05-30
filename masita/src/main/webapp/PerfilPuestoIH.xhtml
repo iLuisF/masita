@@ -120,7 +120,9 @@
             <h:form id="form">
                 <p:growl id="msgs" showDetail="true"/>                
                 <p:dataTable var="comentario" value="#{controladorComentario.comentariosPuesto}" 
-                             editable="true" id="listaC" >                                        
+                             editable="true" id="listaC" paginator="true" rows="10"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="10,15,20,25,30">                                        
                     <p:ajax event="rowEdit" listener="#{controladorComentario.onRowEdit}" update=":form:msgs" />
                     <p:ajax event="rowEditCancel" listener="#{controladorComentario.onRowCancel}" update=":form:msgs"/>
                     <p:column headerText="Usuario" style="width:200px">
@@ -150,25 +152,24 @@
 
             <h:form>
 
-                <p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px" closable="true" rendered="#{!inicioSesion.haySesion()}">
+                <p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px; background-color: #58ACFA" closable="true" rendered="#{!inicioSesion.haySesion()}">
                     <h:outputText/>
                     <br/>
                     <p:inputTextarea value="#{controladorComentario.nuevo.contenido}" style="width: 100%" rows="10">
                     </p:inputTextarea>
-                    <br />                    
-                    <br/>
-                    <p:outputLabel value="Por favor califica:"/>                    
-                    <br/>
+                    
                     <p:commandButton id='btn' value="Comentar" 
                                      ajax="false" action="#{controladorComentario.crearComentario()}" image="ui-icon-document" style="float:right; font-size:20px"/>                                        
+                    <p:outputLabel value="Por favor califica:" style="color: white"/>                    
+                    
                     <p:rating value="#{controladorComentario.nuevo.calificacion}" stars="5" 
-                              cancel="false" onRate="alert('Tu calificaste con: ' + value)" style="float:left; width: 100px; height: 100px">
+                              cancel="false" onRate="alert('Tu calificaste con: ' + value)" >
                         <p:ajax event="rate" listener="#{controladorComentario.calificarPuesto()}"/>
-                    </p:rating>    
-                    <br/>
-                    <p:outputLabel value="Tu calificaste con: " rendered="#{controladorComentario.hayCalificacion()}"/>
+                    </p:rating>                        
+                    <br />
+                    <p:outputLabel value="Tu calificaste con: " rendered="#{controladorComentario.hayCalificacion()}" style="color: white"/>
                     <p:rating value="#{controladorComentario.calificacion}" readonly="true" rendered="#{controladorComentario.hayCalificacion()}"/>
-                    <br/>
+                    
                 </p:panel>
             </h:form>            
         </b:container>
