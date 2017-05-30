@@ -7,9 +7,13 @@ package com.kaab.proyecto.web;
 
 import com.kaab.proyecto.db.Usuario;
 import com.kaab.proyecto.db.controller.UsuarioJpaController;
+import com.kaab.proyecto.db.controller.exceptions.NonexistentEntityException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -38,9 +42,19 @@ public class EliminacionUsuario implements Serializable {
      * El id de un usuario.
      */
     private Long idUsuario;
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
     /**
      * El nombre de un usuario.
      */
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    
     private String nombre;
     /**
      * El apellido materno de un usuario.
@@ -103,7 +117,25 @@ public class EliminacionUsuario implements Serializable {
     public final void mandaAdmin(final Long pIdUsuario) {
         this.idUsuario = pIdUsuario;
     }
-
+    /**
+     * Elimina un usuario.
+     */
+    public final void elimina() throws NonexistentEntityException{
+        try{
+            usuario.destroy(this.getIdUsuario());
+            FacesMessage msg = new FacesMessage("Usuario Eliminado",
+                    Long.toString(this.getIdUsuario()));
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().redirect("/masita/EliminarUsuarioIH"
+                    + ".xhtml");
+        } catch (IOException ex) {
+            System.out.println("Excepción: Eliminar Usuario");
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladorPuesto.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        }
+    }
     /**
      * Hace administrador a un usuario activo.
      * @throws Exception si no encuentra al usuario.
@@ -140,7 +172,6 @@ public class EliminacionUsuario implements Serializable {
                         event.getObject()).getIdUsuario()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-
     /**
      * Si se selecciona el simbolo "cruz", se mantiene al usuario activo.
      * @param event el evento

@@ -93,15 +93,22 @@
                         </p:column>
 
                         <p:column style="width:100px" headerText="Eliminar">
-                            <p:rowEditor />
+                            <p:commandLink value="Eliminar cuenta" actionListener="#{editarUsuario.mandaAdmin(c.idUsuario)}"  oncomplete="PF('dlg2').show();"/>
                         </p:column>
                     </p:dataTable>
                     <p:dialog widgetVar="dlg1" modal="true" resizable="false" showEffect="fade" header="Confirmación" closable="false" > 
                         <h:outputText value="¿Seguro de que desea hacer a este usuario administrador?" />
                         <br/><br/>
-                        <p:commandButton value="Si" actionListener="#{editarUsuario.hacerAdmin()}" oncomplete="PF('dlg1').hide();" />
+                        <p:commandButton value="Si" actionListener="#{editarUsuario.hacerAdmin()}" oncomplete="PF('dlg2').hide();" />
                         <h:outputText value="     " />
                         <p:commandButton value="No" oncomplete="PF('dlg1').hide();"/>     
+                    </p:dialog>
+                    <p:dialog widgetVar="dlg2" modal="true" resizable="false" showEffect="fade" header="Confirmación" closable="false" > 
+                        <h:outputText value="¿Seguro de que desea eliminar esta cuenta?" />
+                        <br/><br/>
+                        <p:commandButton value="Si" actionListener="#{editarUsuario.elimina()}" oncomplete="PF('dlg2').hide();" />
+                        <h:outputText value="     " />
+                        <p:commandButton value="No" oncomplete="PF('dlg2').hide();"/>     
                     </p:dialog>
                 </h:form>
             <hr/>
