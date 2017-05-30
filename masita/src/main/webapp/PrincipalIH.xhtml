@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Masita</title>
+        <meta name="author" content="The Author"></meta>
+    </h:head>
+    <!-- Add 50px padding top to the body for the navbar -->
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
+            <b:navbarLinks>
+            <b:navLink value="Inicio" href="/masita/PrincipalIH.xhtml" style="" ></b:navLink>
+            </b:navbarLinks>
+            <h:form styleClass="navbar-form navbar-right">
+                <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='#{inicioSesion.redireccionBoton()}'"/>
+                <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
+                    <b:container fluid="true">                        
+                        <b:column>
+                            <h:form styleClass="form-signin" prependId="false">
+                                <!--<h3 class="form-signin-heading">Por favor inicie sesión</h3>-->
+                                <b:messages/>
+                                <b:inputText id="email" placeholder="Correo electrónico" value="#{inicioSesion.usuario.correo}">
+                                    <f:facet name="prepend">
+                                        <b:icon name="user" />
+                                    </f:facet>
+                                </b:inputText>
+                                <b:inputText id="password" placeholder="Contraseña" type="password" value="#{inicioSesion.usuario.contrasenia}">
+                                    <f:facet name="prepend">
+                                        <b:iconAwesome name="key"/>
+                                    </f:facet>
+                                </b:inputText>
+                                <b:selectBooleanCheckbox value="true" caption="Recordarme"/>
+                                <b:commandButton look="primary btn-block" value="Iniciar sesión" icon="log-in" size="lg" action="#{inicioSesion.inicioSesion()}"/>
+                            </h:form>
+                        </b:column>                       
+                    </b:container>                
+                </b:dropButton>
+                <b:commandButton value="Cerrar Sesión" look="btn btn-md btn-danger" rendered="#{cierreSesion.mostrarCierreSesion()}" action="#{cierreSesion.cierreSesion()}"/>
+            </h:form>
+        </b:navBar>
+        
+        <b:jumbotron> 
+            <b:container>
+                <h3>Encuentra los mejores lugares para comer y beber en la Facultad de Ciencias</h3>
+                <!--<h:form>
+                    <div class="form-group">
+                        <b:inputText placeholder="Buscar un puesto..." value="#" fieldSize="lg">
+                        </b:inputText>
+                        <b:label text="#" id="label"/>
+                    </div>
+                </h:form>-->
+                <h:form>
+                    <div>
+                        <b:commandButton action="mapa" value="Buscar puesto en el mapa" look="primary" icon="map-marker" iconAlign="right"/>
+                    </div>
+                </h:form>
+            </b:container>
+        </b:jumbotron>
+        
+        <b:container>
+            <h:form id="form">
+                <!--<b:container>
+                    <b:navbarLinks>
+                        <b:dropMenu value="Ordenar puestos por">
+                            <b:navLink value="A-Z" href="#"></b:navLink>
+                            <b:navLink value="Z-A" href="#"></b:navLink>
+                            <b:navLink value="Calificación" href="#"></b:navLink>
+                        </b:dropMenu>
+                    </b:navbarLinks>
+                </b:container>-->
+              
+                <p:dataScroller value="#{informacionPuesto.getListaPuestos()}" var="c" chunkSize="10">
+                    <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                        <h:graphicImage value="imagenes/edificio.png"/>
+                        <p:outputPanel>
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputText value="Nombre: " />
+                                <h:outputText value="#{c.nombre}" style="font-weight: bold"/>
+                                <h:outputText value="Horario: " />
+                                <h:outputText value="#{c.horario}" style="font-weight: bold"/>
+                                <h:outputText value="Calificación: " />
+                                <h:outputText value="#{controladorComentario.obtenerCalificacionGral(c.idPuesto)}" style="font-weight: bold"/>
+                                
+                                <p:link outcome="PerfilPuestoIH" value="Ver más" style="font-size: 140%">
+                                    <f:param name="idPuesto" value="#{c.idPuesto}" />
+                                </p:link>
+                                
+                            </h:panelGrid>
+                        </p:outputPanel>
+                        
+                    </h:panelGrid>
+                    <p:separator />
+                </p:dataScroller>
+                
+                <!--<b:container>
+                    
+            <p><b:button outcome="" value="Ver detalles »"/></p>
+                </b:container>-->
+                </h:form>
+            <hr/>
+            <footer>
+            <p>© KAAB 2017</p>
+            </footer>
+        </b:container>
+    </h:body>
+</html>

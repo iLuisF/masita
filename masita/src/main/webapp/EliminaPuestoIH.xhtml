@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Masita</title>
+        <meta name="author" content="The Author"></meta>
+        <script src="http://maps.google.com/maps/api/js?key=AIzaSyBlEYhBfp104jOYDy-TOhTYkSd8YBtkLFI"></script>
+    </h:head>
+
+
+    <!-- Add 50px padding top to the body for the navbar -->
+    <h:body style="padding-top: 50px; padding-bottom: 20px;" rendered="#{inicioSesion.haySesionAdmin()}">
+        
+        <b:navBar brand="Masita" brandHref="#" inverse="true" fixed="top">
+            <b:navbarLinks>
+            <b:navLink value="Inicio" href="/masita/PrincipalIH.xhtml" style="" ></b:navLink>
+            </b:navbarLinks>
+            <h:form styleClass="navbar-form navbar-right">
+                <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='#{inicioSesion.redireccionBoton()}'"/>
+                <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
+                    <b:container fluid="true">                        
+                        <b:column>
+                            <h:form styleClass="form-signin" prependId="false">
+                                <!--<h3 class="form-signin-heading">Por favor inicie sesión</h3>-->
+                                <b:messages/>
+                                <b:inputText id="email" placeholder="Correo electrónico" value="#{inicioSesion.usuario.correo}">
+                                    <f:facet name="prepend">
+                                        <b:icon name="user" />
+                                    </f:facet>
+                                </b:inputText>
+                                <b:inputText id="password" placeholder="Contraseña" type="password" value="#{inicioSesion.usuario.contrasenia}">
+                                    <f:facet name="prepend">
+                                        <b:iconAwesome name="key"/>
+                                    </f:facet>
+                                </b:inputText>
+                                <b:selectBooleanCheckbox value="true" caption="Recordarme"/>
+                                <b:commandButton look="primary btn-block" value="Iniciar sesión" icon="log-in" size="lg" action="#{inicioSesion.inicioSesion()}"/>
+                            </h:form>
+                        </b:column>                       
+                    </b:container>                
+                </b:dropButton>
+                <b:commandButton value="Cerrar Sesión" look="btn btn-md btn-danger" rendered="#{cierreSesion.mostrarCierreSesion()}" action="#{cierreSesion.cierreSesion()}"/>
+            </h:form>
+        </b:navBar>
+        
+        <b:jumbotron>
+            <b:container>
+                <h3>Información Puestos</h3>
+                <p:link outcome="PerfilAdministradorIH" value="Regresar al Perfil" style="font-size:120%" />
+            </b:container>
+        </b:jumbotron>
+        <b:container>
+            <p:growl id="msgs" showDetail="true"/>
+            <h:form id="form">               
+                <p:dataTable id="listaP" var="puesto" value="#{controladorPuesto.crearListaPuesto()}" editable="false" style="margin-bottom:20px">
+                    <f:facet name="header">
+                        Información Puestos
+                    </f:facet>
+
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{puesto.nombre}" />
+                    </p:column>        
+
+                     <p:column headerText="Horario">
+                           <h:outputText value="#{puesto.horario}" />
+                    </p:column>       
+
+                    <p:column headerText="latitud">
+                        <h:outputText value="#{puesto.latitud}" />
+                    </p:column>
+
+                    <p:column headerText="Longitud">
+                        <h:outputText value="#{puesto.longitud}" />
+                    </p:column>   
+                    
+                    <p:column style="width:60px">
+                        <p:commandLink  value="editar" 
+                                        actionListener="#{controladorPuesto.mandaEditar(puesto.idPuesto)}" update="form:display" oncomplete="PF('dlg').show();" />
+                    </p:column>ladorPuesto.edit
+                    
+                    <p:column style="width:70px">
+                        <p:commandLink  value="eliminar" actionListener="#{controladorPuesto.mandaEliminar(puesto.idPuesto)}"  oncomplete="PF('dlg1').show();"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dialog widgetVar="dlg1" modal="true" resizable="false" showEffect="fade" header="Confirmación" closable="false" > 
+                     <h:outputText value="Seguro de que desea elimnar este Puesto" />
+                     <br/><br/>
+                     <p:commandButton value="Si" actionListener="#{controladorPuesto.elimina}"/>
+                     <h:outputText value="     " />
+                     <p:commandButton value="No" oncomplete="PF('dlg1').hide();"/>     
+                </p:dialog>
+                
+                <p:dialog widgetVar="dlg" modal="true" resizable="false" header="Values" showEffect="fade" height="500" width="700" closable="false"> 
+                    <p:panelGrid id="display" columns="2" columnClasses="value,value">
+                        <h:outputText value="Nombre: " />
+                        <p:inputText id="valorNombre" value="#{controladorPuesto.nombre}"/>
+                        
+                        <h:outputText value="Horario: " />
+                        <p:inputMask id="valorHorario" value="#{controladorPuesto.horario}" mask="99:99-99:99"/>      
+                        <h:outputText value="Longiud: " />
+                        <h:outputText id="valorLongitud" value="#{controladorPuesto.longitud}" />
+                        
+                        <h:outputText value="Latitud: " />
+                        <h:outputText id="valorLatitud" value="#{controladorPuesto.latitud}" />   
+                       
+                         <p:gmap id="gmap" center="19.324328359583355,-99.17934268712997" zoom="19" type="HYBRID" model="#{controladorPuesto.advancedModel}" style="width:750%;height:400px">
+                            <p:ajax event="pointSelect" listener="#{controladorPuesto.onPointSelect}" update="msgs" />
+                            <p:ajax event="pointSelect" update="valorLongitud"/>
+                            <p:ajax event="pointSelect" update="valorLatitud"/> 
+                            <p:ajax event="pointSelect" update="gmap"/> 
+                         </p:gmap>
+                        <p:separator />
+                        <h:outputText value="Servicios: " />
+                        <p:selectManyCheckbox id="grid3" value="#{controladorPuesto.servicios}" layout="pageDirection" columns="1">
+                            <f:selectItem itemLabel="Baños" itemValue="Baños" />
+                            <f:selectItem itemLabel="Mesas" itemValue="Mesas" />
+                            <f:selectItem itemLabel="Comida para llevar" itemValue="Comida para llevar" />
+                        </p:selectManyCheckbox>
+                        
+                        <h:outputText value="Tipo de Comida: " />
+                        <p:selectManyCheckbox id="grid4" value="#{controladorPuesto.tipoComida}" layout="pageDirection"  columns="1">
+                            <f:selectItem itemLabel="Comida corrida" itemValue="Comida corrida" />
+                            <f:selectItem itemLabel="Hamburguesas" itemValue="Hamburguesas" />
+                            <f:selectItem itemLabel="Ensaladas" itemValue="Ensaladas" />
+                            <f:selectItem itemLabel="Dulces" itemValue="Dulces" />
+                            <f:selectItem itemLabel="Tortas" itemValue="Tortas" />
+                            <f:selectItem itemLabel="Garnachas" itemValue="Garnachas" />
+                            <f:selectItem itemLabel="Hotdog" itemValue="Hotdog" />
+                            <f:selectItem itemLabel="Tacos" itemValue="Tacos" />
+                            <f:selectItem itemLabel="Sushi" itemValue="Sushi" />
+                        </p:selectManyCheckbox>
+                        
+                        <p:commandButton  value="Guardar" actionListener="#{controladorPuesto.edita}" update="msgs"/>
+                        <p:commandButton  value="Salir" oncomplete="PF('dlg').hide();" update="msgs"/>
+                        
+                    </p:panelGrid>
+                </p:dialog>
+               
+            </h:form>
+
+        </b:container>
+    </h:body>
+    
+</html>
