@@ -150,10 +150,12 @@ public class EliminacionUsuario implements Serializable {
         Usuario u = usuario.findUsuario(((Usuario)
                 event.getObject()).getIdUsuario());
         u.setActivo("0");
-        usuario.edit(u);
-        FacesMessage msg = new FacesMessage("Usuario Desactivado",
+        usuario.destroy(u.getIdUsuario());
+        FacesMessage msg = new FacesMessage("Usuario Eliminado",
                 "Usuario ID: " + Long.toString(((Usuario)
                         event.getObject()).getIdUsuario()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
+         FacesContext context = FacesContext.getCurrentInstance();
+                context.getExternalContext().redirect("/masita/EliminarUsuarioIH.xhtml");
     }
 }

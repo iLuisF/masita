@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -206,10 +208,12 @@ public class AltaUsuario implements Serializable {
      * @throws java.io.IOException si no se puede hacer la insercion en la B. D.
      */
     public final void darAltaUsuario() throws IOException {
-        boolean agregado = validarNombreUsuario(usuario)
-            && validarCorreo(usuario);
+        boolean condicion2 = validarCorreo(usuario);
+        boolean condicion1 = validarNombreUsuario(usuario);
+        
+        boolean agregado = condicion1 && condicion2;
         if (agregado) {
-            usuario.setActivo("1");
+            usuario.setActivo("0");
             usuario.setNombre(usuario.getNombre());
             usuario.setCorreo(usuario.getCorreo());
             usuario.setApp(usuario.getApp());
@@ -221,8 +225,20 @@ public class AltaUsuario implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().redirect(
                 "/masita/ValidarCuentaIH.xhtml");
+            EnviaMail mensaje = new EnviaMail();
+            mensaje.envia(usuario.getCorreo());
         }
     }
+    private long buscaUsuario(){
+        long id = -1;
+        for (Usuario x : listaUsuarios) {
+            if (x.getCorreo().equals(this.getCorreo())){
+                id = x.getIdUsuario();
+            }
+        }
+        return id;
+    }
+    
     /**
      * Método validarNombreUsuario que revisará que un usuario ya registrado no
      * tenga el mismo nombre de otro usuario ya existente.
@@ -260,5 +276,20 @@ public class AltaUsuario implements Serializable {
             }
         }
         return condicion;
+    }
+    
+    public void activa(){
+        Usuario user = controlador.findUsuario(this.getIdUsuario());
+        user.setActivo("1");
+        try {
+            controlador.edit(user);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().redirect("/masita/PrincipalIH.xhtml");
+        } catch (Exception ex) {
+            Logger.getLogger(AltaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        InicioSesion aux = new InicioSesion();
+        aux.setUsuario(user);
+        aux.inicioSesion();
     }
 }

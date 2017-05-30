@@ -36,8 +36,8 @@ CREATE TABLE Puesto (
   idPuesto      serial PRIMARY KEY,
   nombre        varchar(64) NOT NULL,
   horario       varchar(16) NOT NULL,
-  latitud       varchar(20) NOT NULL,
-  longitud      varchar(20) NOT NULL
+  latitud		varchar(20) NOT NULL,
+  longitud		varchar(20) NOT NULL
 ) ENGINE=InnoDB default charset=utf8;
 
 --
