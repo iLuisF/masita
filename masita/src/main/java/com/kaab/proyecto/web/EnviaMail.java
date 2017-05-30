@@ -64,7 +64,7 @@ public class EnviaMail implements Serializable {
          // Asignamos el asunto
          mensaje.setSubject("Validacion de cuenta");
          String aux = "<h1>presione el link para proceder a validar su cuenta</h1>"
-                             + "<a href=http://localhost:8084/masita/CuentaValidadaIH.xhtml?idUsuario=" + buscaid(para) + "> presione aqui para ir a la p�gina<a/>";
+                             + "<a href=http://localhost:8084/masita/CuentaValidadaIH.xhtml?idUsuario=" + buscaid(para) + "> presione aquí para ir a la página<a/>";
          System.out.println(aux);
          // Asignamos el mensaje como tal
           mensaje.setContent(aux ,"text/html" );

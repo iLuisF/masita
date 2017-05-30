@@ -26,7 +26,7 @@
             </a>
             <h:form styleClass="navbar-form navbar-right">
                 <b:button value="#{inicioSesion.mostrarBoton()}" look="warning" onclick="location='#{inicioSesion.redireccionBoton()}'"/>
-                <b:dropButton value="Iniciar SesiÃƒÂ³n " look="success" rendered="#{inicioSesion.haySesion()}">
+                <b:dropButton value="Iniciar Sesión " look="success" rendered="#{inicioSesion.haySesion()}">
                     <b:container fluid="true">                        
                         <b:column>
                             <h:form styleClass="form-signin" prependId="false">
@@ -53,14 +53,14 @@
         
         <b:jumbotron>
             <b:container>
-                <h3>Presione el boton para validar su cuenta</h3>
+                <h3>Presione el botón para validar su cuenta</h3>
                 <p:commandButton value="Validar Cuenta" actionListener="#{altaUsuario.activa()}"/>
             </b:container>
         </b:jumbotron>
         <b:container>
             <hr/>
             <footer>
-            <p>Ã‚Â©KAAB 2017</p>
+            <p>©KAAB 2017</p>
             </footer>
         </b:container>
     </h:body>
