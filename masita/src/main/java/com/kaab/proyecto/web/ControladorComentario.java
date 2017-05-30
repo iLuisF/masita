@@ -10,7 +10,6 @@ import javax.faces.bean.ManagedBean;
 import javax.persistence.Persistence;
 import javax.persistence.EntityManagerFactory;
 import javax.faces.bean.ViewScoped;
-import com.kaab.proyecto.db.controller.exceptions.ErrorCrearComentario;
 import com.kaab.proyecto.db.controller.exceptions.NonexistentEntityException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -79,10 +79,11 @@ public class ControladorComentario {
      * El comentario no tiene contenido, es decir, esta vació.
      * @throws java.io.IOException No se pudo recuperar la información.
      */
-    public final void crearComentario() throws ErrorCrearComentario,
-            IOException {
+    public final void crearComentario() throws IOException {
         if (nuevo.getContenido().length() == 0) {
-            throw new ErrorCrearComentario("Tu comentario no debe ser vació.");
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+                   "Intentalo de nuevo", "Tu comentario no debe ser vació.");
+        RequestContext.getCurrentInstance().showMessageInDialog(message);
         } else {
             nuevo.setIdUsuario(new Usuario((long) this.idUsuario));
             nuevo.setIdPuesto(new Puesto((long) this.idPuesto));
@@ -90,11 +91,11 @@ public class ControladorComentario {
             nuevo.setFecha(Calendar.getInstance().getTime());
             nuevo.setCalificacion(null);
             controlador.create(nuevo);
-        }
-        String urlPuesto = "/masita/PerfilPuestoIH.xhtml?idPuesto="
+            String urlPuesto = "/masita/PerfilPuestoIH.xhtml?idPuesto="
                 + idPuesto.toString();
         FacesContext contex = FacesContext.getCurrentInstance();
         contex.getExternalContext().redirect(urlPuesto);
+        }
     }
 
     /**

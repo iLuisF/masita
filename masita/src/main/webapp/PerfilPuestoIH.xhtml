@@ -159,7 +159,7 @@
                     </p:inputTextarea>
                     
                     <p:commandButton id='btn' value="Comentar" 
-                                     ajax="false" action="#{controladorComentario.crearComentario()}" image="ui-icon-document" style="float:right; font-size:20px"/>                                        
+                                     ajax="true" action="#{controladorComentario.crearComentario()}" image="ui-icon-document" style="float:right; font-size:20px"/>                                        
                     <p:outputLabel value="Por favor califica:" style="color: white"/>                    
                     
                     <p:rating value="#{controladorComentario.nuevo.calificacion}" stars="5" 
