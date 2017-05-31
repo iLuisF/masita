@@ -81,16 +81,16 @@
                 </b:container>-->
               
                 <p:dataScroller value="#{informacionPuesto.getListaPuestos()}" var="c" chunkSize="10">
-                    <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                        <h:graphicImage value="imagenes/edificio.png"/>
-                        <p:outputPanel>
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <h:outputText value="Nombre: " />
-                                <h:outputText value="#{c.nombre}" style="font-weight: bold"/>
-                                <h:outputText value="Horario: " />
-                                <h:outputText value="#{c.horario}" style="font-weight: bold"/>
-                                <h:outputText value="Calificación: " />
-                                <h:outputText value="#{controladorComentario.obtenerCalificacionGral(c.idPuesto)}" style="font-weight: bold"/>
+                    <p:panelGrid columns="2" style="width:100%" layout="grid">
+                        <h:graphicImage value="imagenes/edificio.png" style="padding: 25px;"/>
+                        <p:outputPanel style="padding: 25px;">
+                            <h:panelGrid columns="2" >
+                                <h:outputText value="Nombre: " style="font-size: large;" />
+                                <h:outputText value="#{c.nombre}" style="font-weight: bold; font-size: large;"/>
+                                <h:outputText value="Horario: " style="font-size: large;" />
+                                <h:outputText value="#{c.horario}" style="font-weight: bold; font-size: large;"/>
+                                <h:outputText value="Calificación: " style="font-size: large;" />
+                                <h:outputText value="#{controladorComentario.obtenerCalificacionGral(c.idPuesto)}" style="font-weight: bold; font-size: large;"/>
                                 
                                 <p:link outcome="PerfilPuestoIH" value="Ver más" style="font-size: 140%">
                                     <f:param name="idPuesto" value="#{c.idPuesto}" />
@@ -99,7 +99,7 @@
                             </h:panelGrid>
                         </p:outputPanel>
                         
-                    </h:panelGrid>
+                    </p:panelGrid>
                     <p:separator />
                 </p:dataScroller>
                 
