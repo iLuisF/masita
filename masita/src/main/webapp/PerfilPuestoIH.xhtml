@@ -53,7 +53,7 @@
             </h:form>
         </b:navBar>
 
-        <p:dataList value="#{informacionPuesto.getInformacionPuesto()}" var="c" type="ordered" lazy="true">
+        <!--<p:dataList value="#{informacionPuesto.getInformacionPuesto()}" var="c" type="ordered" lazy="true">-->
             <b:jumbotron>
                 <b:container>
                     <br /> 
@@ -63,7 +63,7 @@
                                 <h:form>
                                     <f:view contentType="text/html">
                                         <p:gmap id="gmap" center="19.324328359583355,-99.17934268712997" zoom="18" type="HYBRID" model="#{informacionPuesto.advancedModel}" style="width:100%;height:400px">
-
+     
                                             <p:ajax event="overlaySelect" listener="#{informacionPuesto.onMarkerSelect}"/>
 
                                             <p:gmapInfoWindow id="infoWindow">
@@ -80,7 +80,7 @@
                             </b:panel>
                         </b:column>
                         <b:column col-lg="4">
-                            <b:panel look="success" title="#{c.nombre}">
+                            <b:panel look="success" title="#{informacionPuesto.informacionPuesto.nombre}">
                                 <h:form>
                                     Calificacion: #{controladorComentario.obtenerCalificacionGral()}
                                     <p:rating value="#{controladorComentario.redondearCalificacionGral()}" readonly="true" />
@@ -89,7 +89,7 @@
                         </b:column>
                         <b:column col-lg="4">
                             <b:panel look="info" title="Información Puesto" update="grid3, grid4">
-                                <p><strong>Horario:</strong> #{c.horario}</p>
+                                <p><strong>Horario:</strong> #{informacionPuesto.informacionPuesto.horario}</p>
                                 <!-- Leer los servicios -->
                                 <p><strong>Servicios:</strong></p>
                                 <p:selectManyCheckbox id="grid3" value="#{informacionPuesto.servicios}" layout="pageDirection" columns="1">
@@ -115,12 +115,14 @@
                     </b:row>                                        
                 </b:container>
             </b:jumbotron>  
-        </p:dataList>
+        <!--</p:dataList>-->
 
 
         <b:container>
+            
             <h:form id="form">
-                <p:growl id="msgs" showDetail="true"/>                
+                <!--Aqui aparece el error de growl, solo poner rendered="false"-->
+                <p:growl id="msgs" showDetail="true"></p:growl>    
                 <p:dataTable var="comentario" value="#{controladorComentario.comentariosPuesto}" 
                              editable="true" id="listaC" paginator="true" rows="10"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -144,6 +146,7 @@
                         <p:rowEditor rendered="#{controladorComentario.mostrarEdicion(comentario.idUsuario.idUsuario)}"/>
                     </p:column>                    
                 </p:dataTable>
+                
             </h:form>
         </b:container>
 
@@ -151,29 +154,29 @@
         <br />
 
         <b:container>      
-
-
             <h:form>
 
-                <p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px; background-color: #58ACFA" closable="true" rendered="#{!inicioSesion.haySesion()}">
+                <b:panel look="primary" title="¿Qué piensas sobre este puesto?" rendered="#{!inicioSesion.haySesion()}" style="background-color: #58ACFA">
+                <!--<p:panel id="panel" header="¿Qué piensas sobre este puesto?" footer="" style="margin-bottom: 10px; background-color: #58ACFA" closable="true" rendered="#{!inicioSesion.haySesion()}">-->
                     <h:outputText/>
                     <br/>
                     <p:inputTextarea value="#{controladorComentario.nuevo.contenido}" style="width: 100%" rows="10">
                     </p:inputTextarea>
                     
-                    <p:commandButton id='btn' value="Comentar" 
+                    <p:commandButton id='btn' value="Comentar" icon="fa-comments-o"
                                      ajax="true" action="#{controladorComentario.crearComentario()}" image="ui-icon-document" style="float:right; font-size:20px"/>                                        
-                    <p:outputLabel value="Por favor califica:" style="color: white"/>                    
+                    <p:outputLabel value="Por favor califica:" style="color: white; font-size: larger" />                    
                     
-                    <p:rating value="#{controladorComentario.nuevo.calificacion}" stars="5" 
+                    <p:rating value="#{controladorComentario.nuevo.calificacion}" stars="5"
                               cancel="false" onRate="alert('Tu calificaste con: ' + value)" >
                         <p:ajax event="rate" listener="#{controladorComentario.calificarPuesto()}"/>
                     </p:rating>                        
                     <br />
-                    <p:outputLabel value="Tu calificaste con: " rendered="#{controladorComentario.hayCalificacion()}" style="color: white"/>
+                    <p:outputLabel value="Tu calificaste con: " rendered="#{controladorComentario.hayCalificacion()}" style="color: white; font-size: larger"/>
                     <p:rating value="#{controladorComentario.calificacion}" readonly="true" rendered="#{controladorComentario.hayCalificacion()}"/>
                     
-                </p:panel>
+                <!--</p:panel>-->
+                </b:panel>
             </h:form>            
         </b:container>
     </h:body>
