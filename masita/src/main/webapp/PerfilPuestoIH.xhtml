@@ -133,7 +133,8 @@
                     <p:column headerText="Comentario">                        
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{comentario.contenido}" /></f:facet>
-                            <f:facet name="input"><p:inputText id="modelInput" value="#{comentario.contenido}" style="width:100%"/></f:facet>
+                            <f:facet name="input"><p:inputText id="modelInput" value="#{comentario.contenido}" style="width:100%" 
+                                                               disabled="#{!controladorComentario.mostrarEditor(comentario.idUsuario.idUsuario)}"/></f:facet>
                         </p:cellEditor>                        
                     </p:column>
                     <p:column headerText="Fecha" style="width:200px">

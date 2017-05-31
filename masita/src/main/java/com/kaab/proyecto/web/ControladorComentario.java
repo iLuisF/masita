@@ -226,6 +226,20 @@ public class ControladorComentario {
     }
 
     /**
+     * Muestra el recuadro para editar el contenido de un comentario, este
+     * editor de contenido solo esta disponible para los comentarios del usuario
+     * que inicio sesión, es decir, los administradores no podran editar
+     * comentarios de otros usuarios.
+     *
+     * @param idUsuarioSesion Usuario que inicio sesión.
+     * @return True si inicio sesión y se mostrara el editor del comentario,
+     * false en otro caso y no se muestra el recuadro para editar el contenido.
+     */
+    public final boolean mostrarEditor(final Integer idUsuarioSesion) {
+        return Objects.equals(this.idUsuario, idUsuarioSesion);
+    }
+
+    /**
      * Obtiene el identificador de algun usuario a partir de un comentario.
      *
      * @param idComentario Identificador
