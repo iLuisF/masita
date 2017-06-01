@@ -52,7 +52,7 @@ public class CierreSesion {
     public final String cierreSesion() {
         httpServletRequest.getSession().removeAttribute("sessionUsuario");
         // httpServletRequest.getSession().destroy();
-        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Session "
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Sesión "
                 + "cerrada correctamente", null);
         faceContext.addMessage(null, message);
         return "PrincipalIH";

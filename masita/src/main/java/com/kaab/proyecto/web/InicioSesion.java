@@ -143,17 +143,41 @@ public class InicioSesion {
      */
     public final String inicioSesion() {
         if (usuario.getContrasenia().equals(encontrarContrasenia())) {
-            httpServletRequest.getSession().setAttribute("sessionUsuario",
-                    usuario);
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "Acceso Correcto", null);
-            faceContext.addMessage(null, message);
-            return "PrincipalIH";
+            if (estaActivo()) {
+                httpServletRequest.getSession().setAttribute("sessionUsuario",
+                        usuario);
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "Acceso Correcto", null);
+                faceContext.addMessage(null, message);
+                return "PrincipalIH";
+            } else {
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "No has verificado tu correo.", null);
+                faceContext.addMessage(null, message);
+                return "PrincipalIH";
+            }
+
         }
         message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                 "Usuario o contraseña incorrecto", null);
         faceContext.addMessage(null, message);
         return "PrincipalIH";
+    }
+
+    /**
+     * Determina si un usuario verifico su correo.
+     *
+     * @return True si es un usuario activo, false en otro caso.
+     */
+    private boolean estaActivo() {
+        List<Usuario> temporal = controlador.findUsuarioEntities();
+        for (int i = 0; i < temporal.size(); i++) {
+            if (temporal.get(i).getCorreo().toLowerCase().equals(
+                    this.usuario.getCorreo().toLowerCase())) {
+                return temporal.get(i).getActivo().equals("1");
+            }
+        }
+        return false;
     }
 
     /**
